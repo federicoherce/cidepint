@@ -6,3 +6,4 @@ def calculate():
     num2 = float(input("Ingrese el segundo numero"))
 
     print("Suma: ", operations.add(num1,num2))
+    print("Resta: ", operations.subtract(num1,num2))

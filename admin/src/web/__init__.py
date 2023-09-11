@@ -1,10 +1,13 @@
 from flask import Flask
-def create_app():
-    app = Flask(__name__)
+from flask import render_template
+
+
+def create_app(env="development", static_folder="../../static"):
+    app = Flask(__name__, static_folder=static_folder)
     app.get("/")
 
     @app.get("/")
     def home():
-        return "Hola Mundo!"
+        return render_template("home.html")
 
     return app

@@ -48,6 +48,10 @@
                         {% if is_authenticated(session) %}
                         <a class="dropdown-item" href="{{ url_for('users.logout') }}">Cerrar Sesión</a>
                         {% endif %}
+                        {% if not is_authenticated(session) %}
+                        <a class="dropdown-item" href="{{ url_for('users.login') }}">Iniciar Sesión</a>
+                        {% endif %}
+                        
                     </div>
                 </li>
             </ul>

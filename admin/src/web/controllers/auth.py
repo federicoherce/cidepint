@@ -14,7 +14,8 @@ def login():
         user = auth.check_user(params.get("email"), params.get("password"))
         if(user):
             session['user_id'] = user.id
-            return " Bienvenido " + user.email + "!"
+            flash("Se a iniciado session correctamente.", "warning")
+            return redirect(url_for('users.login'))
         else:
             return 'Credenciales incorrectas'
     return render_template('auth/login.html')

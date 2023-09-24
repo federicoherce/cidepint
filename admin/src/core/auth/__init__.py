@@ -21,14 +21,14 @@ def list_users():
     users = Users.query.all()
     return users
 
-def find_user_by_email_and_password(email):
+def find_user_by_mail(email):
 	user = Users.query.filter_by(email=email).first()
 	return user
 
 
 
 def check_user(email, password):
-    user = find_user_by_email_and_password(email)
+    user = find_user_by_mail(email)
     
     if user and sha256_crypt.verify(password, user.password):
         return user

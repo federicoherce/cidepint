@@ -3,22 +3,26 @@ from src.core import auth
 from passlib.hash import sha256_crypt
 from src.core import auth
 
-auth_bp = Blueprint("users",__name__,url_prefix="/sesion")
+auth_bp = Blueprint("auth",__name__,url_prefix="/sesion")
 
-
-
-@auth_bp.route('/login', methods=['GET', 'POST'])
+@auth_bp.get("/")
 def login():
-    if request.method == 'POST':
-        params = request.form
-        user = auth.check_user(params.get("email"), params.get("password"))
-        if(user):
-            session['user_id'] = user.id
-            flash("Se a iniciado session correctamente.", "warning")
-            return redirect(url_for('users.login'))
-        else:
-            return 'Credenciales incorrectas'
-    return render_template('auth/login.html')
+    return render_template("auth/login.html")
+
+
+@auth_bp.post("/authenticate")
+def authenticate():
+    params = request.form
+    user = auth.check_user(params["email"], params["password"])
+
+    if not user:
+        flash("Email o clave incorrecta", "error")
+        return redirect(url_for("auth.login"))
+
+    session["user_id"] = user.email
+    flash("La sesion se inicio correctamente", "succes")
+
+    return redirect(url_for("auth.login"))
 
 
 
@@ -29,4 +33,4 @@ def logout():
         return redirect(url_for('home'))
     else:
         flash("No hay usuario logueado. Por favor, inicia sesión antes de cerrar sesión.", "warning")
-        return redirect(url_for('users.login'))
+        return redirect(url_for('auth.login'))

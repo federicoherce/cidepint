@@ -23,11 +23,11 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     #Configuracion de desarollo
-
+    
     DB_USER = "postgres"
-    DB_PASS = "postgres"
+    DB_PASS = "2000"
     DB_HOST = "localhost"
-    DB_NAME = "pruebas"
+    DB_NAME = "postgres"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}"

@@ -1,12 +1,12 @@
 from src.core.auth.user import Users
-from src.core.database import db
+from src.core.database import database as db
 from passlib.hash import sha256_crypt
 
 
 
 def create_User(**kwargs):
     """
-    hashear la contraseña y crear el usuario
+    hashea la contraseña y crear el usuario
     """
     raw_password = kwargs.get("password")
     hashed_password = sha256_crypt.hash(raw_password)

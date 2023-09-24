@@ -1,6 +1,4 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from src.core import board
-from src.core.database import db
 from src.core import auth
 from passlib.hash import sha256_crypt
 from src.core import auth
@@ -16,10 +14,10 @@ def login():
         user = auth.check_user(params.get("email"), params.get("password"))
         if(user):
             session['user_id'] = user.id
-            return redirect(url_for('issues.index'))
+            return " Bienvenido " + user.email + "!"
         else:
             return 'Credenciales incorrectas'
-    return render_template('users/login.html')
+    return render_template('auth/login.html')
 
 
 

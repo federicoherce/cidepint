@@ -13,10 +13,8 @@ def create_User(**kwargs):
     kwargs["password"] = hashed_password 
     user = Users(**kwargs)
     db.session.add(user)
-    db.session.commit()       # Efectuamos la query
-
-	return user
-
+    db.session.commit()       # Efectuamos la query 
+    return user 
 
 
 def list_users():

@@ -4,6 +4,7 @@ from src.web import error
 from src.core import database, seeds
 from src.web.config import config
 
+session = Session()
 
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder=static_folder)

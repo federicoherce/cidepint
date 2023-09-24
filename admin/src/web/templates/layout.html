@@ -45,7 +45,12 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
                         <a class="dropdown-item" href="#">Perfil</a>
-                        <a class="dropdown-item" href="#">Cerrar sesión</a>
+                        {% if is_authenticated(session) %}
+                        <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
+                        {% endif %}
+                        {% if not is_authenticated(session) %}
+                        <a class="dropdown-item" href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
+                        {% endif %}              
                     </div>
                 </li>
             </ul>

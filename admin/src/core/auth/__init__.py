@@ -16,6 +16,27 @@ def create_User(**kwargs):
     db.session.commit()       # Efectuamos la query 
     return user 
 
+def create_user_no_pw(**kwargs):
+	user = Users(**kwargs)
+	db.session.add(user)
+	db.session.commit()
+
+
+def enter_password(pw, email):
+	user = find_user_by_mail(email)
+	hashed_password = sha256_crypt.hash(pw)
+	user.password = hashed_password
+	db.session.add(user)
+	db.session.commit()
+
+def find_user_by_token(token):
+	return Users.query.filter_by(token=token).first()
+
+def delete_token(email):
+	user = find_user_by_mail(email)
+	user.token = None
+	db.session.add(user)
+	db.session.commit()
 
 def list_users():
     users = Users.query.all()
@@ -24,7 +45,6 @@ def list_users():
 def find_user_by_mail(email):
 	user = Users.query.filter_by(email=email).first()
 	return user
-
 
 
 def check_user(email, password):

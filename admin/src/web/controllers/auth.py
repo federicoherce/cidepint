@@ -1,7 +1,11 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, abort
 from src.core import auth
-from passlib.hash import sha256_crypt
-from src.core import auth
+from forms.registro_form import SignUpForm, PasswordForm
+from flask_mail import Message
+from core.mail import mail
+import secrets
+from src.core.auth.user import Users
+from src.web import error
 
 auth_bp = Blueprint("auth",__name__,url_prefix="/sesion")
 
@@ -34,3 +38,57 @@ def logout():
     else:
         flash("No hay usuario logueado. Por favor, inicia sesión antes de cerrar sesión.", "warning")
         return redirect(url_for('auth.login'))
+    
+    
+def generate_confirmation_token():
+    token = secrets.token_urlsafe(16)
+    return token
+    
+@auth_bp.get("/register")
+def register():
+    form = SignUpForm()
+    return render_template("auth/register.html", form=form)
+
+@auth_bp.post("/register_user")
+def register_user():
+    form = SignUpForm()
+    if form.validate_on_submit():
+        existe = auth.find_user_by_mail(form.email.data)
+        if existe:
+            flash('Este correo electrónico ya está en uso. Por favor, elige otro.', 'error')
+            return redirect(url_for('auth.register'))
+
+        token = generate_confirmation_token()
+        auth.create_user_no_pw(nombre=form.nombre.data, apellido=form.apellido.data, email=form.email.data, token=token)
+        send_confirmation_email(form.email.data, token)
+        flash('Tu cuenta ha sido creada, te enviamos un mail', 'success')
+        return redirect(url_for('home'))
+    return render_template("auth/register.html", form=form)
+
+def send_confirmation_email(email, token):
+   msg = Message('Confirma tu registro', sender='cidepint.proyecto@gmail.com', recipients=[email])
+   confirmation_link = f'http://127.0.0.1:5000/sesion/confirmar_registro/{email}/{token}'
+   msg.html = f'Para confirmar tu registro, haz clic en el siguiente enlace: <a href="{confirmation_link}">Confirmar Registro</a>'
+   mail.send(msg)
+    
+
+@auth_bp.get("/confirmar_registro/<email>/<token>")
+def confirm_registration(email, token):
+   user = auth.find_user_by_token(token)
+   if user:
+      form = PasswordForm()
+      return render_template('auth/confirmar_registro.html', form=form, email=email, token=token)
+   else:
+      abort(404)
+
+
+
+@auth_bp.post("/guardar_contrasenia/<email>/<token>")
+def save_password(email, token):
+    form = PasswordForm()
+    auth.enter_password(form.password.data, email)
+    auth.delete_token(email)
+    flash('Contraseña seteada con exito', 'success')
+    return redirect(url_for('home'))
+
+

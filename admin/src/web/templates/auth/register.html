@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Registro de usuarios{% endblock %}
+{% block content %}
+<form action="{{ url_for('auth.register_user') }}" method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.nombre.label }} {{ form.nombre}}<br>
+    {{ form.apellido.label }} {{ form.apellido}}<br>
+    {{ form.email.label }} {{ form.email}}<br>
+    {% for error in form.email.errors %}
+    <span style="color: red;">Introduzca un email valido</span>
+    {% endfor %}
+    <br>
+    {{ form.submit() }}
+</form>
+{% endblock %}

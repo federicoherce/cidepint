@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template
 from src.web import error
-from src.core import database, seeds
+from src.core import database, seeds, mail
 from src.web.config import config
 from flask_session import Session
 from src.web.controllers.auth import auth_bp
@@ -15,7 +15,7 @@ def create_app(env="development", static_folder="../../static"):
     app.get("/")
 
     database.init_app(app)
-    
+    mail.init_app(app)
     app.register_blueprint(auth_bp)
     
     app.jinja_env.globals.update(is_authenticated = auth.is_authenticated)

@@ -25,7 +25,7 @@ class DevelopmentConfig(Config):
     #Configuracion de desarollo
     
     DB_USER = "postgres"
-    DB_PASS = "2000"
+    DB_PASS = "postgres"
     DB_HOST = "localhost"
     DB_NAME = "postgres"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -33,8 +33,14 @@ class DevelopmentConfig(Config):
         f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}"
     )
 
-
-
+    
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USERNAME = 'cidepint.proyecto@gmail.com'
+    MAIL_PASSWORD = 'tihdtlofndswghxw '
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+    
 class TestingConfig(Config):
     #Configuracion de testeo
 

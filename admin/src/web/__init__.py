@@ -6,6 +6,13 @@ from src.web.config import config
 from flask_session import Session
 from src.web.controllers.auth import auth_bp
 from src.web.helpers import auth
+import logging
+
+
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
+
 
 session = Session()
 

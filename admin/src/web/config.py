@@ -27,6 +27,8 @@ class ProductionConfig(Config):
         f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}"
     )
     
+    URL_REGISTRO = "https://admin-grupo17.proyecto2023.linti.unlp.edu.ar/sesion/confirmar_registro"
+    
 
 
 class DevelopmentConfig(Config):
@@ -41,6 +43,7 @@ class DevelopmentConfig(Config):
         f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}"
     )
 
+    URL_REGISTRO = "http://127.0.0.1:5000/sesion/confirmar_registro"
     
   
 class TestingConfig(Config):

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session, abort
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, abort, current_app
 from src.core import auth
 from forms.registro_form import SignUpForm, PasswordForm
 from flask_mail import Message
@@ -67,8 +67,8 @@ def register_user():
 
 def send_confirmation_email(email, token):
    msg = Message('Confirma tu registro', sender='cidepint.proyecto@gmail.com', recipients=[email])
-   
-   confirmation_link = f'http://127.0.0.1:5000/sesion/confirmar_registro/{email}/{token}'
+   url = current_app.config['URL_REGISTRO']
+   confirmation_link = f'{url}/{email}/{token}'
    msg.html = f'Para confirmar tu registro, haz clic en el siguiente enlace: <a href="{confirmation_link}">Confirmar Registro</a>'
    mail.send(msg)
     

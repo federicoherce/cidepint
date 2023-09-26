@@ -67,6 +67,7 @@ def register_user():
 
 def send_confirmation_email(email, token):
    msg = Message('Confirma tu registro', sender='cidepint.proyecto@gmail.com', recipients=[email])
+   
    confirmation_link = f'http://127.0.0.1:5000/sesion/confirmar_registro/{email}/{token}'
    msg.html = f'Para confirmar tu registro, haz clic en el siguiente enlace: <a href="{confirmation_link}">Confirmar Registro</a>'
    mail.send(msg)

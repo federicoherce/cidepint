@@ -6,17 +6,10 @@ from src.web.config import config
 from flask_session import Session
 from src.web.controllers.auth import auth_bp
 from src.web.helpers import auth
-import logging
-
-
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-
-
 
 session = Session()
 
-def create_app(env="production", static_folder="../../static"):
+def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder=static_folder)
     app.config.from_object(config[env])
     app.get("/")

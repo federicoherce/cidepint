@@ -83,6 +83,7 @@ def send_confirmation_email(email, token):
     mail.send(msg)
 
 
+
 @auth_bp.get("/confirmar_registro/<email>/<token>")
 def confirm_registration(email, token):
     user = auth.find_user_by_token(token)

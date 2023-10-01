@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
 from src.core.database import database as db
 from datetime import datetime
-
+from admin.src.core.auth.role_permission import user_role
 
 
 class Users(db.Model):
@@ -12,7 +13,8 @@ class Users(db.Model):
     email = Column(String(255), unique=True, nullable=False)
     password = Column(String(100), nullable=True)
     token = Column(String(32), unique=True, nullable=True)
-    
+    activo = Column(Boolean, default=False)
+    roles = relationship("Roles", secondary=user_role)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )

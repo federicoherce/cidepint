@@ -27,7 +27,7 @@ role_permissions = db.Table(
 )
 
 
-class Role(db.Model):
+class Roles(db.Model):
     __tablename__ = "roles"
     id = Column(Integer, primary_key=True, unique=True)
     nombre = Column(String(255), nullable=False, unique=True)
@@ -39,12 +39,13 @@ class Role(db.Model):
 
 
 # Tuve un problema con esta clase,
-# la quise poner en otro módulo pero no me salió )):
-class Permission(db.Model):
+# la quise poner en otro módulo pero no me salió
+# me dice que no encuentra la table Permissions
+class Permissions(db.Model):
     __tablename__ = "permissions"
     id = Column(Integer, primary_key=True, unique=True)
     nombre = Column(String(255), nullable=False, unique=True)
-    roles = relationship("Roles", secondary=role_permissions)
+    # roles = relationship("Roles", secondary=role_permissions)
 
     def __init__(self, nombre):
         self.nombre = nombre

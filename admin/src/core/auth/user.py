@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 from src.core.database import database as db
 from datetime import datetime
-from src.core.auth.role_permission import user_role
+from src.core.roles_permissions.role import user_role
 
 
 class Users(db.Model):

@@ -5,6 +5,7 @@ from src.core import database, seeds, mail
 from src.web.config import config
 from flask_session import Session
 from src.web.controllers.auth import auth_bp
+from src.web.controllers.users import users_bp
 from src.web.helpers import auth
 import logging
 
@@ -23,7 +24,9 @@ def create_app(env="development", static_folder="../../static"):
 
     database.init_app(app)
     mail.init_app(app)
+
     app.register_blueprint(auth_bp)
+    app.register_blueprint(users_bp)
 
     app.jinja_env.globals.update(is_authenticated=auth.is_authenticated)
 

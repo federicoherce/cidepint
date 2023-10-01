@@ -5,8 +5,7 @@ from forms.registro_form import SignUpForm, PasswordForm
 from flask_mail import Message
 from core.mail import mail
 import secrets
-from src.core.auth.user import Users
-from src.web import error
+
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
 

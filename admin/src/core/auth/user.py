@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 from src.core.database import database as db
 from datetime import datetime
-from src.core.roles_permissions.role import user_role
+from src.core.users.role import user_role
 
 
 class Users(db.Model):
@@ -20,9 +20,10 @@ class Users(db.Model):
     )
     inserted_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, nombre, apellido, email, token, password=None):
+    def __init__(self, nombre, apellido, email, token, password=None, activo=False):
         self.nombre = nombre
         self.apellido = apellido
         self.email = email
         self.token = token
         self.password = password
+        self.activo = activo

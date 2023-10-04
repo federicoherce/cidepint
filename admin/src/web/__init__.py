@@ -43,5 +43,6 @@ def create_app(env="development", static_folder="../../static"):
         seeds.run()
 
     app.register_error_handler(404, error.not_found_error)
+    app.register_error_handler(401, error.unauthorized)
 
     return app

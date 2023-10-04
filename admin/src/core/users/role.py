@@ -31,8 +31,8 @@ class Roles(db.Model):
     __tablename__ = "roles"
     id = Column(Integer, primary_key=True, unique=True)
     nombre = Column(String(255), nullable=False, unique=True)
-    usuarios = relationship("Users", secondary=user_role)
-    permisos = relationship("Permissions", secondary=role_permissions)
+    usuarios = relationship("Users", secondary=user_role, back_populates="roles")
+    permisos = relationship("Permissions", secondary=role_permissions, back_populates="roles")
 
     def __init__(self, nombre):
         self.nombre = nombre

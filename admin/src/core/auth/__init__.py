@@ -56,6 +56,16 @@ def find_user_by_mail(email):
     return user
 
 
+def find_user_contains_mail(email):
+    users = Users.query.filter(Users.email.contains(f'{email}')).all()
+    return users
+
+
+def find_user_by_state(state):
+    users = Users.query.filter(Users.activo == (state == 'activo')).all()
+    return users
+
+
 def check_user(email, password):
     """
     Verifica la contraseña ingresada por un usuario

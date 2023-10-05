@@ -17,7 +17,7 @@ def run():
 
     user_index_permission = users.create_permission(nombre="user_index")
     user_show_permission = users.create_permission(nombre="user_show")
-    user_new_permission = users.create_permission(nombre="user_new")    # Create
+    user_new_permission = users.create_permission(nombre="user_new")
     user_destroy_permission = users.create_permission(nombre="user_destroy")
     user_update_permission = users.create_permission(nombre="user_update")
 
@@ -27,6 +27,7 @@ def run():
     users.assign_permission_role(superadmin_role, user_new_permission)
     users.assign_permission_role(superadmin_role, user_destroy_permission)
     users.assign_permission_role(superadmin_role, user_update_permission)
+    
     
 def run_services():
     services.create_service(
@@ -46,8 +47,8 @@ def run_services():
         activo=True
     )
 
-    owner_role = users.create_role(nombre="owner")
+    owner = users.create_role(nombre="owner")
 
-    users.assign_role_user(user, owner_role)
-    users.assign_permission_role(owner_role, users.set_permission("user_index"))
-
+    users.assign_role_user(user, owner)
+    users.assign_permission_role(owner, users.set_permission("user_index"))
+    users.assign_permission_role(owner, users.set_permission("user_new"))

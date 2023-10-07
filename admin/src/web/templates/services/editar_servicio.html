@@ -14,7 +14,7 @@
         {{ form.habilitado.label }} {{ form.habilitado}}<br>
         <button type="submit" class="btn btn-primary">Editar</button>
     </form>
-    <form action="{{ url_for('services.eliminar', servicio_id=servicio.id) }}" method="DELETE">
-    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+    <form action="{{ url_for('services.eliminar', servicio_id=servicio.id) }}" method="POST">
+    <button type="submit" class="btn btn-danger">Eliminar</button>
     <form></form>
 {% endblock %}

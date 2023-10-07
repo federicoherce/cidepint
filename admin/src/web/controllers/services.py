@@ -44,6 +44,8 @@ def agregar_servicio():
 @services_bp.get("/editar/<int:servicio_id>")
 @login_required
 def editar(servicio_id):
+    if not has_permissions(['user_update']):
+        abort(401)
     servicio = services.get_service(servicio_id)
     form = ServiciosForm(obj=servicio)
     return render_template('services/editar_servicio.html', form=form, servicio=servicio)
@@ -62,6 +64,8 @@ def editar_servicio(servicio_id):
 @services_bp.post("/eliminar/<int:servicio_id>")
 @login_required
 def eliminar(servicio_id):
+    if not has_permissions(['user_destroy']):
+        abort(401)
     servicio = services.get_service(servicio_id)
     services.delete_service(servicio)
     flash('Servicio eliminado correctamente', 'success')

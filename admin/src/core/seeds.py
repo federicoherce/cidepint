@@ -30,14 +30,6 @@ def run():
     
     
 def run_services():
-    services.create_service(
-        nombre="Pintura Especializada",
-        descripcion="Calidad",
-        keywords="pintura, especializada",
-        centros="Institucion 1, Institucion 2, Institucion 3",
-        tipo_servicio="Desarrollo",
-        habilitado=True
-    )
     user = auth.create_User(
         email="juan@owner.com",
         password="1234",
@@ -47,8 +39,25 @@ def run_services():
         activo=True
     )
 
+    op = auth.create_User(
+        email="juan@operator.com",
+        password="1234",
+        token=None,
+        nombre="Juan",
+        apellido="Perez",
+        activo=True
+    )
+    
     owner = users.create_role(nombre="owner")
-
+    operator = users.create_role(nombre="operator")
+    
     users.assign_role_user(user, owner)
     users.assign_permission_role(owner, users.set_permission("user_index"))
     users.assign_permission_role(owner, users.set_permission("user_new"))
+    users.assign_permission_role(owner, users.set_permission("user_update"))
+    users.assign_permission_role(owner, users.set_permission("user_destroy"))
+    
+    users.assign_role_user(op, operator)
+    users.assign_permission_role(operator, users.set_permission("user_index"))
+    users.assign_permission_role(operator, users.set_permission("user_new"))
+    users.assign_permission_role(operator, users.set_permission("user_update"))

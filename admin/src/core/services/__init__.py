@@ -12,3 +12,15 @@ def create_service(**kwargs):
 def list_services():
     services = Servicio.query.all()
     return services
+
+def get_service(service_id):
+    service = Servicio.query.get_or_404(service_id)
+    return service
+
+def update_service(form, service):
+    form.populate_obj(service)
+    db.session.commit()
+    
+def delete_service(service):
+    db.session.delete(service)
+    db.session.commit()

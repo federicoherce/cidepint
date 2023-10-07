@@ -1,8 +1,10 @@
 {% extends "layout.html" %}
-{% block title %}Agregar servicio{% endblock %}
+{% block title %}Editar Servicio{% endblock %}
+
 {% block content %}
-    <h1 class="mb-4">Agregar Servicio</h1>
-    <form action="{{ url_for('services.agregar_servicio') }}" method="POST">
+    <h1 class="mb-4">Editar Servicio</h1>
+
+    <form action="{{ url_for('services.editar_servicio', servicio_id=servicio.id) }}" method="POST">
         {{ form.hidden_tag() }}
         {{ form.nombre.label }} {{ form.nombre}}<br>
         {{ form.descripcion.label }} {{ form.descripcion}}<br>
@@ -10,7 +12,9 @@
         {{ form.centros.label }} {{ form.centros}}<br>
         {{ form.tipo_servicio.label }} {{ form.tipo_servicio}}<br>
         {{ form.habilitado.label }} {{ form.habilitado}}<br>
-        <br>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary">Editar</button>
     </form>
+    <form action="{{ url_for('services.eliminar', servicio_id=servicio.id) }}" method="DELETE">
+    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+    <form></form>
 {% endblock %}

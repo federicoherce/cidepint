@@ -4,12 +4,19 @@
     <h1 class="mb-4">Agregar Servicio</h1>
     <form action="{{ url_for('services.agregar_servicio') }}" method="POST">
         {{ form.hidden_tag() }}
-        {{ form.nombre.label }} {{ form.nombre}}<br>
-        {{ form.descripcion.label }} {{ form.descripcion}}<br>
-        {{ form.keywords.label }} {{ form.keywords}}<br>
-        {{ form.centros.label }} {{ form.centros}}<br>
-        {{ form.tipo_servicio.label }} {{ form.tipo_servicio}}<br>
-        {{ form.habilitado.label }} {{ form.habilitado}}<br>
+        {{ form.nombre.label(class="form-label") }} 
+        {{ form.nombre(class="form-control") }}
+        {{ form.descripcion.label(class="form-label") }}
+        {{ form.descripcion(class="form-control") }}
+        {{ form.keywords.label(class="form-label") }}
+        {{ form.keywords(class="form-control") }}
+        {{ form.centros.label(class="form-label") }}
+        {{ form.centros(class="form-control") }}
+        {{ form.tipo_servicio.label(class="form-label") }}
+        {{ form.tipo_servicio(class="form-control") }} <br>
+        {{ form.habilitado.label}}
+        {{ form.habilitado}}
+        <br>
         <br>
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>

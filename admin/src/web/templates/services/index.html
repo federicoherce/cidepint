@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Listado de servicios{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <a href="{{ url_for('services.agregar') }}" class="btn btn-info btn-sm">Agregar</a>
+    <h1 class="mb-4">Listado de servicios:</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Keywords</th>
+                <th>Centros</th>
+                <th>Tipo</th>
+                <th>Habilitado</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for service in services %}
+            <tr>
+                <td>{{ service.nombre }}</td>
+                <td>{{ service.descripcion }}</td>
+                <td>{{ service.keywords }}</td>
+                <td>{{ service.centros }}</td>
+                <td>{{ service.tipo_servicio }}</td>
+                <td>
+                    {% if service.habilitado %}
+                        Habilitado
+                    {% else %}
+                        Inhabilitado
+                    {% endif %}
+                </td>
+                <td><a href="{{ url_for('services.editar', servicio_id=service.id) }}" class="btn btn-info btn-sm">Editar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Registro de usuarios{% endblock %}
+{% block content %}
+
+        <a>{{instit.nombre}}</a><br>
+        <a>{{instit.informacion}}</a><br>
+        <a>{{instit.direccion}}</a><br>
+        <a>{{instit.localizacion}}</a><br>
+        <a>{{instit.palabras_claves}}</a><br>
+        <a>{{instit.horarios}}</a><br>
+        <a>{{instit.web}}</a><br>
+        <a>{{instit.contacto}}</a><br>
+
+    <a href="{{ url_for('instituciones.update', id=instit.id) }}">Modificar</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}Registro de usuarios{% endblock %}
+{% block content %}
+{% if instits %}
+    {% for instit in instits %}
+        <a><b>{{ instit.nombre }}</b> -> </a><a href="{{ url_for('instituciones.show', id=instit.id) }}">Ver informacion completa</a><br>
+    {% endfor %}
+{% else %}
+    <p> NO HAY INSTITUCIONES </p>
+    <a href="{{ url_for('instituciones.create') }}">Crear Institucion</a>
+{% endif %}
+{% endblock %}

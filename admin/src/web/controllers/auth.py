@@ -16,14 +16,6 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
 def login():
     return render_template("auth/login.html")
 
-#@auth_bp.before_request
-#def check_maintenance_mode():
-#    if app.config['MAINTENANCE_MODE'] and request.path != url_for('auth.login') and not has_permissions(['user_show']):
-#        return abort(503)
-#
-
-
-
 
 @auth_bp.post("/authenticate")
 def authenticate():
@@ -40,7 +32,7 @@ def authenticate():
          session["user_id"] = user.email 
          flash("La sesion se inicio correctamente", "succes")
     
-
+    
     return redirect(url_for("auth.login"))
 
 

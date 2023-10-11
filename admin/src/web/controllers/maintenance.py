@@ -19,6 +19,7 @@ def toggle_maintenance():
             if action == 'Activar Mantenimiento':
                 app.config['MAINTENANCE_MODE'] = True
                 flash("Se activó modo Mantenimiento: " + str(app.config['MAINTENANCE_MODE']), "info")
-            elif action == 'Desactivar Mantenimiento':
+            elif action == 'Desactivar mantenimiento':
                app.config['MAINTENANCE_MODE']  = False
+               flash("Se deactivó modo mantenimiento: " + str(app.config['MAINTENANCE_MODE']), "info")
     return render_template('maintenance_form.html')

@@ -30,5 +30,7 @@ def create_app(env="development", static_folder="../../static"):
     commands.register_commands(app)
     error_handlers.register_errors(app)
     app.jinja_env.globals.update(is_authenticated=auth.is_authenticated)
-
+    app.jinja_env.globals.update(has_permissions=auth.has_permissions)
+    
+    
     return app

@@ -25,3 +25,12 @@ def has_permissions(required_permissions_list):
         if permission in user_permission_list:
             return True
     return False
+
+def has_permissions_mail(required_permissions_list , mail):
+    user = auth.find_user_by_mail(mail)
+    user_permission_list = users.list_permissions_by_user(user)
+
+    for permission in required_permissions_list:
+        if permission in user_permission_list:
+            return True
+    return False

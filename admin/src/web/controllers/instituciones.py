@@ -11,10 +11,10 @@ def list_instituciones():
     return render_template("instituciones/list_instituciones.html", instits=instits)
 
 
-@instituciones_bp.route('/instituciones/<int:id>', methods=['GET'])
+@instituciones_bp.route('/institucion/<int:id>', methods=['GET'])
 def show(id):
-    # Lógica para mostrar detalles de una institución específica
-    return f'Detalles de la institución {id}'
+    instit = instituciones.find_institucion_by_id(id)
+    return render_template("instituciones/institucion.html", instit=instit)
 
 @instituciones_bp.get("/create")
 def create():
@@ -41,10 +41,28 @@ def create_institucion():
     return render_template("instituciones/create_institucion.html", form=form)
 
 
-@instituciones_bp.route('/instituciones/<int:id>', methods=['PUT'])
+@instituciones_bp.route('/update/<int:id>', methods=['POST', 'GET'])
 def update(id):
-    # Lógica para actualizar una institución existente
-    return f'Actualizar institución {id}'
+    instit = instituciones.find_institucion_by_id(id)
+
+    form = InstitucionForm(obj=instit)
+
+    if form.validate_on_submit():
+        instituciones.update_institucion(instit,
+            nombre=form.nombre.data,
+            informacion = form.informacion.data,
+            direccion = form.direccion.data,
+            localizacion = form.localizacion.data,
+            palabras_claves = form.palabras_claves.data,
+            horarios = form.horarios.data,
+            web = form.web.data,
+            contacto = form.contacto.data
+        )
+
+        flash('Institución actualizada exitosamente', 'success')
+        return redirect(url_for('home'))
+
+    return render_template("instituciones/update_institucion.html", instit=instit, form=form)
 
 @instituciones_bp.route('/instituciones/<int:id>', methods=['DELETE'])
 def destroy(id):

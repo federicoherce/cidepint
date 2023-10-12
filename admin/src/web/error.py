@@ -20,3 +20,14 @@ def unauthorized(e):
     }
 
     return render_template("error.html", **kwargs), 401
+
+
+def forbidden(e):
+    kwargs = {
+        "error_name": "503 Forbidden",
+        "error_description": """
+            El sitio se encuentra en mantenimiento.
+            Por favor, intente más tarde.
+        """
+    }
+    return render_template("error.html", **kwargs), 503

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Mantenimiento{% endblock %}
+{% block content %}
+<html>
+<head>
+    <title>Selección de Modo de Mantenimiento</title>
+</head>
+<body>
+    <h1>Selecciona el Modo de Mantenimiento</h1>
+    <form method="POST" action="{{ url_for('maintenance.toggle_maintenance') }}">
+        {{ form.hidden_tag() }}
+        {{ form.activate_maintenance() }}
+        {{ form.deactivate_maintenance() }}
+    </form>
+</body>
+</html>
+{% endblock %}

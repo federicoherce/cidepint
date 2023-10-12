@@ -52,8 +52,10 @@
                         {% endif %}
                         {% if not is_authenticated(session) %}
                         <a class="dropdown-item" href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
+                        {% if not isActivated() %}
                         <a class="dropdown-item" href="{{ url_for('auth.register') }}">Registrarse</a>
-                        {% endif %}              
+                        {% endif %}      
+                        {% endif %}       
                     </div>
                 </li>
             </ul>

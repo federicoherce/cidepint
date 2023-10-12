@@ -14,6 +14,7 @@ def index():
 
 
 @maintenance_bp.before_request
+@login_required
 def not_has_permissions():
     if not has_permissions(['user_show']):
            abort(401)  # Acceso prohibido si no es un super admin

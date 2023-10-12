@@ -8,8 +8,9 @@
 <body>
     <h1>Selecciona el Modo de Mantenimiento</h1>
     <form method="POST" action="{{ url_for('maintenance.toggle_maintenance') }}">
-        <input type="submit" value="Activar Mantenimiento" name="action">
-        <input type="submit" value="Desactivar Mantenimiento" name="action">
+        {{ form.hidden_tag() }}
+        {{ form.activate_maintenance() }}
+        {{ form.deactivate_maintenance() }}
     </form>
 </body>
 </html>

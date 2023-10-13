@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, request, redirect, url_for, session
+from flask import Blueprint, render_template, abort, request, redirect, url_for
 from src.core import auth
 from src.web.helpers.auth import login_required, has_permissions, is_superadmin
 

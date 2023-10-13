@@ -8,6 +8,7 @@ import logging
 from src.web import routes
 from src.web import commands
 from src.web import error_handlers
+from src.web import jinja
 from flask import session, abort
 from src.web.helpers.auth import has_permissions
 from flask import url_for
@@ -29,8 +30,6 @@ def create_app(env="development", static_folder="../../static"):
     routes.register_routes(app)
     commands.register_commands(app)
     error_handlers.register_errors(app)
-    app.jinja_env.globals.update(is_authenticated=auth.is_authenticated)
-    app.jinja_env.globals.update(has_permissions=auth.has_permissions)
-    
-    
+    jinja.register_jinja_env_globals(app)
+
     return app

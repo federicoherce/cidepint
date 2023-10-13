@@ -33,7 +33,7 @@ def authenticate():
          flash("La sesion se inicio correctamente", "succes")
     
     
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("home"))
 
 
 @auth_bp.route('/logout')

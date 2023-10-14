@@ -5,9 +5,7 @@ from src.web.config import config
 from src.web import routes
 from src.web import commands
 from src.web import error_handlers
-from flask import session, abort
-from src.web.helpers.auth import has_permissions
-from flask import url_for
+from src.web import jinja
 #logging.basicConfig()
 #logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 

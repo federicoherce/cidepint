@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Contacto{% endblock %}
+{% block content %}
+<html>
+<head>
+    <title>Informacion de contacto</title>
+</head>
+<body>
+    <h1>editar informacion de contacto</h1>
+    <form method="POST" action="{{ url_for('maintenance.index_contacto') }}">
+       {{form.email.label}} {{form.email}}
+        <br>
+        {{ form.guardar() }}
+   </form>
+</body>
+</html>
+{% endblock %}

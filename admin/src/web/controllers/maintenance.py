@@ -5,6 +5,7 @@ from src.web.helpers.maintenance import maintenance
 from src.web.config  import config
 from flask import current_app as app
 from forms.maintenance_form import MaintenanceForm
+from forms.maintenance_form import ContactoForm
 
 maintenance_bp = Blueprint("maintenance", __name__, url_prefix="/maintenance")
 
@@ -29,3 +30,15 @@ def toggle_maintenance():
             app.config['MAINTENANCE_MODE']  = False
             flash("Se deactivó modo mantenimiento: ", "info")
         return redirect(url_for('maintenance.index'))
+    
+
+@maintenance_bp.get('/contacto')
+def index_contacto():
+    form = ContactoForm()
+    return render_template('configuraciones/info_contacto.html' , form = form )    
+
+
+@maintenance_bp.post('/contacto')
+def info_contacto():
+    flash("Se guardaron los cambios correctamente", "info")
+    return redirect(url_for('maintenance.index_contacto'))

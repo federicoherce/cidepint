@@ -24,8 +24,8 @@ def toggle_maintenance():
     if form.validate_on_submit():
         if form.activate_maintenance.data:
             app.config['MAINTENANCE_MODE'] = True
-            flash("Se activó modo Mantenimiento: " + str(app.config['MAINTENANCE_MODE']), "info")
+            flash("Se activó modo Mantenimiento: ", "info")
         elif form.deactivate_maintenance.data:
-            app.config['MAINTENANCE_MODE'] = False
-            flash("Se deactivó modo mantenimiento: " + str(app.config['MAINTENANCE_MODE']), "info")
+            app.config['MAINTENANCE_MODE']  = False
+            flash("Se deactivó modo mantenimiento: ", "info")
         return redirect(url_for('maintenance.index'))

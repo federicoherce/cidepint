@@ -9,21 +9,9 @@ def create_institucion(**kwargs):
     return institucion
 
 
-def create_user_no_pw(**kwargs):
-    """
-    Esta función se ejecuta cuando el usuario
-    hace la primera parte del registro.
-    """
-    user = Users(**kwargs)
-    db.session.add(user)
-    db.session.commit()
-
-
-def enter_password(pw, email):
-    user = find_user_by_mail(email)
-    hashed_password = sha256_crypt.hash(pw)
-    user.password = hashed_password
-    db.session.add(user)
+def delete_institucion(id):
+    institucion = Institucion.query.filter_by(id=id).first()
+    db.session.delete(institucion)
     db.session.commit()
 
 
@@ -38,6 +26,9 @@ def update_institucion(institucion, **kwargs):
     db.session.commit()
 
 
+def habilitar_institucion(institucion, value):
+    setattr(institucion, 'habilitado', value)
+    db.session.commit()
 
 
 def list_instituciones():

@@ -2,14 +2,29 @@
 {% block title %}Registro de usuarios{% endblock %}
 {% block content %}
 
-        <a>{{instit.nombre}}</a><br>
-        <a>{{instit.informacion}}</a><br>
-        <a>{{instit.direccion}}</a><br>
-        <a>{{instit.localizacion}}</a><br>
-        <a>{{instit.palabras_claves}}</a><br>
-        <a>{{instit.horarios}}</a><br>
-        <a>{{instit.web}}</a><br>
-        <a>{{instit.contacto}}</a><br>
+        <a><b>Nombre: </b>{{instit.nombre}}</a><br>
+        <a><b>Informacion </b>{{instit.informacion}}</a><br>
+        <a><b>Direccion: </b>{{instit.direccion}}</a><br>
+        <a><b>Localizacion: </b>{{instit.localizacion}}</a><br>
+        <a><b>Claves: </b>{{instit.palabras_claves}}</a><br>
+        <a><b>Horarios: </b>{{instit.horarios}}</a><br>
+        <a><b>Web: </b>{{instit.web}}</a><br>
+        <a><b>Contacto: </b>{{instit.contacto}}</a><br>
+        <a><b>Habilitado: </b>{{ instit.habilitado }}</a>
 
-    <a href="{{ url_for('instituciones.update', id=instit.id) }}">Modificar</a>
+    <form method="POST" action="{{ url_for('instituciones.update', id=instit.id) }}">
+        <button type="submit" class="btn btn-primary">Modificar</button>
+    </form>
+    <form method="POST" action="{{ url_for('instituciones.habilitar_institucion', id=instit.id) }}">
+        <button type="submit" class="btn btn-primary">
+            {% if instit.habilitado %}
+                Deshabilitar
+            {% else %}
+                Habilitar
+            {% endif %}
+        </button>
+    </form>
+    <form method="POST" action="{{ url_for('instituciones.destroy', id=instit.id) }}">
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
 {% endblock %}

@@ -16,6 +16,15 @@ def show(id):
     instit = instituciones.find_institucion_by_id(id)
     return render_template("instituciones/institucion.html", instit=instit)
 
+
+@instituciones_bp.route('/habilitar_institucion/<int:id>', methods=['POST'])
+def habilitar_institucion(id):
+    instit = instituciones.find_institucion_by_id(id)
+
+    instituciones.habilitar_institucion(instit, not instit.habilitado)
+
+    return render_template("instituciones/institucion.html", instit=instit)
+
 @instituciones_bp.get("/create")
 def create():
     form = InstitucionForm()
@@ -64,18 +73,7 @@ def update(id):
 
     return render_template("instituciones/update_institucion.html", instit=instit, form=form)
 
-@instituciones_bp.route('/instituciones/<int:id>', methods=['DELETE'])
+@instituciones_bp.route('/destroy/<int:id>', methods=['POST', 'DELETE'])
 def destroy(id):
-    # Lógica para eliminar una institución
-    return f'Eliminar institución {id}'
-
-@instituciones_bp.route('/instituciones/<int:id>/activate', methods=['PUT'])
-def activate(id):
-    # Lógica para activar una institución
-    return f'Activar institución {id}'
-
-@instituciones_bp.route('/instituciones/<int:id>/deactivate', methods=['PUT'])
-def deactivate(id):
-    # Lógica para desactivar una institución
-    return f'Desactivar institución {id}'
-
+    instituciones.delete_institucion(id)
+    return redirect(url_for('instituciones.list_instituciones'))

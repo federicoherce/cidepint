@@ -1,49 +1,29 @@
 from flask import Flask
 from flask import render_template
-from src.web import error
-from src.core import database, seeds, mail
+from src.core import database, mail
 from src.web.config import config
-from flask_session import Session
-from src.web.controllers.auth import auth_bp
-from src.web.controllers.users import users_bp
-from src.web.controllers.instituciones import instituciones_bp
-from src.web.helpers import auth
-import logging
-
-
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-
-
-session = Session()
+from src.web import routes
+from src.web import commands
+from src.web import error_handlers
+from src.web import jinja
+#logging.basicConfig()
+#logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder=static_folder)
     app.config.from_object(config[env])
     app.get("/")
-
-    database.init_app(app)
-    mail.init_app(app)
-
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(users_bp)
-    app.register_blueprint(instituciones_bp)
-
-    app.jinja_env.globals.update(is_authenticated=auth.is_authenticated)
-
+    
     @app.get("/")
     def home():
         return render_template("home.html")
-
-    @app.cli.command(name="resetdb")
-    def resetdb():
-        database.reset_db()
-
-    @app.cli.command(name="seedsdb")
-    def seedsdb():
-        seeds.run()
-
-    app.register_error_handler(404, error.not_found_error)
+    
+    database.init_app(app)
+    mail.init_app(app)
+    routes.register_routes(app)
+    commands.register_commands(app)
+    error_handlers.register_errors(app)
+    jinja.register_jinja_env_globals(app)
 
     return app

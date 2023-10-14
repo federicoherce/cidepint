@@ -38,3 +38,12 @@ def list_permissions_by_user(user):
             list_permissions.add(permission.nombre)
 
     return list(list_permissions)
+
+
+def set_permission(permission):
+    return Permissions.query.filter_by(nombre=permission).first()
+
+
+# Necesaria?
+def get_roles_user(user):
+    return user.roles

@@ -14,7 +14,7 @@ class Users(db.Model):
     password = Column(String(100), nullable=True)
     token = Column(String(32), unique=True, nullable=True)
     activo = Column(Boolean, default=False)
-    roles = relationship("Roles", secondary=user_role)
+    roles = relationship("Roles", secondary=user_role, back_populates="usuarios")
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )

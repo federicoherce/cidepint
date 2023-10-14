@@ -14,7 +14,7 @@ class Config(object):
     MAIL_PASSWORD = 'tihdtlofndswghxw '
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
-
+    MAINTENANCE_MODE = False
 
 class ProductionConfig(Config):
 
@@ -44,7 +44,6 @@ class DevelopmentConfig(Config):
     )
 
     URL_REGISTRO = "http://127.0.0.1:5000/sesion/confirmar_registro"
-    
   
 class TestingConfig(Config):
     #Configuracion de testeo

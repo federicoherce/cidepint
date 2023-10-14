@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>{% block title %}{% endblock %} - My Webpage</title>
+    <title>{% block title %}{% endblock %} - CIDEPINT</title>
     {% endblock %}
 </head>
 <body>
@@ -61,15 +61,20 @@
     </nav>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-    <div class="alert alert-warning">
-        <ul>
-            {% for category, message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+        <div class="alert alert-warning">
+            <ul>
+                {% for category, message in messages %}
+                    <li>
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
-    {% endwith %} 
+    {% endwith %}
     <div id="content">
         {% block content %}{% endblock %}
     </div>

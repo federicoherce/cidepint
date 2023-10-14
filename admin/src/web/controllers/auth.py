@@ -24,7 +24,7 @@ def authenticate():
     if not user:
         flash("Email o clave incorrecta", "error")
         return redirect(url_for("auth.login"))
-  
+
     if app.config['MAINTENANCE_MODE'] and not has_permissions_mail(['user_show'], user.email):
         return abort(503)
     else:

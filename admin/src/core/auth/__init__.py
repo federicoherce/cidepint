@@ -57,7 +57,7 @@ def find_user_by_mail(email):
 
 
 def get_user_by_id(id):
-    user = Users.query.get_or_404(id)   # Necesario el first()?
+    user = Users.query.get_or_404(id)
     return user
 
 
@@ -85,4 +85,9 @@ def check_user(email, password):
 
 def update_state(user):
     user.activo = not user.activo
+    db.session.commit()
+
+
+def delete_user(user):
+    db.session.delete(user)
     db.session.commit()

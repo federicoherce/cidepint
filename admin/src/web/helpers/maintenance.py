@@ -21,5 +21,5 @@ def maintenanceActivated(f):
     return decorated_function
 
 
-def isActivated():
+def is_maintenance():
     return app.config['MAINTENANCE_MODE']

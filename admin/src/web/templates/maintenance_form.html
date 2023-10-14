@@ -9,11 +9,11 @@
     <h1>Selecciona el Modo de Mantenimiento</h1>
     <form method="POST" action="{{ url_for('maintenance.toggle_maintenance') }}">
         {{ form.hidden_tag() }}
-        {% if not isActivated() %}
-        {{ form.activate_maintenance() }}
+        {% if not  is_maintenance() %}
+             {{ form.activate_maintenance() }}
         {% endif %}
-        {% if isActivated() %}
-        {{ form.deactivate_maintenance() }}
+        {% if  is_maintenance() %}
+             {{ form.deactivate_maintenance() }}
         {% endif %}
     </form>
 </body>

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Crear institucion{% endblock %}
+{% block content %}
+<form action="{{ url_for('instituciones.create_institucion') }}" method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.nombre.label }} {{ form.nombre}}<br>
+    {{ form.informacion.label }} {{ form.informacion}}<br>
+    {{ form.direccion.label }} {{ form.direccion}}<br>
+    {{ form.localizacion.label }} {{ form.localizacion}}<br>
+    {{ form.palabras_claves.label }} {{ form.palabras_claves}}<br>
+    {{ form.horarios.label }} {{ form.horarios}}<br>
+    {{ form.web.label }} {{ form.web}}<br>
+    {{ form.contacto.label }} {{ form.contacto}}
+    <br>
+    {{ form.submit() }}
+</form>
+{% endblock %}

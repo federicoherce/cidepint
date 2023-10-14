@@ -1,16 +1,12 @@
 from flask import Flask
 from flask import render_template
-from flask import request
 from src.core import database, mail
 from src.web.config import config
-from src.web.helpers import auth
-import logging
 from src.web import routes
 from src.web import commands
 from src.web import error_handlers
 from flask import session, abort
 from src.web.helpers.auth import has_permissions
-from src.web.helpers import maintenance
 from flask import url_for
 #logging.basicConfig()
 #logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
@@ -30,9 +26,6 @@ def create_app(env="development", static_folder="../../static"):
     routes.register_routes(app)
     commands.register_commands(app)
     error_handlers.register_errors(app)
-    
-    app.jinja_env.globals.update(is_authenticated=auth.is_authenticated)
-    app.jinja_env.globals.update(has_permissions=auth.has_permissions)
-    app.jinja_env.globals.update(isActivated=maintenance.isActivated)
-    
+    jinja.register_jinja_env_globals(app)
+
     return app

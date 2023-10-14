@@ -56,6 +56,11 @@ def find_user_by_mail(email):
     return user
 
 
+def get_user_by_id(id):
+    user = Users.query.get_or_404(id)
+    return user
+
+
 def find_user_contains_mail(email):
     users = Users.query.filter(Users.email.contains(f'{email}')).all()
     return users
@@ -76,3 +81,13 @@ def check_user(email, password):
         return user
     else:
         return None
+
+
+def update_state(user):
+    user.activo = not user.activo
+    db.session.commit()
+
+
+def delete_user(user):
+    db.session.delete(user)
+    db.session.commit()

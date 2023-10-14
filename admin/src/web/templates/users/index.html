@@ -5,7 +5,9 @@
 <div class="container mt-5">
     <h1 class="mb-4">Listado de usuarios:</h1>
 
-    <form method="GET" action="{{ url_for('users.index') }}" class="form-inline mb-4">
+    <a href="{{ url_for('users.create_user') }}" class="btn btn-primary">Crear usuario</a>
+
+    <form method="GET" action="{{ url_for('users.index') }}" class="form-inline mb-4 mt-3">
         <div class="form-group">
             <label for="email" class="mr-2">Correo:</label>
             {% if request.args.get('email') %}
@@ -26,9 +28,6 @@
         
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
-    
-
-
     
     <table class="table table-striped">
         <thead>
@@ -53,7 +52,7 @@
                         Bloqueado
                     {% endif %}
                 </td>
-                <td><a href="#" class="btn btn-info btn-sm">Ver perfil</a></td>
+                <td><a href="{{ url_for('users.user_profile', user_id=user.id) }}" class="btn btn-info btn-sm">Ver perfil</a></td>
             </tr>
             {% endfor %}
         </tbody>

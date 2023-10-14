@@ -2,8 +2,8 @@
 {% block title %} {{ user.nombre }} {{ user.apellido }} {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>{{ user.nombre }} {{ user.apellido }}</h1>
+<div class="container mt-5">
+    <h1 class="mb-4">{{ user.nombre }} {{ user.apellido }}</h1>
     <div class="row">
         <div class="col-md-6">
             <p><strong>Correo electrónico: </strong>{{ user.email }}</p>
@@ -24,6 +24,9 @@
                             Activar
                         {% endif %}
                     </button>
+                </form>
+                <form method="post" action="{{ url_for('users.destroy_user', user_id=user.id) }}">
+                    <input type="submit", class="btn btn-danger mt-2", value="Borrar usuario" onclick="return confirm('¿Estas seguro de que queres eliminar a este usuario?');">
                 </form>
             {% endif %}
             

@@ -8,6 +8,8 @@ import secrets
 from src.web.helpers.auth import has_permissions_mail
 from src.web.config import config
 from flask import current_app as app
+from src.web.helpers.maintenance import maintenanceActivated
+
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
 
@@ -52,6 +54,7 @@ def generate_confirmation_token():
 
 
 @auth_bp.get("/register")
+@maintenanceActivated
 def register():
     form = SignUpForm()
     return render_template("auth/register.html", form=form)

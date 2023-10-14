@@ -19,6 +19,7 @@ def run():
     user_new_permission = users.create_permission(nombre="user_new")    # Create
     user_destroy_permission = users.create_permission(nombre="user_destroy")
     user_update_permission = users.create_permission(nombre="user_update")
+    admintasks_permission = users.create_permission(nombre="admintasks")
 
     users.assign_role_user(user, superadmin_role)
     users.assign_permission_role(superadmin_role, user_index_permission)
@@ -26,3 +27,4 @@ def run():
     users.assign_permission_role(superadmin_role, user_new_permission)
     users.assign_permission_role(superadmin_role, user_destroy_permission)
     users.assign_permission_role(superadmin_role, user_update_permission)
+    users.assign_permission_role(superadmin_role, admintasks_permission)

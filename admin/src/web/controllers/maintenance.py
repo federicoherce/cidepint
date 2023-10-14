@@ -15,12 +15,6 @@ def index():
     return render_template('maintenance_form.html',form = MaintenanceForm())
 
 
-#@maintenance_bp.before_request
-#@login_required
-#def not_has_permissions():
-#    if not has_permissions(['user_maintenance']):
-#           abort(401)  # Acceso prohibido si no es un super admin
-
 
 
 @maintenance_bp.post('/toggle')

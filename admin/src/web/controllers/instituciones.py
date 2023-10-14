@@ -6,19 +6,28 @@ from forms.institucion_form import InstitucionForm
 instituciones_bp = Blueprint("instituciones", __name__, url_prefix="/instituciones")
 
 @instituciones_bp.route('/instituciones', methods=['GET'])
+@login_required
 def list_instituciones():
+    if not has_permissions(['admintasks']):
+        abort(401)
     instits = instituciones.list_instituciones()
     return render_template("instituciones/list_instituciones.html", instits=instits)
 
 
 @instituciones_bp.route('/institucion/<int:id>', methods=['GET'])
+@login_required
 def show(id):
+    if not has_permissions(['admintasks']):
+        abort(401)
     instit = instituciones.find_institucion_by_id(id)
     return render_template("instituciones/institucion.html", instit=instit)
 
 
 @instituciones_bp.route('/habilitar_institucion/<int:id>', methods=['POST'])
+@login_required
 def habilitar_institucion(id):
+    if not has_permissions(['admintasks']):
+        abort(401)
     instit = instituciones.find_institucion_by_id(id)
 
     instituciones.habilitar_institucion(instit, not instit.habilitado)
@@ -26,13 +35,19 @@ def habilitar_institucion(id):
     return render_template("instituciones/institucion.html", instit=instit)
 
 @instituciones_bp.get("/create")
+@login_required
 def create():
+    if not has_permissions(['admintasks']):
+        abort(401)
     form = InstitucionForm()
     return render_template("instituciones/create_institucion.html", form=form)
 
 
 @instituciones_bp.post("/create_institucion")
+@login_required
 def create_institucion():
+    if not has_permissions(['admintasks']):
+        abort(401)
     form = InstitucionForm()
     if form.validate_on_submit():
         instituciones.create_institucion(
@@ -51,7 +66,10 @@ def create_institucion():
 
 
 @instituciones_bp.route('/update/<int:id>', methods=['POST', 'GET'])
+@login_required
 def update(id):
+    if not has_permissions(['admintasks']):
+        abort(401)
     instit = instituciones.find_institucion_by_id(id)
 
     form = InstitucionForm(obj=instit)
@@ -74,6 +92,9 @@ def update(id):
     return render_template("instituciones/update_institucion.html", instit=instit, form=form)
 
 @instituciones_bp.route('/destroy/<int:id>', methods=['POST', 'DELETE'])
+@login_required
 def destroy(id):
+    if not has_permissions(['admintasks']):
+        abort(401)
     instituciones.delete_institucion(id)
     return redirect(url_for('instituciones.list_instituciones'))

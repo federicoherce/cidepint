@@ -13,7 +13,7 @@ class Users(db.Model):
     email = Column(String(255), unique=True, nullable=False)
     password = Column(String(100), nullable=True)
     token = Column(String(32), unique=True, nullable=True)
-    activo = Column(Boolean, default=False)
+    activo = Column(Boolean, default=True)
     roles = relationship("Roles", secondary=user_role, back_populates="usuarios")
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow

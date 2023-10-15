@@ -91,3 +91,7 @@ def update_state(user):
 def delete_user(user):
     db.session.delete(user)
     db.session.commit()
+
+
+def update_user():
+    db.session.commit()

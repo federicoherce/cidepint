@@ -25,6 +25,7 @@
                         {% endif %}
                     </button>
                 </form>
+                <a href="{{ url_for('users.update_user', user_id=user.id) }}" class="btn btn-primary mt-2">Editar</a>
                 <form method="post" action="{{ url_for('users.destroy_user', user_id=user.id) }}">
                     <input type="submit", class="btn btn-danger mt-2", value="Borrar usuario" onclick="return confirm('¿Estas seguro de que queres eliminar a este usuario?');">
                 </form>

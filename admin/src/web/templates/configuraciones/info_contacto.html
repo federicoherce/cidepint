@@ -5,13 +5,11 @@
 <head>
     <title>Informacion de contacto</title>
 </head>
-<body>
-    <h1>editar informacion de contacto</h1>
-    <form method="POST" action="{{ url_for('maintenance.index_contacto') }}">
-       {{form.email.label}} {{form.email}}
-        <br>
-        {{ form.guardar() }}
-   </form>
-</body>
+    <body>
+        <h1>Información de Contacto</h1>
+        <p>Nombre: {{ contact_info['nombre'] }}</p>
+        <p>Correo Electrónico: {{ contact_info['correo'] }}</p>
+        <p>Teléfono: {{ contact_info['telefono'] }}</p>
+    </body>
 </html>
 {% endblock %}

@@ -12,6 +12,7 @@ maintenance_bp = Blueprint("maintenance", __name__, url_prefix="/maintenance")
 
 @maintenance_bp.get('/')
 @login_required
+@maintenance
 def index():
     return render_template('maintenance_form.html',form = MaintenanceForm())
 
@@ -19,7 +20,6 @@ def index():
 
 
 @maintenance_bp.post('/toggle')
-@maintenance
 def toggle_maintenance():   
     form = MaintenanceForm()
     if form.validate_on_submit():
@@ -33,9 +33,16 @@ def toggle_maintenance():
     
 
 @maintenance_bp.get('/contacto')
+@login_required
+@maintenance
 def index_contacto():
     form = ContactoForm()
-    return render_template('configuraciones/info_contacto.html' , form = form )    
+    contact_info = {
+    'nombre': 'Nombre del Contacto',
+    'correo': 'contacto@example.com',
+    'telefono': '+1234567890'
+}
+    return render_template('configuraciones/info_contacto.html' , contact_info = contact_info )    
 
 
 @maintenance_bp.post('/contacto')

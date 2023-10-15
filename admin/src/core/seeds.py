@@ -1,7 +1,7 @@
 from src.core import auth
 from src.core import users
 from src.core import services
-
+from src.core import api
 
 def run():
     # Creación de usuarios:
@@ -70,3 +70,15 @@ def run_services():
     users.assign_permission_role(operator, users.set_permission("user_index"))
     users.assign_permission_role(operator, users.set_permission("user_new"))
     users.assign_permission_role(operator, users.set_permission("user_update"))
+
+def run_api():
+    api.create_user(
+        username="fedeherce",
+        tipo_documento="DNI",
+        nro_documento="42708561",
+        direccion="10 y 60",
+        telefono='2920687309',
+        email="fede@gmail.com",
+        password="1234"
+    )
+    

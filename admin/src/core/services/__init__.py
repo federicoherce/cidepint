@@ -13,8 +13,8 @@ def list_services():
     services = Servicio.query.all()
     return services
 
-def get_service(service_id):
-    service = Servicio.query.get_or_404(service_id)
+def get_service(id):
+    service = Servicio.query.filter_by(id=id).first()
     return service
 
 def update_service(form, service):

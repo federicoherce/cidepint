@@ -1,12 +1,11 @@
-from flask import Blueprint, render_template, request
-from flask import redirect, url_for, flash, session, abort,request
+from flask import Blueprint, render_template
+from flask import redirect, url_for, flash, session, abort, request
 from src.core import auth
 from forms.registro_form import SignUpForm, PasswordForm
 from flask_mail import Message
 from core.mail import mail
 import secrets
 from src.web.helpers.auth import has_permissions_mail
-from src.web.config import config
 from flask import current_app as app
 from src.web.helpers.maintenance import maintenanceActivated
 
@@ -31,9 +30,8 @@ def authenticate():
     if app.config['MAINTENANCE_MODE'] and not has_permissions_mail(['user_show'], user.email):
         return abort(503)
     else:
-         session["user_id"] = user.email
-         flash("La sesion se inicio correctamente", "succes")
-
+        session["user_id"] = user.email
+        flash("La sesion se inicio correctamente", "succes")
 
     return redirect(url_for("home"))
 

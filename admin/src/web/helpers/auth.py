@@ -37,11 +37,14 @@ def has_permissions_mail(required_permissions_list , mail):
     return False
 
 
-def is_superadmin(user):
-    if user is None:
-        email = session.get("user_id")
-        user = auth.find_user_by_mail(email)
+def is_superadmin(user=None):
+    if not is_authenticated(session):
+        return False
 
+    return session.get("is_superadmin")
+
+
+def user_is_superadmin(user):
     for role in user.roles:
         if role.nombre == "superadmin":
             return True

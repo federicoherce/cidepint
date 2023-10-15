@@ -37,7 +37,7 @@ def has_permissions_mail(required_permissions_list , mail):
     return False
 
 
-def is_superadmin(user=None):
+def is_superadmin():
     if not is_authenticated(session):
         return False
 

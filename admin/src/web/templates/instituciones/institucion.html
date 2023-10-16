@@ -16,7 +16,7 @@
         <button type="submit" class="btn btn-primary">Modificar</button>
     </form>
     <form method="POST" action="{{ url_for('instituciones.habilitar_institucion', id=instit.id) }}">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary mt-2">
             {% if instit.habilitado %}
                 Deshabilitar
             {% else %}
@@ -25,6 +25,6 @@
         </button>
     </form>
     <form method="POST" action="{{ url_for('instituciones.destroy', id=instit.id) }}">
-        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <button type="submit" class="btn btn-danger mt-2">Eliminar</button>
     </form>
 {% endblock %}

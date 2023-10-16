@@ -25,11 +25,28 @@
                         {% endif %}
                     </button>
                 </form>
+                <a href="{{ url_for('users.update_user', user_id=user.id) }}" class="btn btn-primary mt-2">Editar</a>
                 <form method="post" action="{{ url_for('users.destroy_user', user_id=user.id) }}">
                     <input type="submit", class="btn btn-danger mt-2", value="Borrar usuario" onclick="return confirm('¿Estas seguro de que queres eliminar a este usuario?');">
                 </form>
+                <h2 class="mt-2 mb-4">Instituciones y roles: </h2>
+                <div class="list-group">
+                    {% for institucion, rol in instituciones_roles %}
+                    <div class="list-group-item list-group-item-action">
+                        <form method="post" action="{{ url_for('users.update_role_institution', institution_id=institucion.id, user_id=user.id) }}">
+                            <span>{{ institucion.nombre }} -</span>
+                            <select name="new_role" class="form-select" onchange="this.form.submit()">
+                                <option value="owner" {% if rol.nombre == 'owner' %} selected {% endif %}>Dueño</option>
+                                <option value="operator" {% if rol.nombre == 'operator' %} selected {% endif %}>Operador</option>
+                                <option value="admin" {% if rol.nombre == 'admin' %} selected {% endif %}>Administrador</option>
+                            </select>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
             {% endif %}
             
+
             <a href="{{ url_for('users.index') }}" class="btn btn-outline-primary mt-2">
                 <i class="fas fa-arrow-left"></i> Volver atrás
             </a>

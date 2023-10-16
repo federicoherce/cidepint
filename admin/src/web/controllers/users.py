@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, abort, request
 from flask import redirect, url_for, flash
 from src.core import auth
-from src.forms.users_form import CreateUserForm
+from src.core import users
+# from src.core.users.role import user_institution_role
+from src.forms.users_form import CreateUserForm, UpdateUserForm
 from src.web.helpers.auth import login_required, has_permissions, user_is_superadmin
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
@@ -61,10 +63,45 @@ def user_profile(user_id):
 
     user = auth.get_user_by_id(user_id)
     is_superadmin = user_is_superadmin(user=user)
+    instituciones_roles = zip(users.get_user_institutions(user), users.get_user_roles(user))
 
-    return render_template("users/profile.html",
-                           user=user,
-                           user_is_superadmin=is_superadmin)
+    return render_template(
+        "users/profile.html",
+        user=user,
+        user_is_superadmin=is_superadmin,
+        instituciones_roles=instituciones_roles
+    )
+
+
+@users_bp.route("/update_user/<int:user_id>", methods=['GET', 'POST'])
+@login_required
+def update_user(user_id):
+    if not has_permissions(['user_update']):
+        abort(401)
+
+    user = auth.get_user_by_id(user_id)
+    form = UpdateUserForm()
+
+    if form.validate_on_submit():
+        if user.email != form.email.data:
+            existe = auth.find_user_by_mail(form.email.data)
+            if existe:
+                flash('Este correo electrónico ya está en uso. Por favor, elige otro.', 'error')
+                return redirect(url_for("users.update_user", user_id=user.id))
+
+        user.nombre = form.nombre.data
+        user.apellido = form.apellido.data
+        user.email = form.email.data
+        auth.update_user()
+        flash("Usuario actualizado con éxito!", "success")
+        return redirect(url_for("users.user_profile", user_id=user.id))
+
+    elif request.method == "GET":
+        form.nombre.data = user.nombre
+        form.apellido.data = user.apellido
+        form.email.data = user.email
+
+    return render_template("users/update_user.html", user_id=user.id, form=form)
 
 
 @users_bp.post("/update_state/<int:user_id>")
@@ -86,6 +123,7 @@ def destroy_user(user_id):
         abort(401)
 
     user = auth.get_user_by_id(user_id)
+    users.cascade_delete_user(user_id)
     auth.delete_user(user)
 
     flash("Usuario eliminado con éxito", "success")
@@ -121,3 +159,22 @@ def create_user():
         return redirect(url_for("users.user_profile", user_id=user.id))
 
     return render_template("users/create_user.html", form=form)
+
+
+@users_bp.post("/update_role_institution/<int:institution_id>/<int:user_id>")
+@login_required
+def update_role_institution(institution_id, user_id):
+    """
+    Esta función actualiza el rol del usuario en una institución.
+    Esta implementación es posible ya que sabemos el id de cada rol (definido por nosotros en la BD)
+    """
+    new_role = request.form.get("new_role")
+    if (new_role == "owner"):
+        role_id = 2
+    elif (new_role == "admin"):
+        role_id = 3
+    elif (new_role == "operator"):
+        role_id = 4
+
+    users.update_role_for_user_in_institution(user_id, institution_id, role_id)
+    return redirect(url_for("users.user_profile", user_id=user_id))

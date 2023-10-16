@@ -22,9 +22,21 @@ def unauthorized(e):
     return render_template("error.html", **kwargs), 401
 
 
-def forbidden(e):
+def forbbiden(e):
     kwargs = {
-        "error_name": "503 Forbidden",
+        "error_name": "403 Forbbiden",
+        "error_description": """
+            Lo sentimos, no ha podido acceder al sistema.
+            Por favor contacte a uno de los administradores.
+        """
+    }
+
+    return render_template("error.html", **kwargs), 403
+
+
+def service_unavaible(e):
+    kwargs = {
+        "error_name": "503 Service Unavailable",
         "error_description": """
             El sitio se encuentra en mantenimiento.
             Por favor, intente más tarde.

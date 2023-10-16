@@ -29,6 +29,8 @@ def authenticate():
 
     if app.config['MAINTENANCE_MODE'] and not has_permissions_mail(['user_show'], user.email):
         return abort(503)
+    elif not user.activo:
+        return abort(403)
     else:
         session["user_id"] = user.email
         session["is_superadmin"] = user_is_superadmin(user)

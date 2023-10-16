@@ -16,8 +16,6 @@ def index():
     return render_template('maintenance_form.html',form = MaintenanceForm())
 
 
-
-
 @maintenance_bp.post('/toggle')
 @login_required
 def toggle_maintenance():   

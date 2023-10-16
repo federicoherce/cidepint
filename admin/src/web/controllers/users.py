@@ -178,6 +178,9 @@ def update_role_institution(institution_id, user_id):
     Esta función actualiza el rol del usuario en una institución.
     Esta implementación es posible ya que sabemos el id de cada rol (definido por nosotros en la BD)
     """
+    if not has_permissions(['user_update']):
+        abort(401)
+
     new_role = get_role_requested(request.form.get("new_role"))
 
     users.update_role_for_user_in_institution(user_id, institution_id, new_role)
@@ -187,6 +190,9 @@ def update_role_institution(institution_id, user_id):
 @users_bp.post("/assign_role_institution/<int:institution_id>/<int:user_id>")
 @login_required
 def assign_role_institution(institution_id, user_id):
+    if not has_permissions(['user_update']):
+        abort(401)
+
     new_role = get_role_requested(request.form.get("new_role"))
     role = users.get_role_by_id(new_role)
     user = auth.get_user_by_id(user_id)

@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from flask import redirect, url_for, flash, session, abort, request
 from src.core import auth
+from src.core import users
 from forms.registro_form import SignUpForm, PasswordForm
 from flask_mail import Message
 from core.mail import mail
@@ -34,6 +35,7 @@ def authenticate():
     else:
         session["user_id"] = user.email
         session["is_superadmin"] = user_is_superadmin(user)
+        session["permissions"] = users.list_permissions_by_user(user)
         flash("La sesion se inicio correctamente", "succes")
 
     return redirect(url_for("home"))

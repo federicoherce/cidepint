@@ -31,18 +31,34 @@
                 </form>
                 <h2 class="mt-2 mb-4">Instituciones y roles: </h2>
                 <div class="list-group">
-                    {% for institucion, rol in instituciones_roles %}
+                    
                     <div class="list-group-item list-group-item-action">
-                        <form method="post" action="{{ url_for('users.update_role_institution', institution_id=institucion.id, user_id=user.id) }}">
-                            <span>{{ institucion.nombre }} -</span>
-                            <select name="new_role" class="form-select" onchange="this.form.submit()">
-                                <option value="owner" {% if rol.nombre == 'owner' %} selected {% endif %}>Dueño</option>
-                                <option value="operator" {% if rol.nombre == 'operator' %} selected {% endif %}>Operador</option>
-                                <option value="admin" {% if rol.nombre == 'admin' %} selected {% endif %}>Administrador</option>
-                            </select>
-                        </form>
+                        {% if instituciones_roles %}
+                            {% for institucion, rol in instituciones_roles %}
+                            <form method="post" action="{{ url_for('users.update_role_institution', institution_id=institucion.id, user_id=user.id) }}">
+                                <span>{{ institucion.nombre }} -</span>
+                                <select name="new_role" class="form-select" onchange="this.form.submit()">
+                                    <option value="owner" {% if rol.nombre == 'owner' %} selected {% endif %}>Dueño</option>
+                                    <option value="operator" {% if rol.nombre == 'operator' %} selected {% endif %}>Operador</option>
+                                    <option value="admin" {% if rol.nombre == 'admin' %} selected {% endif %}>Administrador</option>
+                                </select>
+                            </form>
+                            {% endfor %}
+                        {% endif %}
+                        {% if otras_instituciones %}
+                            {% for otra_institucion in otras_instituciones %}
+                            <form method="post" action="{{ url_for('users.assign_role_institution', institution_id=otra_institucion.id, user_id=user.id) }}">
+                                <span>{{ otra_institucion.nombre }} -</span>
+                                <select name="new_role" class="form-select" onchange="this.form.submit()">
+                                    <option value="asignar" selected>Designar rol</option>
+                                    <option value="owner">Dueño</option>
+                                    <option value="operator">Operador</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </form>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                    {% endfor %}
                 </div>
             {% endif %}
             

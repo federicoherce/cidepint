@@ -45,7 +45,7 @@
                                 <button class="fas fa-cog" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    {%if is_superadmin(session.user_id) %}
+                                    {%if is_superadmin(None) %}
                                     <a class="dropdown-item" href="{{ url_for('maintenance.index') }}">Mantenimiento</a>
                                     <a class="dropdown-item" href="{{ url_for('maintenance.index_contacto') }}">Informacion de contacto</a>
                                     <a class="dropdown-item" href="#">Opción 3</a>

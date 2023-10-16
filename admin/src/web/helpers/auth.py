@@ -45,7 +45,7 @@ def is_superadmin():
 
 
 def user_is_superadmin(user):
-    for role in user.roles:
+    for role in users.get_user_roles(user):
         if role.nombre == "superadmin":
             return True
     return False

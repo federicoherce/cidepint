@@ -1,18 +1,13 @@
 from src.core.database import database as db
 
 
-user_role = db.Table(
-    "user_role",
-    db.Column("user_id",
-              db.Integer,
-              db.ForeignKey("users.id"),
-              primary_key=True),
-    db.Column("role_id",
-              db.Integer,
-              db.ForeignKey("roles.id"),
-              primary_key=True
-              )
-)        # Falta la parte de institucion
+#user_institution_role = db.Table(
+#    "user_institution_role",
+#    db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
+#    db.Column("institution_id", db.Integer, db.ForeignKey("instituciones.id")),
+#    db.Column("role_id", db.Integer, db.ForeignKey("roles.id"))
+#)
+
 
 role_permissions = db.Table(
     "role_permissions",
@@ -25,13 +20,28 @@ role_permissions = db.Table(
 )
 
 
+class UserRoleInstitution(db.Model):
+    __tablename__ = "user_institution_role"
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
+    institution_id = db.Column(db.Integer, db.ForeignKey("instituciones.id"), primary_key=True)
+    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
+
+    # Relaciones con las tablas relacionadas
+    user = db.relationship("Users")
+    institution = db.relationship("Institucion")
+    role = db.relationship("Roles")
+
+    def __init__(self, user_id, institution_id, role_id):
+        self.user_id = user_id
+        self.institution_id = institution_id
+        self.role_id = role_id
+
+
 class Roles(db.Model):
     __tablename__ = "roles"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     nombre = db.Column(db.String(255), nullable=False, unique=True)
-    usuarios = db.relationship("Users",
-                               secondary=user_role,
-                               back_populates="roles")
     permisos = db.relationship("Permissions",
                                secondary=role_permissions,
                                back_populates="roles")

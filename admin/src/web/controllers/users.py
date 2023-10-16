@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, abort, request
 from flask import redirect, url_for, flash
 from src.core import auth
 from src.forms.users_form import CreateUserForm
-from src.web.helpers.auth import login_required, has_permissions, is_superadmin
+from src.web.helpers.auth import login_required, has_permissions, user_is_superadmin
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
 
@@ -60,9 +60,11 @@ def user_profile(user_id):
         abort(401)
 
     user = auth.get_user_by_id(user_id)
-    user_is_superadmin = is_superadmin(user=user)
+    is_superadmin = user_is_superadmin(user=user)
 
-    return render_template("users/profile.html", user=user, user_is_superadmin=user_is_superadmin)
+    return render_template("users/profile.html",
+                           user=user,
+                           user_is_superadmin=is_superadmin)
 
 
 @users_bp.post("/update_state/<int:user_id>")

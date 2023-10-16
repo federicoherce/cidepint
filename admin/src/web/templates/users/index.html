@@ -18,38 +18,38 @@
         </div>
         
         <div class="form-group mx-sm-3">
-            <label for="estado" class="mr-2">Estado:</label>
+            <label for="estado" class="mr-2">Activo:</label>
             <select id="estado" name="estado" class="form-control">
                 <option value="todos"></option>
-                <option value="activo">Activo</option>
-                <option value="bloqueado">Bloqueado</option>
+                <option value="activo">SI</option>
+                <option value="bloqueado">NO</option>
             </select>
         </div>
         
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
-    
+    {% if users %}
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Email</th>
-                <th>Estado</th>
+                <th>Activo</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-             {% for user in users %}
+            {% for user in users %}
             <tr>
                 <td>{{ user.nombre }}</td>
                 <td>{{ user.apellido }}</td>
                 <td>{{ user.email }}</td>
                 <td>
                     {% if user.activo %}
-                        Activo
+                        SI
                     {% else %}
-                        Bloqueado
+                        NO
                     {% endif %}
                 </td>
                 <td><a href="{{ url_for('users.user_profile', user_id=user.id) }}" class="btn btn-info btn-sm">Ver perfil</a></td>
@@ -57,5 +57,8 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        <h2>No se encontraron usuarios</h2>
+    {% endif %}
 </div>
 {% endblock %}

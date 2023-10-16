@@ -1,15 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Contacto{% endblock %}
 {% block content %}
-<html>
-<head>
-    <title>Informacion de contacto</title>
-</head>
-    <body>
-        <h1>Información de Contacto</h1>
-        <p>Nombre: {{ contact_info['nombre'] }}</p>
-        <p>Correo Electrónico: {{ contact_info['correo'] }}</p>
-        <p>Teléfono: {{ contact_info['telefono'] }}</p>
-    </body>
-</html>
+<h1>Informacion de contacto</h1>
+<form action="{{ url_for('maintenance.info_contacto') }}" method="POST">
+        {{form.email.label}} {{form.email}}
+        {{form.guardar}}
+ </form>       
+
 {% endblock %}

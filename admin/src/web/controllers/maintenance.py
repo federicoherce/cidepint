@@ -37,12 +37,7 @@ def toggle_maintenance():
 @maintenance
 def index_contacto():
     form = ContactoForm()
-    contact_info = {
-    'nombre': 'Nombre del Contacto',
-    'correo': 'contacto@example.com',
-    'telefono': '+1234567890'
-}
-    return render_template('configuraciones/info_contacto.html' , contact_info = contact_info )    
+    return render_template('configuraciones/info_contacto.html' , form = form)    
 
 
 @maintenance_bp.post('/contacto')

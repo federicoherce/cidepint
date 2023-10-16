@@ -69,12 +69,23 @@ def run():
     cidepint_institution = instituciones.create_institucion(
         nombre="Institucion CIDEPINT",
         informacion="Somos la institución principal",
-        direccion="Av. 52 e/ 121 y 122 ",
+        direccion="Av. 52 e/ 121 y 122",
         localizacion="La Plata",
         palabras_claves="Pinturas Recubrimientos Investigacion Centro",
         horarios="08:00hs - 20:00hs",
         web="https://cidepint.ing.unlp.edu.ar/",
         contacto="0221 421-6214"
+    )
+
+    institucion1 = instituciones.create_institucion(
+        nombre="Institución 1",
+        informacion="Somos la institución 1",
+        direccion="Calle 50 & Av. 120",
+        localizacion="La Plata",
+        palabras_claves="Software Proyecto",
+        horarios="10:00hs - 19:00hs",
+        web="https://www.info.unlp.edu.ar/",
+        contacto="0221 427-7270"
     )
 
     # Creación de permisos:

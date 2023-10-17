@@ -9,6 +9,7 @@ import secrets
 from src.web.helpers.auth import has_permissions_mail, user_is_superadmin
 from flask import current_app as app
 from src.web.helpers.maintenance import maintenanceActivated
+from src.core import configuracion
 
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")

@@ -63,7 +63,8 @@ def get_user_institutions(user):
     tuplas = UserRoleInstitution.query.filter_by(user_id=user.id).all()
     institutions = set()
     for t in tuplas:
-        institutions.add(t.institution)
+        if t.institution_id != 1:
+            institutions.add(t.institution)
     return list(institutions)
 
 

@@ -22,4 +22,5 @@ def create_app(env="development", static_folder="../../static"):
     error_handlers.register_errors(app)
     jinja.register_jinja_env_globals(app)
 
+
     return app

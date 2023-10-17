@@ -24,6 +24,13 @@ def assign_role_in_institution_to_user(role, institution, user):
     db.session.commit()
 
 
+def delete_role_in_institution_to_user_by_id(institution_id, user_id):
+    UserRoleInstitution.query.filter_by(
+        user_id=user_id, institution_id=institution_id
+    ).delete()
+    db.session.commit()
+
+
 def create_permission(**kwargs):
     permission = Permissions(**kwargs)
     db.session.add(permission)
@@ -67,6 +74,19 @@ def get_user_institutions(user):
     return list(institutions)
 
 
+def get_user_institutions_and_roles(user):
+    """
+    Esta función retorna una lista con tuplas, donde cada tupla representa a
+    cada renglon de la tabla UserRoleInstitution a la cuál el usuario está
+    presente.
+    """
+    tuplas = UserRoleInstitution.query.filter_by(user_id=user.id).all()
+    institutions_roles = set()
+    for t in tuplas:
+        institutions_roles.add((t.institution, t.role))
+    return list(institutions_roles)
+
+
 def update_role_for_user_in_institution(user_id, institution_id, new_role_id):
     user_institution_relationship = UserRoleInstitution.query.filter_by(
         user_id=user_id, institution_id=institution_id
@@ -79,3 +99,7 @@ def update_role_for_user_in_institution(user_id, institution_id, new_role_id):
 def cascade_delete_user(user_id):
     UserRoleInstitution.query.filter_by(user_id=user_id).delete()
     db.session.commit()
+
+
+def get_role_by_id(role_id):
+    return Roles.query.get_or_404(role_id)

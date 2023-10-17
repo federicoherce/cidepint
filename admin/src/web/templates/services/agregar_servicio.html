@@ -2,7 +2,7 @@
 {% block title %}Agregar servicio{% endblock %}
 {% block content %}
     <h1 class="mb-4">Agregar Servicio</h1>
-    <form action="{{ url_for('services.agregar_servicio') }}" method="POST">
+    <form action="{{ url_for('services.agregar_servicio', institucion_id=institucion_id) }}" method="POST">
         {{ form.hidden_tag() }}
         {{ form.nombre.label(class="form-label") }} 
         {{ form.nombre(class="form-control") }}

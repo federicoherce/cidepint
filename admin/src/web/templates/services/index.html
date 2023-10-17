@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <a href="{{ url_for('services.agregar') }}" class="btn btn-info btn-sm">Agregar</a>
+    <a href="{{ url_for('services.agregar', institucion_id=institucion_id) }}" class="btn btn-info btn-sm">Agregar</a>
     <h1 class="mb-4">Listado de servicios:</h1>
     <table class="table table-striped">
         <thead>
@@ -33,7 +33,7 @@
                         Inhabilitado
                     {% endif %}
                 </td>
-                <td><a href="{{ url_for('services.editar', servicio_id=service.id) }}" class="btn btn-info btn-sm">Editar</a></td>
+                <td><a href="{{ url_for('services.editar', servicio_id=service.id, institucion_id=institucion_id) }}" class="btn btn-info btn-sm">Editar</a></td>
             </tr>
             {% endfor %}
         </tbody>

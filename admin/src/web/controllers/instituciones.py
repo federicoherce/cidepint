@@ -61,7 +61,7 @@ def create_institucion():
             contacto = form.contacto.data
         )
         flash('Institucion agregada exitosamente', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('home.index'))
     return render_template("instituciones/create_institucion.html", form=form)
 
 
@@ -87,7 +87,7 @@ def update(id):
         )
 
         flash('Institución actualizada exitosamente', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('home.index'))
 
     return render_template("instituciones/update_institucion.html", instit=instit, form=form)
 

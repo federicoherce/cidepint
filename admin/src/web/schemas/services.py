@@ -1,5 +1,6 @@
 from marshmallow import Schema, fields
 
+
 class ServiceSchema(Schema):
     id = fields.Int(dump_only=True)
     nombre = fields.Str()
@@ -8,6 +9,5 @@ class ServiceSchema(Schema):
     centros = fields.Str()
     habilitado = fields.Boolean()
 
-    
 
 service_schema = ServiceSchema()

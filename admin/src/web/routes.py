@@ -4,6 +4,7 @@ from src.web.controllers.services import services_bp
 from src.web.controllers.maintenance import maintenance_bp
 from src.web.api.api import api_bp
 from src.web.controllers.instituciones import instituciones_bp
+from src.web.controllers.home import home_bp
 
 
 def register_routes(app):
@@ -13,3 +14,4 @@ def register_routes(app):
     app.register_blueprint(maintenance_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(instituciones_bp)
+    app.register_blueprint(home_bp)

@@ -18,6 +18,7 @@ def index():
 
 @maintenance_bp.post('/toggle')
 @login_required
+@maintenance
 def toggle_maintenance():   
     form = MaintenanceForm()
     if form.validate_on_submit():

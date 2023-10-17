@@ -108,7 +108,9 @@ def run():
 
 
     admintasks_permission = users.create_permission(nombre="admintasks")
-    user_maintenance_permission = users.create_permission(nombre="user_maintenance")
+    user_config_show_permission = users.create_permission(nombre="config_show")
+    user_config_update_permission = users.create_permission(nombre="config_update")
+    
     
     services_index_permission = users.create_permission(nombre="services_index")
     services_show_permission = users.create_permission(nombre="services_show")
@@ -127,7 +129,9 @@ def run():
     
     # Asignación de permisos y roles:
     users.assign_permission_role(superadmin_role, admintasks_permission)
-    users.assign_permission_role(superadmin_role, user_maintenance_permission)
+    users.assign_permission_role(superadmin_role, user_config_update_permission)
+    users.assign_permission_role(superadmin_role, user_config_show_permission)
+    
     
     
     users.assign_permission_role(superadmin_role, user_index_permission)

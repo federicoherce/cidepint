@@ -28,7 +28,7 @@ def authenticate():
         flash("Email o clave incorrecta", "error")
         return redirect(url_for("auth.login"))
 
-    if app.config['MAINTENANCE_MODE'] and not has_permissions_mail(['user_show'], user.email):
+    if app.config['MAINTENANCE_MODE'] and not has_permissions_mail(['config_show'], user.email):
         return abort(503)
     elif not user.activo:
         return abort(403)
@@ -64,6 +64,7 @@ def register():
 
 
 @auth_bp.post("/register_user")
+@maintenanceActivated
 def register_user():
     form = SignUpForm()
     if form.validate_on_submit():

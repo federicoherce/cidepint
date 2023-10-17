@@ -56,8 +56,6 @@ def info_contacto():
 
 
 
-
-
 @maintenance_bp.post('/update_contacto')
 @login_required
 @maintenance

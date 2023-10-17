@@ -8,7 +8,7 @@ from src.core import configuracion
 def maintenance(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not has_permissions(['user_maintenance']):
+        if not has_permissions(['config_show']):
             return abort(401)
         return f(*args, **kwargs)
     return decorated_function

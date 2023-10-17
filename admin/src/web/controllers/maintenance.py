@@ -6,6 +6,7 @@ from src.web.config  import config
 from flask import current_app as app
 from forms.maintenance_form import MaintenanceForm
 from forms.maintenance_form import ContactoForm
+from src.core import configuracion
 
 maintenance_bp = Blueprint("maintenance", __name__, url_prefix="/maintenance")
 
@@ -22,23 +23,38 @@ def toggle_maintenance():
     form = MaintenanceForm()
     if form.validate_on_submit():
         if form.activate_maintenance.data:
-            app.config['MAINTENANCE_MODE'] = True
+            configuracion.update_state(True)
             flash("Se activó modo Mantenimiento: ", "info")
         elif form.deactivate_maintenance.data:
-            app.config['MAINTENANCE_MODE']  = False
+            configuracion.update_state(False)
             flash("Se deactivó modo mantenimiento: ", "info")
+        configuracion.update_mensaje(form.mensaje.data)      
         return redirect(url_for('maintenance.index'))
     
+
+
 
 @maintenance_bp.get('/contacto')
 @login_required
 @maintenance
 def index_contacto():
     form = ContactoForm()
-    return render_template('configuraciones/info_contacto.html' , form = form)    
+    return render_template('configuraciones/update_info.html' , form = form)    
 
 
-@maintenance_bp.post('/contacto')
+@maintenance_bp.get('/info_contacto')
 def info_contacto():
+    info = configuracion.get_info_contacto()
+    return render_template('configuraciones/info_contacto.html' , info = info)
+
+
+
+
+
+
+@maintenance_bp.post('/update_contacto')
+def update_contacto():
     flash("Se guardaron los cambios correctamente", "info")
+    form = ContactoForm()
+    configuracion.update_info(form.telefono.data, form.email.data, form.direccion.data)
     return redirect(url_for('maintenance.index_contacto'))

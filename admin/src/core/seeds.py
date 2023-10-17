@@ -3,9 +3,20 @@ from src.core import users
 from src.core import services
 from src.core import api
 from src.core import instituciones
-
+from src.core import configuracion
 
 def run():
+    configuracion.create_maintenance(
+        mensaje="Estamos en mantenimiento",
+        mode = False
+    )
+    
+    configuracion.create_info_contacto(
+        email="",
+        telefono="",
+        direccion=""
+    )
+
     # Creación de usuarios:
     user_superadmin = auth.create_User(
         email="juan@admin.com",
@@ -15,6 +26,7 @@ def run():
         apellido="Perez",
         activo=True
     )
+    
 
     user_op1 = auth.create_User(
         email="ana@op.com",
@@ -102,6 +114,8 @@ def run():
     users.assign_permission_role(superadmin_role, user_update_permission)
     users.assign_permission_role(superadmin_role, admintasks_permission)
     users.assign_permission_role(superadmin_role, user_maintenance_permission)
+    
+    
 
 
 def run_services():
@@ -122,7 +136,7 @@ def run_services():
         apellido="Perez",
         activo=True
     )
-
+    
     owner = users.create_role(nombre="owner")
     operator = users.create_role(nombre="operator")
 

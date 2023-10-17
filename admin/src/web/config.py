@@ -14,8 +14,6 @@ class Config(object):
     MAIL_PASSWORD = 'tihdtlofndswghxw '
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
-    MAINTENANCE_MODE = False
-
 class ProductionConfig(Config):
 
     DB_USER = environ.get("DB_USER")

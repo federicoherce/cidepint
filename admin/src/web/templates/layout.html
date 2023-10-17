@@ -38,21 +38,21 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                {% if is_superadmin() %}
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-link">
-                            <div class="dropdown">
-                                <button class="fas fa-cog" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                </button>
+                            <li class="nav-item active dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    {% if is_superadmin() %}
                                     <a class="dropdown-item" href="{{ url_for('maintenance.index') }}">Mantenimiento</a>
-                                    <a class="dropdown-item" href="{{ url_for('maintenance.index_contacto') }}">Informacion de contacto</a>
-                                    <a class="dropdown-item" href="#">Opción 3</a>                               
+                                    <a class="dropdown-item" href="{{ url_for('maintenance.info_contacto') }}">Informacion de contacto</a>  
+                                    {% endif %}                          
                                 </div>
                             </div>
                         </li>
-                {% endif %}
                 {% if is_superadmin() %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('users.index') }}"><i class="fas fa-users"></i></a>

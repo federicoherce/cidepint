@@ -8,6 +8,7 @@ import secrets
 from src.web.helpers.auth import has_permissions_mail, user_is_superadmin
 from flask import current_app as app
 from src.web.helpers.maintenance import maintenanceActivated
+from src.core import configuracion
 
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
@@ -27,8 +28,8 @@ def authenticate():
         flash("Email o clave incorrecta", "error")
         return redirect(url_for("auth.login"))
 
-    if app.config['MAINTENANCE_MODE'] and not has_permissions_mail(['user_show'], user.email):
-        return abort(503)
+    if  configuracion.get_state   and not has_permissions_mail(['user_show'], user.email):
+        return abort(503) 
     elif not user.activo:
         return abort(403)
     else:

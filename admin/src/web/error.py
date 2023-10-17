@@ -1,5 +1,5 @@
 from flask import render_template
-
+from src.core import configuracion
 
 def not_found_error(e):
     kwargs = {
@@ -37,9 +37,6 @@ def forbbiden(e):
 def service_unavaible(e):
     kwargs = {
         "error_name": "503 Service Unavailable",
-        "error_description": """
-            El sitio se encuentra en mantenimiento.
-            Por favor, intente más tarde.
-        """
+        "error_description": configuracion.get_mensaje()
     }
     return render_template("error.html", **kwargs), 503

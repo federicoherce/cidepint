@@ -24,6 +24,13 @@ def assign_role_in_institution_to_user(role, institution, user):
     db.session.commit()
 
 
+def delete_role_in_institution_to_user_by_id(institution_id, user_id):
+    UserRoleInstitution.query.filter_by(
+        user_id=user_id, institution_id=institution_id
+    ).delete()
+    db.session.commit()
+
+
 def create_permission(**kwargs):
     permission = Permissions(**kwargs)
     db.session.add(permission)

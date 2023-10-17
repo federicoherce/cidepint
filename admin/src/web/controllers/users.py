@@ -182,8 +182,10 @@ def update_role_institution(institution_id, user_id):
         abort(401)
 
     new_role = get_role_requested(request.form.get("new_role"))
-
-    users.update_role_for_user_in_institution(user_id, institution_id, new_role)
+    if (new_role != -1):
+        users.update_role_for_user_in_institution(user_id, institution_id, new_role)
+    else:
+        users.delete_role_in_institution_to_user_by_id(institution_id, user_id)
     return redirect(url_for("users.user_profile", user_id=user_id))
 
 
@@ -194,9 +196,9 @@ def assign_role_institution(institution_id, user_id):
         abort(401)
 
     new_role = get_role_requested(request.form.get("new_role"))
-    role = users.get_role_by_id(new_role)
     user = auth.get_user_by_id(user_id)
     institution = instituciones.find_institucion_by_id(institution_id)
+    role = users.get_role_by_id(new_role)
 
     users.assign_role_in_institution_to_user(role, institution, user)
     return redirect(url_for("users.user_profile", user_id=user_id))
@@ -209,3 +211,5 @@ def get_role_requested(new_role):
         return 3
     elif (new_role == "operator"):
         return 4
+    elif (new_role == "none"):
+        return -1

@@ -3,9 +3,20 @@ from src.core import users
 from src.core import services
 from src.core import api
 from src.core import instituciones
-
+from src.core import configuracion
 
 def run():
+    configuracion.create_maintenance(
+        mensaje="Estamos en mantenimiento",
+        mode = False
+    )
+    
+    configuracion.create_info_contacto(
+        email="",
+        telefono="",
+        direccion=""
+    )
+
     # Creación de usuarios:
     user_superadmin = auth.create_User(
         email="juan@admin.com",
@@ -15,6 +26,7 @@ def run():
         apellido="Perez",
         activo=True
     )
+    
 
     user_op1 = auth.create_User(
         email="ana@op.com",
@@ -108,7 +120,9 @@ def run():
 
 
     admintasks_permission = users.create_permission(nombre="admintasks")
-    user_maintenance_permission = users.create_permission(nombre="user_maintenance")
+    user_config_show_permission = users.create_permission(nombre="config_show")
+    user_config_update_permission = users.create_permission(nombre="config_update")
+    
     
     services_index_permission = users.create_permission(nombre="services_index")
     services_show_permission = users.create_permission(nombre="services_show")
@@ -127,7 +141,9 @@ def run():
     
     # Asignación de permisos y roles:
     users.assign_permission_role(superadmin_role, admintasks_permission)
-    users.assign_permission_role(superadmin_role, user_maintenance_permission)
+    users.assign_permission_role(superadmin_role, user_config_update_permission)
+    users.assign_permission_role(superadmin_role, user_config_show_permission)
+    
     
     
     users.assign_permission_role(superadmin_role, user_index_permission)
@@ -156,7 +172,7 @@ def run():
     users.assign_permission_role(operator_role, services_update_permission)
     users.assign_permission_role(operator_role, services_new_permission)
 
-    
+
     services.create_service(
         nombre="f",
         descripcion="f",
@@ -164,9 +180,8 @@ def run():
         centros="f",
         tipo_servicio="Desarrollo",
         habilitado=True,
-        institucion = cidepint_institution
+        institucion=cidepint_institution
     )
-
 
 
 def run_api():

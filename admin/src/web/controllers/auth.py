@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from flask import redirect, url_for, flash, session, abort, request
 from src.core import auth
+from src.core import users
 from forms.registro_form import SignUpForm, PasswordForm
 from flask_mail import Message
 from core.mail import mail
@@ -8,6 +9,7 @@ import secrets
 from src.web.helpers.auth import has_permissions_mail, user_is_superadmin
 from flask import current_app as app
 from src.web.helpers.maintenance import maintenanceActivated
+from src.core import configuracion
 
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
@@ -27,13 +29,14 @@ def authenticate():
         flash("Email o clave incorrecta", "error")
         return redirect(url_for("auth.login"))
 
-    if app.config['MAINTENANCE_MODE'] and not has_permissions_mail(['user_show'], user.email):
+    if app.config['MAINTENANCE_MODE'] and not has_permissions_mail(['config_show'], user.email):
         return abort(503)
     elif not user.activo:
         return abort(403)
     else:
         session["user_id"] = user.email
         session["is_superadmin"] = user_is_superadmin(user)
+        session["permissions"] = users.list_permissions_by_user(user)
         flash("La sesion se inicio correctamente", "succes")
 
     return redirect(url_for("home.index"))
@@ -62,6 +65,7 @@ def register():
 
 
 @auth_bp.post("/register_user")
+@maintenanceActivated
 def register_user():
     form = SignUpForm()
     if form.validate_on_submit():

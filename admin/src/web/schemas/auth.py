@@ -1,5 +1,6 @@
 from marshmallow import Schema, fields
 
+
 class AuthSchema(Schema):
     id = fields.Int(dump_only=True)
     username = fields.Str()
@@ -9,7 +10,7 @@ class AuthSchema(Schema):
     telefono = fields.Str()
     email = fields.Email()
     password = fields.Str()
-    
+
 
 auth_schema = AuthSchema(only=["email", "password"])
 profile_schema = AuthSchema(exclude=["password"])

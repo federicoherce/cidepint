@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from src.core import api
 from src.web.schemas.auth import auth_schema, profile_schema
 from src.web.schemas.services import service_schema
+from src.web.schemas.service_type import service_type
 from marshmallow import ValidationError
 from src.core import services
 
@@ -17,7 +18,7 @@ def login():
         return jsonify({"error": "Parametros invalidos"}), 400
 
     if api.check_user(data['email'], data['password']):
-        return jsonify({'result': 'succes'}), 200
+        return jsonify({'result': 'success'}), 200
     else:
         return jsonify({'result': 'fail'}), 400
 
@@ -36,3 +37,9 @@ def service(id):
     if service is None:
         return jsonify({"error": "Parametros invalidos"}), 404
     return service_schema.dump(service), 200
+
+
+@api_bp.get("/services-type")
+def services_type():
+    services_type_list = ["Analisis", "Consultoria", "Desarrollo"]
+    return service_type.dump({"data": services_type_list}), 200

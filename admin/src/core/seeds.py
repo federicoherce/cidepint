@@ -76,6 +76,17 @@ def run():
         web="https://cidepint.ing.unlp.edu.ar/",
         contacto="0221 421-6214"
     )
+    
+    nueva_institucion = instituciones.create_institucion(
+        nombre="Nueva Institucion",
+        informacion="Somos",
+        direccion="Av. 52 ",
+        localizacion="Bs As",
+        palabras_claves="Pinturas",
+        horarios="24 hs",
+        web="www.hola.com",
+        contacto="123456"
+    )
 
     institucion1 = instituciones.create_institucion(
         nombre="Institución 1",
@@ -94,8 +105,16 @@ def run():
     user_new_permission = users.create_permission(nombre="user_new")
     user_destroy_permission = users.create_permission(nombre="user_destroy")
     user_update_permission = users.create_permission(nombre="user_update")
+
+
     admintasks_permission = users.create_permission(nombre="admintasks")
     user_maintenance_permission = users.create_permission(nombre="user_maintenance")
+    
+    services_index_permission = users.create_permission(nombre="services_index")
+    services_show_permission = users.create_permission(nombre="services_show")
+    services_new_permission = users.create_permission(nombre="services_new")
+    services_destroy_permission = users.create_permission(nombre="services_destroy")
+    services_update_permission = users.create_permission(nombre="services_update")
 
     # users.assign_role_user(user_superadmin, superadmin_role)
     # Asignación de usuarios en una institución con un rol:
@@ -104,49 +123,50 @@ def run():
     users.assign_role_in_institution_to_user(owner_role, cidepint_institution, user_ow1)
     users.assign_role_in_institution_to_user(operator_role, cidepint_institution, user_op1)
     users.assign_role_in_institution_to_user(operator_role, cidepint_institution, user_to_delete)
-
+    users.assign_role_in_institution_to_user(admin_role, nueva_institucion, user_ow1 )
+    
     # Asignación de permisos y roles:
+    users.assign_permission_role(superadmin_role, admintasks_permission)
+    users.assign_permission_role(superadmin_role, user_maintenance_permission)
+    
+    
     users.assign_permission_role(superadmin_role, user_index_permission)
     users.assign_permission_role(superadmin_role, user_show_permission)
     users.assign_permission_role(superadmin_role, user_new_permission)
     users.assign_permission_role(superadmin_role, user_destroy_permission)
     users.assign_permission_role(superadmin_role, user_update_permission)
-    users.assign_permission_role(superadmin_role, admintasks_permission)
-    users.assign_permission_role(superadmin_role, user_maintenance_permission)
 
+    
+    users.assign_permission_role(owner_role, services_index_permission)
+    users.assign_permission_role(owner_role, services_show_permission)
+    users.assign_permission_role(owner_role, services_update_permission)
+    users.assign_permission_role(owner_role, services_new_permission)
+    users.assign_permission_role(owner_role, services_destroy_permission)
+    
+    
+    users.assign_permission_role(admin_role, services_index_permission)
+    users.assign_permission_role(admin_role, services_show_permission)
+    users.assign_permission_role(admin_role, services_update_permission)
+    users.assign_permission_role(admin_role, services_new_permission)
+    users.assign_permission_role(admin_role, services_destroy_permission)
+    
+    
+    users.assign_permission_role(operator_role, services_index_permission)
+    users.assign_permission_role(operator_role, services_show_permission)
+    users.assign_permission_role(operator_role, services_update_permission)
+    users.assign_permission_role(operator_role, services_new_permission)
 
-def run_services():
-    user = auth.create_User(
-        email="juan@owner.com",
-        password="1234",
-        token=None,
-        nombre="Juan",
-        apellido="Perez",
-        activo=True
+    
+    services.create_service(
+        nombre="f",
+        descripcion="f",
+        keywords="f",
+        centros="f",
+        tipo_servicio="Desarrollo",
+        habilitado=True,
+        institucion = cidepint_institution
     )
 
-    op = auth.create_User(
-        email="juan@operator.com",
-        password="1234",
-        token=None,
-        nombre="Juan",
-        apellido="Perez",
-        activo=True
-    )
-
-    owner = users.create_role(nombre="owner")
-    operator = users.create_role(nombre="operator")
-
-    users.assign_role_user(user, owner)
-    users.assign_permission_role(owner, users.set_permission("user_index"))
-    users.assign_permission_role(owner, users.set_permission("user_new"))
-    users.assign_permission_role(owner, users.set_permission("user_update"))
-    users.assign_permission_role(owner, users.set_permission("user_destroy"))
-
-    users.assign_role_user(op, operator)
-    users.assign_permission_role(operator, users.set_permission("user_index"))
-    users.assign_permission_role(operator, users.set_permission("user_new"))
-    users.assign_permission_role(operator, users.set_permission("user_update"))
 
 
 def run_api():

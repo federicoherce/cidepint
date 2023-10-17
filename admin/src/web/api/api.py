@@ -27,8 +27,7 @@ def profile(id):
     user = api.get_user_by_id(id)
     if user is None:
         return jsonify({"error": "Parametros invalidos"}), 404
-    data = profile_schema.dump(user)
-    return data, 200
+    return profile_schema.dump(user), 200
 
 
 @api_bp.get("/services/<id>")
@@ -36,5 +35,4 @@ def service(id):
     service = services.get_service(id)
     if service is None:
         return jsonify({"error": "Parametros invalidos"}), 404
-    data = service_schema.dump(service)
-    return data, 200
+    return service_schema.dump(service), 200

@@ -17,7 +17,7 @@ def login():
         return jsonify({"error": "Parametros invalidos"}), 400
 
     if api.check_user(data['email'], data['password']):
-        return jsonify({'result': 'succes'}), 200
+        return jsonify({'result': 'success'}), 200
     else:
         return jsonify({'result': 'fail'}), 400
 

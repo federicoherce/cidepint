@@ -6,6 +6,7 @@ from src.web.config  import config
 from flask import current_app as app
 from forms.maintenance_form import MaintenanceForm
 from forms.maintenance_form import ContactoForm
+from forms.maintenance_form  import paginadoForm
 from src.core import configuracion
 
 maintenance_bp = Blueprint("maintenance", __name__, url_prefix="/maintenance")
@@ -63,3 +64,26 @@ def update_contacto():
     form = ContactoForm()
     configuracion.update_info(form.telefono.data, form.email.data, form.direccion.data)
     return redirect(url_for('maintenance.index_contacto'))
+
+
+
+
+
+@maintenance_bp.get('/paginado')
+@login_required
+@maintenance
+def index_paginado():
+    form = paginadoForm()
+    return render_template('configuraciones/paginado.html' , form = form)
+
+
+@maintenance_bp.post('/update_paginado')
+@login_required
+@maintenance
+def update_paginado():
+    flash("Se guardaron los cambios correctamente", "info")
+    form = paginadoForm()
+    if form.validate_on_submit():
+         app.config['PER_PAGE'] = form.per_page.data
+         return redirect(url_for('maintenance.index_paginado'))
+    return render_template('configuraciones/paginado.html') 

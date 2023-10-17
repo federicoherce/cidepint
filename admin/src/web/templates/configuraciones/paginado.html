@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}Contacto{% endblock %}
+{% block content %}
+<h1>Editar informacion de contacto</h1>
+<form action="{{ url_for('maintenance.update_paginado') }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{form.per_page.label}} {{form.per_page}}
+        {{form.guardar}}
+ </form>       
+{% endblock %}

@@ -24,6 +24,3 @@ def maintenanceActivated(f):
 
 def is_maintenance():
     return configuracion.get_state()
-
-def get_elements_per_page():
-    return 1

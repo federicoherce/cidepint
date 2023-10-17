@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, IntegerField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -18,6 +18,12 @@ class ContactoForm(FlaskForm):
     direccion = StringField('Direccion', validators=[DataRequired(message="Este campo es obligatorio")])
     
     guardar = SubmitField('guardar')
+    
+class paginadoForm(FlaskForm):
+    per_page = IntegerField('cantidad de elementos por pagina', validators=[DataRequired(message="Este campo es obligatorio")])
+    guardar = SubmitField('guardar')
+    
+    
     
     
     

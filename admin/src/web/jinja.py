@@ -6,3 +6,4 @@ def register_jinja_env_globals(app):
     app.jinja_env.globals.update(has_permissions=auth.has_permissions)
     app.jinja_env.globals.update(is_superadmin=auth.is_superadmin)
     app.jinja_env.globals.update(is_maintenance=maintenance.is_maintenance)
+   

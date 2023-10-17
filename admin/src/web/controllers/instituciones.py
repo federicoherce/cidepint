@@ -3,6 +3,7 @@ from src.core import instituciones
 from src.web.helpers.auth import login_required, has_permissions
 from forms.institucion_form import InstitucionForm
 
+
 instituciones_bp = Blueprint("instituciones", __name__, url_prefix="/instituciones")
 
 @instituciones_bp.route('/instituciones', methods=['GET'])
@@ -10,9 +11,11 @@ instituciones_bp = Blueprint("instituciones", __name__, url_prefix="/institucion
 def list_instituciones():
     if not has_permissions(['admintasks']):
         abort(401)
-    instits = instituciones.list_instituciones()
-    return render_template("instituciones/list_instituciones.html", instits=instits)
 
+    page = request.args.get('page', type=int, default=1)
+    per_page = 1 # Número de elementos por página
+    paginated_instits = instituciones.paginate_instituciones(page, per_page)
+    return render_template("instituciones/list_instituciones.html", instits=paginated_instits)
 
 @instituciones_bp.route('/institucion/<int:id>', methods=['GET'])
 @login_required

@@ -28,6 +28,7 @@ def toggle_maintenance():
         elif form.deactivate_maintenance.data:
             configuracion.update_state(False)
             flash("Se deactivó modo mantenimiento: ", "info")
+            
         configuracion.update_mensaje(form.mensaje.data)      
         return redirect(url_for('maintenance.index'))
     

@@ -43,6 +43,8 @@ def index_contacto():
 
 
 @maintenance_bp.get('/info_contacto')
+@login_required
+@maintenance
 def info_contacto():
     info = configuracion.get_info_contacto()
     return render_template('configuraciones/info_contacto.html' , info = info)
@@ -53,6 +55,8 @@ def info_contacto():
 
 
 @maintenance_bp.post('/update_contacto')
+@login_required
+@maintenance
 def update_contacto():
     flash("Se guardaron los cambios correctamente", "info")
     form = ContactoForm()

@@ -103,3 +103,6 @@ def destroy(id):
         abort(401)
     instituciones.delete_institucion(id)
     return redirect(url_for('instituciones.list_instituciones'))
+
+
+

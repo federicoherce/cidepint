@@ -160,7 +160,7 @@ def run():
     users.assign_permission_role(operator_role, services_update_permission)
     users.assign_permission_role(operator_role, services_new_permission)
 
-    
+
     services.create_service(
         nombre="f",
         descripcion="f",
@@ -168,9 +168,8 @@ def run():
         centros="f",
         tipo_servicio="Desarrollo",
         habilitado=True,
-        institucion = cidepint_institution
+        institucion=cidepint_institution
     )
-
 
 
 def run_api():

@@ -36,14 +36,14 @@ def authenticate():
         session["is_superadmin"] = user_is_superadmin(user)
         flash("La sesion se inicio correctamente", "succes")
 
-    return redirect(url_for("home"))
+    return redirect(url_for("home.index"))
 
 
 @auth_bp.route('/logout')
 def logout():
     if 'user_id' in session:
         session.pop('user_id', None)
-        return redirect(url_for('home'))
+        return redirect(url_for('home.index'))
     else:
         flash("No hay usuario logueado. Por favor, inicia sesión antes de cerrar sesión.", "warning")
         return redirect(url_for('auth.login'))
@@ -115,4 +115,4 @@ def save_password(email, token):
     auth.enter_password(form.password.data, email)
     auth.delete_token(email)
     flash('Contraseña seteada con exito', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('home.index'))

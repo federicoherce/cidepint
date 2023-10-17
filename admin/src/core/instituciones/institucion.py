@@ -15,7 +15,7 @@ class Institucion(db.Model):
     web = db.Column(db.String(50), nullable=True)
     contacto = db.Column(db.String(50), nullable=False)
     habilitado = db.Column(db.Boolean, default=False)
-    # users_roles = db.relationship('UserInstitutionRole', back_populates='institution')
+    servicios = db.relationship('Servicio', back_populates='institucion')
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )

@@ -9,8 +9,8 @@ def create_service(**kwargs):
 
     return service
 
-def list_services():
-    services = Servicio.query.all()
+def list_services(id):
+    services = Servicio.query.filter_by(institucion_id=id).all()
     return services
 
 def get_service(id):

@@ -13,12 +13,8 @@ from src.web import jinja
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder=static_folder)
     app.config.from_object(config[env])
-    app.get("/")
-    
-    @app.get("/")
-    def home():
-        return render_template("home.html")
-    
+
+
     database.init_app(app)
     mail.init_app(app)
     routes.register_routes(app)

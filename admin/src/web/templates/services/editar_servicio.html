@@ -4,7 +4,7 @@
 {% block content %}
     <h1 class="mb-4">Editar Servicio</h1>
 
-    <form action="{{ url_for('services.editar_servicio', servicio_id=servicio.id) }}" method="POST">
+    <form action="{{ url_for('services.editar_servicio', servicio_id=servicio.id, institucion_id=institucion_id) }}" method="POST">
         {{ form.hidden_tag() }}
         {{ form.nombre.label(class="form-label") }} 
         {{ form.nombre(class="form-control") }}
@@ -23,7 +23,7 @@
     <div class="btn-group">
             <button type="submit" class="btn btn-primary" style="margin-right: 10px;" >Editar</button>
         </form>
-        <form action="{{ url_for('services.eliminar', servicio_id=servicio.id) }}" method="POST" style="display: inline;">
+        <form action="{{ url_for('services.eliminar', servicio_id=servicio.id, institucion_id=institucion_id) }}" method="POST" style="display: inline;">
         <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas borrar este servicio?')">Eliminar</button>
         </form>
     </div>

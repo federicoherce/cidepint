@@ -20,11 +20,8 @@ def index():
 
 
 @maintenance_bp.post('/toggle')
-<<<<<<< HEAD
 @login_required
 @maintenance
-=======
->>>>>>> feature/configuracion
 def toggle_maintenance():   
     form = MaintenanceForm()
     if form.validate_on_submit():
@@ -55,8 +52,6 @@ def index_contacto():
 def info_contacto():
     info = configuracion.get_info_contacto()
     return render_template('configuraciones/info_contacto.html' , info = info)
-
-
 
 
 

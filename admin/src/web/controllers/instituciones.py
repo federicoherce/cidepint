@@ -10,7 +10,7 @@ instituciones_bp = Blueprint("instituciones", __name__, url_prefix="/institucion
 @instituciones_bp.route('/', methods=['GET'])
 @login_required
 def list_instituciones():
-    if not has_permissions(['institution_index_permission']):
+    if not has_permissions(['institution_index']):
         abort(401)
 
     page = request.args.get('page', type=int, default=1)
@@ -22,7 +22,7 @@ def list_instituciones():
 @instituciones_bp.route('/<int:id>', methods=['GET'])
 @login_required
 def show(id):
-    if not has_permissions(['institution_show_permission']):
+    if not has_permissions(['institution_show']):
         abort(401)
     instit = instituciones.find_institucion_by_id(id)
     return render_template("instituciones/institucion.html", instit=instit)

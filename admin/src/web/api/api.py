@@ -56,7 +56,7 @@ def institutions():
 
     page = request_data['page']
     per_page = request_data['per_page']
-    list_institutions_paginated = module_institutions.paginate_instituciones(page, per_page)
+    list_institutions_paginated = module_institutions.paginate_institutions_habilited(page, per_page)
     serialized_institutions = institution_schema.dump(list_institutions_paginated.items, many=True)
     response_data = {
         "data": serialized_institutions,

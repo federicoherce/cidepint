@@ -11,7 +11,7 @@ class InstitutionSchema(Schema):
     horarios = fields.String()
     web = fields.String()
     contacto = fields.String()
-    habilitado = fields.String()
+    habilitado = fields.Boolean()
 
 
 class PaginatedInstitutionSchema(Schema):

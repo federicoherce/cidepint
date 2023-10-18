@@ -36,6 +36,5 @@ def list_instituciones():
     return instituciones
 
 
-
 def paginate_instituciones(page, per_page):
     return Institucion.query.paginate(page=page, per_page=per_page)

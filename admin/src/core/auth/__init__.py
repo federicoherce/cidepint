@@ -46,11 +46,6 @@ def delete_token(email):
     db.session.commit()
 
 
-def list_users():
-    users = Users.query.all()
-    return users
-
-
 def find_user_by_mail(email):
     user = Users.query.filter_by(email=email).first()
     return user
@@ -61,14 +56,33 @@ def get_user_by_id(id):
     return user
 
 
-def find_user_contains_mail(email):
-    users = Users.query.filter(Users.email.contains(f'{email}')).all()
+def list_users(page, per_page):
+    users = Users.query.paginate(page=page, per_page=per_page)
     return users
 
 
-def find_user_by_state(state):
-    users = Users.query.filter(Users.activo == (state == 'activo')).all()
+def find_user_contains_mail(email, page, per_page):
+    users = Users.query.filter(Users.email.contains(f'{email}')).paginate(page=page, per_page=per_page)
     return users
+
+
+def find_user_by_state(state, page, per_page):
+    return Users.query.filter(Users.activo == (state == 'activo')).paginate(page=page, per_page=per_page)
+
+
+
+def find_user_by_email_and_state(email, state, page, per_page):
+    query = Users.query
+
+    if email:
+        query = query.filter(Users.email.contains(email))
+
+    if state == 'activo':
+        query = query.filter(Users.activo == True)
+    elif state == 'bloqueado':
+        query = query.filter(Users.activo == False)
+
+    return query.paginate(page=page, per_page=per_page, error_out=False)
 
 
 def check_user(email, password):

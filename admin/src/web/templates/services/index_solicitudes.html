@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}Listado de Solicitudes{% endblock %} 
+{% block content %}
+<div class="container">
+    <h1>Listado de Solicitudes</h1>
+
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.fecha_inicio.label(class="control-label") }}
+            {{ form.fecha_inicio(class="form-control", placeholder="YYYY-MM-DD HH:MM:SS") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.fecha_fin.label(class="control-label") }}
+            {{ form.fecha_fin(class="form-control", placeholder="YYYY-MM-DD HH:MM:SS") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.estado.label(class="control-label") }}
+            {{ form.estado(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.tipo_servicio.label(class="control-label") }}
+            {{ form.tipo_servicio(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.cliente_username.label(class="control-label") }}
+            {{ form.cliente_username(class="form-control") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+                <th>Tipo de Servicio</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for solicitud in solicitudes %}
+            <tr>
+                <td>{{ solicitud.id }}</td>
+                <td>{{ solicitud.cliente.username }}</td>
+                <td>{{ solicitud.estado }}</td>
+                <td>{{ solicitud.servicio.tipo_servicio }}</td>
+                <td>
+                    <a href="{{ url_for('services.show_solicitud', id=solicitud.id) }}" class="btn btn-info btn-sm">Ver</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

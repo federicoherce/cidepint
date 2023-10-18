@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from src.core import api
 from src.web.schemas.auth import auth_schema, profile_schema
-from src.web.schemas.services import service_schema
+from src.web.schemas.services import service_schema, solicitud_schema
 from marshmallow import ValidationError
 from src.core import services
 
@@ -38,3 +38,18 @@ def service(id):
         return jsonify({"error": "Parametros invalidos"}), 404
     data = service_schema.dump(service)
     return data, 200
+
+
+@api_bp.post("/me/requests")
+def solicitud():
+    try:
+        data = request.json
+        
+        # Valida y carga los datos en el esquema
+        errors = solicitud_schema.validate(data)
+
+        services.create_solicitud(**data)
+    except ValidationError:
+        return jsonify({"error": "Parametros invalidos"}), 400
+
+    return jsonify({'result': 'succes'}), 200

@@ -29,9 +29,11 @@ def delete_service(service):
 
 # ------------------------ SOLICITUDES
 
+
 def list_solicitudes():
     solicitudes = Solicitud.query.all()
     return solicitudes
+
 
 def show_solicitud(id):
     solicitud = Solicitud.query.filter_by(id=id).first()
@@ -43,6 +45,12 @@ def update_solicitud(solicitud, **kwargs):
             setattr(solicitud, key, value)
     db.session.commit()
 
-def delete_solicitud(solicitud):
+def delete_solicitud(id):
+    solicitud = Solicitud.query.filter_by(id=id).first()
     db.session.delete(solicitud)
+    db.session.commit()
+
+def create_solicitud(**kwargs):
+    solicitud = Solicitud(**kwargs)
+    db.session.add(solicitud)
     db.session.commit()

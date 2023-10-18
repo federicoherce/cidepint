@@ -8,6 +8,11 @@ class ServiceSchema(Schema):
     centros = fields.Str()
     habilitado = fields.Boolean()
 
-    
-
 service_schema = ServiceSchema()
+
+class SolicitudSchema(Schema):
+    cliente_id = fields.Int()
+    servicio_id = fields.Str()
+    detalles = fields.Str()
+
+solicitud_schema = SolicitudSchema()

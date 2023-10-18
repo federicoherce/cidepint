@@ -1,6 +1,7 @@
+from datetime import datetime, time
 from flask import Blueprint, render_template, abort, flash, redirect, url_for
-from src.core import services
-from src.forms.servicios_form import ServiciosForm
+from src.core import services, users, auth, api
+from src.forms.servicios_form import ServiciosForm, ActualizarSolicitudesForm, FiltroSolicitudesForm
 from src.web.helpers.auth import login_required, has_permissions
 
 
@@ -75,3 +76,81 @@ def eliminar(servicio_id):
     services.delete_service(servicio)
     flash('Servicio eliminado correctamente', 'success')
     return redirect(url_for("services.index"))
+
+
+@services_bp.route("/index_solicitudes", methods=['POST', 'GET'])
+def index_solicitudes():
+    form = FiltroSolicitudesForm()  # Asume que tienes un formulario para el filtrado
+    solicitudes = services.list_solicitudes()
+
+    if form.validate_on_submit():
+        if form.fecha_inicio.data:
+            fecha_inicio = datetime.combine(form.fecha_inicio.data, time.min)
+            solicitudes = [solicitud for solicitud in solicitudes if solicitud.fecha_creacion >= fecha_inicio]
+
+        if form.fecha_fin.data:
+            fecha_fin = datetime.combine(form.fecha_fin.data, time.min)
+            solicitudes = [solicitud for solicitud in solicitudes if solicitud.fecha_creacion <= fecha_fin]
+
+        if form.estado.data:
+            solicitudes = [solicitud for solicitud in solicitudes if solicitud.estado == form.estado.data]
+
+        if form.tipo_servicio.data:
+            solicitudes = [solicitud for solicitud in solicitudes if solicitud.servicio.tipo_servicio == form.tipo_servicio.data]
+
+        if form.cliente_username.data:
+            solicitudes = [solicitud for solicitud in solicitudes if solicitud.cliente.username == form.cliente_username.data]
+
+
+    return render_template("services/index_solicitudes.html", solicitudes=solicitudes, form=form)
+
+
+@services_bp.route("/show_solicitud/<int:id>", methods=['POST', 'GET'])
+def show_solicitud(id):
+    solicitud = services.show_solicitud(id)
+    cliente = api.get_user_by_id(solicitud.cliente_id)
+    servicio = services.get_service(solicitud.servicio_id)
+    return render_template("services/solicitud.html", solicitud=solicitud, cliente=cliente, servicio=servicio)
+
+
+@services_bp.post("/update_solicitud/<int:id>")
+def update_solicitud(id):
+    solicitud = services.show_solicitud(id)
+    form = ActualizarSolicitudesForm(obj=solicitud)
+    form.set_estado_choices(solicitud)
+
+    if form.validate_on_submit():
+        if (form.estado.data == solicitud.estado and form.comentario.data != ''):
+            services.update_solicitud(solicitud, comentario = form.comentario.data)
+        elif (form.comentario.data == ''):
+            services.update_solicitud(
+                solicitud,
+                estado = form.estado.data,
+                observacion_cambio_estado = form.observacion_cambio_estado.data,
+                fecha_cambio_estado = datetime.utcnow(),
+            )
+        else:
+            services.update_solicitud(
+                solicitud,
+                estado = form.estado.data,
+                observacion_cambio_estado = form.observacion_cambio_estado.data,
+                fecha_cambio_estado = datetime.utcnow(),
+                comentario = form.comentario.data
+            )
+
+        flash('Solicitud actualizada exitosamente', 'success')
+
+        return redirect(url_for('services.show_solicitud', id=solicitud.id))
+
+    return render_template("services/update_solicitud.html", solicitud=solicitud, form=form)
+
+
+@services_bp.route("/destroy_solicitud/<int:id>", methods=['POST', 'DELETE'])
+def destroy_solicitud(id):
+    services.delete_solicitud(id)
+    flash('Solicitud eliminada exitosamente', 'success')
+    return redirect(url_for('services.index_solicitudes'))
+
+
+
+

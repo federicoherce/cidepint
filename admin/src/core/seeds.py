@@ -152,6 +152,8 @@ def run_services():
 def run_api():
     api.create_user(
         username="fedeherce",
+        nombre="Federico",
+        apellido="Herce",
         tipo_documento="DNI",
         nro_documento="42708561",
         direccion="10 y 60",

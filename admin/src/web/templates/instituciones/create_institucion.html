@@ -3,15 +3,23 @@
 {% block content %}
 <form action="{{ url_for('instituciones.create_institucion') }}" method="POST">
     {{ form.hidden_tag() }}
-    {{ form.nombre.label }} {{ form.nombre}}<br>
-    {{ form.informacion.label }} {{ form.informacion}}<br>
-    {{ form.direccion.label }} {{ form.direccion}}<br>
-    {{ form.localizacion.label }} {{ form.localizacion}}<br>
-    {{ form.palabras_claves.label }} {{ form.palabras_claves}}<br>
-    {{ form.horarios.label }} {{ form.horarios}}<br>
-    {{ form.web.label }} {{ form.web}}<br>
-    {{ form.contacto.label }} {{ form.contacto}}
+    {{ form.nombre.label(class="form-label") }} 
+    {{ form.nombre(class="form-control")}}
+    {{ form.informacion.label(class="form-label") }} 
+    {{ form.informacion(class="form-control")}}
+    {{ form.direccion.label(class="form-label") }}
+    {{ form.direccion(class="form-control")}}
+    {{ form.localizacion.label(class="form-label") }}
+    {{ form.localizacion(class="form-control")}}
+    {{ form.palabras_claves.label(class="form-label") }} 
+    {{ form.palabras_claves(class="form-control")}}
+    {{ form.horarios.label(class="form-label") }} 
+    {{ form.horarios(class="form-control")}}
+    {{ form.web.label(class="form-label") }} 
+    {{ form.web(class="form-control")}}
+    {{ form.contacto.label(class="form-label") }} 
+    {{ form.contacto(class="form-control")}}
     <br>
-    {{ form.submit() }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 {% endblock %}

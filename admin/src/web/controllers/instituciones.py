@@ -4,9 +4,8 @@ from src.web.helpers.auth import login_required, has_permissions
 from forms.institucion_form import InstitucionForm
 from flask import current_app as app
 
-
-
 instituciones_bp = Blueprint("instituciones", __name__, url_prefix="/instituciones")
+
 
 @instituciones_bp.route('/instituciones', methods=['GET'])
 @login_required
@@ -18,6 +17,7 @@ def list_instituciones():
     per_page = app.config['PER_PAGE']
     paginated_instits = instituciones.paginate_instituciones(page, per_page)
     return render_template("instituciones/list_instituciones.html", instits=paginated_instits)
+
 
 @instituciones_bp.route('/institucion/<int:id>', methods=['GET'])
 @login_required

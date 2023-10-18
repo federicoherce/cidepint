@@ -64,18 +64,18 @@ def user_profile(user_id):
     owner = auth.find_user_by_mail(session["user_id"])
     user = auth.get_user_by_id(user_id)
     is_superadmin = user_is_superadmin(user=user)
-    instituciones_del_usuario = users.get_user_institutions(user)
+    instituciones_del_usuario =  users.get_user_institutions_and_roles(user)
 
     # Obtengo las instituciones y roles del usuario
     instituciones_roles = users.get_user_institutions_and_roles(owner)
-    instituciones = users.get_user_institutions(owner)
+
 
     return render_template(
         "admin_insti/asignar_rol.html",
         user=user,
         user_is_superadmin=is_superadmin,
-        instituciones_roles=instituciones_roles,
-        instituciones = instituciones
+        instituciones_roles_owner=instituciones_roles,
+        instituciones_roles_user = instituciones_del_usuario
         
     )
     
@@ -88,7 +88,8 @@ def assign_role_institution(institution_id, user_id):
     role = users.get_role_by_id(new_role)
 
     users.assign_role_in_institution_to_user(role, institution, user)
-    return redirect(url_for("admin.asignar_rol", user_id=user_id))
+    print(user_id, institution_id, new_role,"PUSO NUEVO ROLLLLLLLLLLLLLLLLL ")
+    return redirect(url_for("admin.user_profile", user_id=user_id))
 
 
 def get_role_requested(new_role):
@@ -113,6 +114,8 @@ def update_role_institution(institution_id, user_id):
     new_role = get_role_requested(request.form.get("new_role"))
     if (new_role != -1):
         users.update_role_for_user_in_institution(user_id, institution_id, new_role)
+        print(user_id, institution_id, new_role,"AAAAAAAAAAAAAAAAAAAAA")
+        print("entrooooooooooooooooooooooooooooooooo")
     else:
         users.delete_role_in_institution_to_user_by_id(institution_id, user_id)
     return redirect(url_for("admin.user_profile", user_id=user_id))

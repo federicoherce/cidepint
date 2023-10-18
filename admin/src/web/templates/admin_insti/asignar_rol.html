@@ -8,29 +8,25 @@
         <div class="col-md-6">
             <p><strong>Correo electrónico: </strong>{{ user.email }}</p>
             </p>
-            {% if not user_is_superadmin %}
-                <form method="post" action="{{ url_for('admin.update_state', user_id=user.id) }}">
-                    <input type="hidden" name="usuario_id" value="{{ user.id }}">
                 <h2 class="mt-2 mb-4">Instituciones y roles: </h2>
-                <div class="list-group">
-                    
-                    <div class="list-group-item list-group-item-action">
-                        {% if instituciones_roles %}
-                            {% for institucion, rol in instituciones_roles %}
+                <div class="list-group-item list-group-item-action">
+                    {% if instituciones_roles_user %}
+                        {% for institucion, rol in instituciones_roles_user %}
                             <form method="post" action="{{ url_for('admin.update_role_institution', institution_id=institucion.id, user_id=user.id) }}">
                                 <span>{{ institucion.nombre }} -</span>
                                 <select name="new_role" class="form-select" onchange="this.form.submit()">
+                                    <option value="none">Ningún rol</option>
                                     <option value="owner" {% if rol.nombre == 'owner' %} selected {% endif %}>Dueño</option>
                                     <option value="operator" {% if rol.nombre == 'operator' %} selected {% endif %}>Operador</option>
                                     <option value="admin" {% if rol.nombre == 'admin' %} selected {% endif %}>Administrador</option>
-                                    <option value="none">Ningún rol</option>
                                 </select>
                             </form>
-                            {% endfor %}
-                        {% endif %}
-                            {% for  instituciones in  instituciones %}
-                            <form method="post" action="{{ url_for('admin.assign_role_institution', institution_id=instituciones.id, user_id=user.id) }}">
-                                <span>{{  instituciones.nombre }} -</span>
+                        {% endfor %}
+                    {% endif %}
+                    {% if not instituciones_roles_user %}
+                        {% for institucion, rol in instituciones_roles_owner %}
+                            <form method="post" action="{{ url_for('admin.assign_role_institution', institution_id=institucion.id, user_id=user.id) }}">
+                                <span>{{  institucion.nombre }} -</span>
                                 <select name="new_role" class="form-select" onchange="this.form.submit()">
                                     <option value="asignar" selected>Designar rol</option>
                                     <option value="owner">Dueño</option>
@@ -38,12 +34,9 @@
                                     <option value="admin">Administrador</option>
                                 </select>
                             </form>
-                            {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-            
-
+                        {% endfor %}
+                    {% endif %}
+                </div>                
             <a href="{{ url_for('users.index') }}" class="btn btn-outline-primary mt-2">
                 <i class="fas fa-arrow-left"></i> Volver atrás
             </a>

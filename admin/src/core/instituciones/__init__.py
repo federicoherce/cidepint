@@ -38,3 +38,12 @@ def list_instituciones():
 
 def paginate_instituciones(page, per_page):
     return Institucion.query.paginate(page=page, per_page=per_page)
+
+
+
+def get_institutions_of_owner(inst):
+    insti = set()
+    for t in inst:
+        if t.institution_id != 1:
+            insti.add(t.institution)
+    return list(inst)

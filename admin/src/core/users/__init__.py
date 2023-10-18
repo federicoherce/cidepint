@@ -107,3 +107,7 @@ def get_role_by_id(role_id):
 
 def roles_in_institution(institution_id , user_id):
     return UserRoleInstitution.query.filter_by(user_id=user_id, institution_id=institution_id).all()
+
+
+def institutios_of_owner(user_id, rol_id):
+     return UserRoleInstitution.query.filter_by(user_id=user_id,  role_id = rol_id).all()

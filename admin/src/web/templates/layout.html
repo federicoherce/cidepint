@@ -40,26 +40,23 @@
                         {% endif %}    
                     </li>
                     {% if is_superadmin() %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ url_for('users.index') }}"><i class="fas fa-users"></i></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ url_for('instituciones.list_instituciones') }}"> <i class="fa fa-building"></i></a>
-                    </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ url_for('users.index') }}"><i class="fas fa-users"></i></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ url_for('instituciones.list_instituciones') }}"> <i class="fa fa-building"></i></a>
+                        </li>
+                        <li class="nav-item active dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-cog"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                                <a class="dropdown-item" href="{{ url_for('maintenance.index') }}">Mantenimiento</a>
+                                <a class="dropdown-item" href="{{ url_for('maintenance.info_contacto') }}">Informacion de contacto</a>
+                                <a class="dropdown-item" href="{{ url_for('maintenance.index_paginado') }}">paginado</a>  
+                            </div>
+                        </li>
                     {% endif %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#"><i class="fas fa-check-circle"></i></a>
-                    </li>
-                    <li class="nav-item active dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-cog"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                            <a class="dropdown-item" href="{{ url_for('maintenance.index') }}">Mantenimiento</a>
-                            <a class="dropdown-item" href="{{ url_for('maintenance.info_contacto') }}">Informacion de contacto</a>
-                            <a class="dropdown-item" href="{{ url_for('maintenance.index_paginado') }}">paginado</a>  
-                        </div>
-                    </li>
                 {% endif %}
                 <li class="nav-item active dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -67,14 +64,14 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
                         {% if is_authenticated(session) %}
-                        <a class="dropdown-item" href="#">Perfil</a>
-                        <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
+                            <a class="dropdown-item" href="#">Perfil</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
                         {% endif %}
                         {% if not is_authenticated(session) %}
-                        <a class="dropdown-item" href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
-                        {% if not is_maintenance() %}
-                        <a class="dropdown-item" href="{{ url_for('auth.register') }}">Registrarse</a>
-                        {% endif %}      
+                            <a class="dropdown-item" href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
+                            {% if not is_maintenance() %}
+                                <a class="dropdown-item" href="{{ url_for('auth.register') }}">Registrarse</a>
+                            {% endif %}      
                         {% endif %}       
                     </div>
                 </li>

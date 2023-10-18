@@ -28,3 +28,6 @@ def update_service(form, service):
 def delete_service(service):
     db.session.delete(service)
     db.session.commit()
+    
+def paginate_services(page, per_page):
+    return Servicio.query.paginate(page=page, per_page=per_page)

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, abort, request
 from flask import redirect, url_for, flash
+from flask import current_app as app
 from src.core import auth
 from src.core import users
 from src.core import instituciones
@@ -16,6 +17,9 @@ def index():
     if not has_permissions(['user_index']):
         abort(401)
 
+    page = request.args.get('page', type=int, default=1)
+    per_page = app.config['PER_PAGE']
+
     if request.args:
         email = request.args.get('email')
         estado = request.args.get('estado')
@@ -23,12 +27,12 @@ def index():
         email = ""
         estado = "todos"
 
-    users = get_users(email, estado)
+    users = get_users(email, estado, page, per_page)
 
-    return render_template("users/index.html", users=users)
+    return render_template("users/index.html", users=users.items, pagination=users)
 
 
-def get_users(email, estado):
+def get_users(email, estado, page, per_page):
     """
     Este método se encarga de traer los usuarios (se haga o no una búsqueda)
     - Si no se realizó una búsqueda:
@@ -39,21 +43,18 @@ def get_users(email, estado):
     - Si solo se busca por un criterio, se aplicará solo ese al listado.
     """
     if email == "" and estado == "todos":
-        return auth.list_users()
+        return auth.list_users(page, per_page)
 
-    users = []
+    elif email != "" and estado != "todos":
+        return auth.find_user_by_email_and_state(email, estado, page, per_page)
 
     if email != "":
-        users.extend(auth.find_user_contains_mail(email))
+        return auth.find_user_contains_mail(email, page, per_page)
 
     if estado != "todos":
-        aux = auth.find_user_by_state(estado)  # Menos lecturas
-        if email != "":
-            users = [u for u in users if u in aux]
-        else:
-            users.extend(aux)
+        return auth.find_user_by_state(estado, page, per_page)
 
-    return users
+    return []
 
 
 @users_bp.get("/profile/<int:user_id>")

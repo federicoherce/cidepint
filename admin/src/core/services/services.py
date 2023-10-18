@@ -6,7 +6,6 @@ class Servicio(db.Model):
     nombre = db.Column(db.String(100), nullable=False)
     descripcion = db.Column(db.String(500), nullable=False)
     keywords = db.Column(db.String(200), nullable=False)
-    centros = db.Column(db.String(200), nullable=False)
     tipo_servicio = db.Column(db.Enum('Análisis', 'Consultoría', 'Desarrollo',name="tipo_servicio_enum"), nullable=False)
     habilitado = db.Column(db.Boolean, nullable=False)
     institucion_id = db.Column(db.Integer, db.ForeignKey('instituciones.id'))

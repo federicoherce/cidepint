@@ -117,6 +117,18 @@ def run():
     user_new_permission = users.create_permission(nombre="user_new")
     user_destroy_permission = users.create_permission(nombre="user_destroy")
     user_update_permission = users.create_permission(nombre="user_update")
+    
+    """
+    creo  permisos para dueños de instituciones
+    """
+    owner_index_permission = users.create_permission(nombre="owner_index")
+    owner_show_permission = users.create_permission(nombre="owner_show")
+    owner_new_permission = users.create_permission(nombre="owner_new")
+    owner_destroy_permission = users.create_permission(nombre="owner_destroy")
+    owner_update_permission = users.create_permission(nombre="owner_update")
+    
+    
+    
 
 
     admintasks_permission = users.create_permission(nombre="admintasks")
@@ -172,7 +184,15 @@ def run():
     users.assign_permission_role(operator_role, services_update_permission)
     users.assign_permission_role(operator_role, services_new_permission)
 
-
+    """
+    asigno permisos a los usuarios dueños de las instituciones
+    """
+    users.assign_permission_role(owner_role,owner_index_permission  )
+    users.assign_permission_role(owner_role,owner_show_permission )
+    users.assign_permission_role(owner_role,owner_new_permission )
+    users.assign_permission_role(owner_role,owner_destroy_permission)
+    users.assign_permission_role(owner_role,owner_update_permission)
+    
     services.create_service(
         nombre="f",
         descripcion="f",

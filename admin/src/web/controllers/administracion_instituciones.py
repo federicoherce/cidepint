@@ -13,7 +13,6 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/administracion")
 @admin_bp.get("/")
 @login_required
 def index():
-
     if request.args:
         email = request.args.get('email')
         estado = request.args.get('estado')
@@ -28,9 +27,6 @@ def index():
 @admin_bp.post("/update_state/<int:user_id>")
 @login_required
 def update_state(user_id):
-    if not has_permissions(['user_update']):
-        abort(401)
-
     user = auth.get_user_by_id(user_id)
     auth.update_state(user)
 
@@ -72,13 +68,15 @@ def user_profile(user_id):
 
     # Obtengo las instituciones y roles del usuario
     instituciones_roles = users.get_user_institutions_and_roles(owner)
-
+    instituciones = users.get_user_institutions(owner)
 
     return render_template(
         "admin_insti/asignar_rol.html",
         user=user,
         user_is_superadmin=is_superadmin,
         instituciones_roles=instituciones_roles,
+        instituciones = instituciones
+        
     )
     
 @admin_bp.post("/assign_role_institution/<int:institution_id>/<int:user_id>")
@@ -111,8 +109,6 @@ def update_role_institution(institution_id, user_id):
     Esta función actualiza el rol del usuario en una institución.
     Esta implementación es posible ya que sabemos el id de cada rol (definido por nosotros en la BD)
     """
-    if not has_permissions(['user_update']):
-        abort(401)
 
     new_role = get_role_requested(request.form.get("new_role"))
     if (new_role != -1):

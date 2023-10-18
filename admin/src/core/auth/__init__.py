@@ -109,3 +109,8 @@ def delete_user(user):
 
 def update_user():
     db.session.commit()
+
+def find_user_contains_mail(email):
+    users = Users.query.filter(Users.email.contains(f'{email}'))
+    return users
+

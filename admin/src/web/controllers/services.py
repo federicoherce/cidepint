@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, abort, flash, redirect, url_for, session
+from flask import Blueprint, render_template, abort, flash, redirect, url_for, session, request
 from src.forms.servicios_form import ServiciosForm
 from src.web.helpers.auth import login_required, has_permissions
 from src.web.helpers.institutions import user_in_institution
 from src.core import services, instituciones
-
+from flask import current_app as app
 
 services_bp = Blueprint("services", __name__, url_prefix="/services")
 
@@ -14,8 +14,10 @@ services_bp = Blueprint("services", __name__, url_prefix="/services")
 def index(institucion_id):
     if not has_permissions(['services_index']): 
         abort(401)
-    servicios = services.list_services(institucion_id)
-    return render_template("services/index.html", services=servicios, institucion_id=institucion_id)
+    page = request.args.get('page', type=int, default=1)
+    per_page = app.config['PER_PAGE']
+    paginated_services = services.paginate_services(page, per_page)
+    return render_template("services/index.html", services=paginated_services, institucion_id=institucion_id)
 
 
 @services_bp.get("/agregar/<int:institucion_id>")

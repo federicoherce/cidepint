@@ -11,7 +11,6 @@
                 <th>Nombre</th>
                 <th>Descripcion</th>
                 <th>Keywords</th>
-                <th>Centros</th>
                 <th>Tipo</th>
                 <th>Habilitado</th>
                 <th></th>
@@ -24,7 +23,6 @@
                 <td>{{ service.nombre }}</td>
                 <td>{{ service.descripcion }}</td>
                 <td>{{ service.keywords }}</td>
-                <td>{{ service.centros }}</td>
                 <td>{{ service.tipo_servicio }}</td>
                 <td>
                     {% if service.habilitado %}
@@ -45,7 +43,7 @@
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ instits.prev_num }}" aria-label="Previous">
+                            <a class="page-link" href="?page={{ services.prev_num }}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
@@ -53,7 +51,7 @@
                     
                     {% for page_num in services.iter_pages() %}
                         {% if page_num %}
-                            <li class="page-item {% if page_num == instits.page %}active{% endif %}">
+                            <li class="page-item {% if page_num == services.page %}active{% endif %}">
                                 <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
                             </li>
                         {% else %}
@@ -63,12 +61,12 @@
                     
                     {% if services.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ instits.next_num }}" aria-label="Next">
+                            <a class="page-link" href="?page={{ services.next_num }}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ instits.pages }}" aria-label="Last">
+                            <a class="page-link" href="?page={{ services.pages }}" aria-label="Last">
                                 <span aria-hidden="true">&raquo;&raquo;</span>
                             </a>
                         </li>

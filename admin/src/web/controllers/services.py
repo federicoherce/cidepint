@@ -40,7 +40,6 @@ def agregar_servicio(institucion_id):
             nombre=form.nombre.data,
             descripcion=form.descripcion.data,
             keywords=form.keywords.data,
-            centros=form.centros.data,
             tipo_servicio=form.tipo_servicio.data,
             habilitado=form.habilitado.data,
             institucion = instituciones.find_institucion_by_id(institucion_id)

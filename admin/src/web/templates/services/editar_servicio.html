@@ -12,8 +12,6 @@
         {{ form.descripcion(class="form-control") }}
         {{ form.keywords.label(class="form-label") }}
         {{ form.keywords(class="form-control") }}
-        {{ form.centros.label(class="form-label") }}
-        {{ form.centros(class="form-control") }}
         {{ form.tipo_servicio.label(class="form-label") }}
         {{ form.tipo_servicio(class="form-control") }} <br>
         {{ form.habilitado.label}}
@@ -23,8 +21,10 @@
     <div class="btn-group">
             <button type="submit" class="btn btn-primary" style="margin-right: 10px;" >Editar</button>
         </form>
-        <form action="{{ url_for('services.eliminar', servicio_id=servicio.id, institucion_id=institucion_id) }}" method="POST" style="display: inline;">
-        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas borrar este servicio?')">Eliminar</button>
-        </form>
+        {% if has_permissions(['services_destroy']) %}
+            <form action="{{ url_for('services.eliminar', servicio_id=servicio.id, institucion_id=institucion_id) }}" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas borrar este servicio?')">Eliminar</button>
+            </form>
+        {% endif %}
     </div>
 {% endblock %}

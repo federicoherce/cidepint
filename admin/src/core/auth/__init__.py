@@ -107,5 +107,8 @@ def delete_user(user):
     db.session.commit()
 
 
-def update_user():
+def update_name_surname_email(user, name, surname, email):
+    user.nombre = name
+    user.apellido = surname
+    user.email = email
     db.session.commit()

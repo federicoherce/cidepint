@@ -112,6 +112,7 @@ def run():
     )
 
     # Creación de permisos:
+    #Modulo usuarios
     user_index_permission = users.create_permission(nombre="user_index")
     user_show_permission = users.create_permission(nombre="user_show")
     user_new_permission = users.create_permission(nombre="user_new")
@@ -119,16 +120,26 @@ def run():
     user_update_permission = users.create_permission(nombre="user_update")
 
 
-    admintasks_permission = users.create_permission(nombre="admintasks")
+    #Modulo instituciones
+    institution_index_permission = users.create_permission(nombre="institution_index")
+    institution_show_permission = users.create_permission(nombre="institution_show")
+    institution_new_permission = users.create_permission(nombre="institution_new")
+    institution_destroy_permission = users.create_permission(nombre="institution_destroy")
+    institution_update_permission = users.create_permission(nombre="institution_update")
+    
+    
+    #Modulo configuracion
     user_config_show_permission = users.create_permission(nombre="config_show")
     user_config_update_permission = users.create_permission(nombre="config_update")
     
     
+    #Modulo servicios
     services_index_permission = users.create_permission(nombre="services_index")
     services_show_permission = users.create_permission(nombre="services_show")
     services_new_permission = users.create_permission(nombre="services_new")
     services_destroy_permission = users.create_permission(nombre="services_destroy")
     services_update_permission = users.create_permission(nombre="services_update")
+
 
     # users.assign_role_user(user_superadmin, superadmin_role)
     # Asignación de usuarios en una institución con un rol:
@@ -139,13 +150,22 @@ def run():
     users.assign_role_in_institution_to_user(operator_role, cidepint_institution, user_to_delete)
     users.assign_role_in_institution_to_user(admin_role, nueva_institucion, user_ow1 )
     
+    
     # Asignación de permisos y roles:
-    users.assign_permission_role(superadmin_role, admintasks_permission)
+    #Modulo Instituciones
+    users.assign_permission_role(superadmin_role, institution_index_permission)
+    users.assign_permission_role(superadmin_role, institution_show_permission)
+    users.assign_permission_role(superadmin_role, institution_new_permission)
+    users.assign_permission_role(superadmin_role, institution_destroy_permission)
+    users.assign_permission_role(superadmin_role, institution_update_permission)
+    
+    
+    #Modulo configuracion
     users.assign_permission_role(superadmin_role, user_config_update_permission)
     users.assign_permission_role(superadmin_role, user_config_show_permission)
     
     
-    
+    #Modulo usuarios
     users.assign_permission_role(superadmin_role, user_index_permission)
     users.assign_permission_role(superadmin_role, user_show_permission)
     users.assign_permission_role(superadmin_role, user_new_permission)
@@ -153,6 +173,7 @@ def run():
     users.assign_permission_role(superadmin_role, user_update_permission)
 
     
+    #Modulo servicios
     users.assign_permission_role(owner_role, services_index_permission)
     users.assign_permission_role(owner_role, services_show_permission)
     users.assign_permission_role(owner_role, services_update_permission)

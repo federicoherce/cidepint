@@ -1,11 +1,10 @@
-from flask import Blueprint, render_template, abort, request
+from flask import Blueprint, render_template, abort, request,session
 from flask import redirect, url_for, flash
 from src.core import auth
 from src.core import users
 from src.core import instituciones
 from src.web.helpers.auth import login_required, has_permissions
 from src.web.helpers.auth import login_required, has_permissions, user_is_superadmin
-
 admin_bp = Blueprint("admin", __name__, url_prefix="/administracion")
 
 
@@ -23,9 +22,19 @@ def index():
         estado = "todos"
 
     users = get_users(email, estado)
+    
+    return render_template("admin_insti/buscar_user.html", users=users)
 
-    return render_template("users/index.html", users=users)
+@admin_bp.post("/update_state/<int:user_id>")
+@login_required
+def update_state(user_id):
+    if not has_permissions(['user_update']):
+        abort(401)
 
+    user = auth.get_user_by_id(user_id)
+    auth.update_state(user)
+
+    return redirect(url_for("admin.user_profile", user_id=user_id))
 
 def get_users(email, estado):
     """
@@ -37,8 +46,6 @@ def get_users(email, estado):
       igual al recibido
     - Si solo se busca por un criterio, se aplicará solo ese al listado.
     """
-    if email == "" and estado == "todos":
-        return auth.list_users()
 
     users = []
 
@@ -58,25 +65,22 @@ def get_users(email, estado):
 @admin_bp.get("/profile/<int:user_id>")
 @login_required
 def user_profile(user_id):
+    owner = auth.find_user_by_mail(session["user_id"])
     user = auth.get_user_by_id(user_id)
     is_superadmin = user_is_superadmin(user=user)
-
     instituciones_del_usuario = users.get_user_institutions(user)
 
     # Obtengo las instituciones y roles del usuario
-    instituciones_roles = users.get_user_institutions_and_roles(user)
+    instituciones_roles = users.get_user_institutions_and_roles(owner)
 
-    # Obtengo todas las instituciones a las que el usuario NO pertenece
-    otras_instituciones = [inst for inst in instituciones.list_instituciones()
-                           if inst not in instituciones_del_usuario]
 
     return render_template(
-        "users/profile.html",
+        "admin_insti/asignar_rol.html",
         user=user,
         user_is_superadmin=is_superadmin,
         instituciones_roles=instituciones_roles,
-        otras_instituciones=otras_instituciones
     )
+    
 @admin_bp.post("/assign_role_institution/<int:institution_id>/<int:user_id>")
 @login_required
 def assign_role_institution(institution_id, user_id):
@@ -86,7 +90,7 @@ def assign_role_institution(institution_id, user_id):
     role = users.get_role_by_id(new_role)
 
     users.assign_role_in_institution_to_user(role, institution, user)
-    return redirect(url_for("users.user_profile", user_id=user_id))
+    return redirect(url_for("admin.asignar_rol", user_id=user_id))
 
 
 def get_role_requested(new_role):
@@ -115,5 +119,5 @@ def update_role_institution(institution_id, user_id):
         users.update_role_for_user_in_institution(user_id, institution_id, new_role)
     else:
         users.delete_role_in_institution_to_user_by_id(institution_id, user_id)
-    return redirect(url_for("users.user_profile", user_id=user_id))
+    return redirect(url_for("admin.user_profile", user_id=user_id))
 

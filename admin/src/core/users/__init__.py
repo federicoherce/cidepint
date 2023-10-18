@@ -24,6 +24,13 @@ def assign_role_in_institution_to_user(role, institution, user):
     db.session.commit()
 
 
+def delete_role_in_institution_to_user_by_id(institution_id, user_id):
+    UserRoleInstitution.query.filter_by(
+        user_id=user_id, institution_id=institution_id
+    ).delete()
+    db.session.commit()
+
+
 def create_permission(**kwargs):
     permission = Permissions(**kwargs)
     db.session.add(permission)
@@ -63,7 +70,8 @@ def get_user_institutions(user):
     tuplas = UserRoleInstitution.query.filter_by(user_id=user.id).all()
     institutions = set()
     for t in tuplas:
-        institutions.add(t.institution)
+        if t.institution_id != 1:
+            institutions.add(t.institution)
     return list(institutions)
 
 

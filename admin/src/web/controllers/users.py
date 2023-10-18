@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, abort, request
 from flask import redirect, url_for, flash
+from flask import current_app as app
 from src.core import auth
 from src.core import users
 from src.core import instituciones
@@ -16,6 +17,9 @@ def index():
     if not has_permissions(['user_index']):
         abort(401)
 
+    page = request.args.get('page', type=int, default=1)
+    per_page = app.config['PER_PAGE']
+
     if request.args:
         email = request.args.get('email')
         estado = request.args.get('estado')
@@ -23,12 +27,12 @@ def index():
         email = ""
         estado = "todos"
 
-    users = get_users(email, estado)
+    users = get_users(email, estado, page, per_page)
 
-    return render_template("users/index.html", users=users)
+    return render_template("users/index.html", users=users.items, pagination=users)
 
 
-def get_users(email, estado):
+def get_users(email, estado, page, per_page):
     """
     Este método se encarga de traer los usuarios (se haga o no una búsqueda)
     - Si no se realizó una búsqueda:
@@ -39,21 +43,18 @@ def get_users(email, estado):
     - Si solo se busca por un criterio, se aplicará solo ese al listado.
     """
     if email == "" and estado == "todos":
-        return auth.list_users()
+        return auth.list_users(page, per_page)
 
-    users = []
+    elif email != "" and estado != "todos":
+        return auth.find_user_by_email_and_state(email, estado, page, per_page)
 
     if email != "":
-        users.extend(auth.find_user_contains_mail(email))
+        return auth.find_user_contains_mail(email, page, per_page)
 
     if estado != "todos":
-        aux = auth.find_user_by_state(estado)  # Menos lecturas
-        if email != "":
-            users = [u for u in users if u in aux]
-        else:
-            users.extend(aux)
+        return auth.find_user_by_state(estado, page, per_page)
 
-    return users
+    return []
 
 
 @users_bp.get("/profile/<int:user_id>")
@@ -99,10 +100,7 @@ def update_user(user_id):
                 flash('Este correo electrónico ya está en uso. Por favor, elige otro.', 'error')
                 return redirect(url_for("users.update_user", user_id=user.id))
 
-        user.nombre = form.nombre.data
-        user.apellido = form.apellido.data
-        user.email = form.email.data
-        auth.update_user()
+        auth.update_name_surname_email(user, form.nombre.data, form.apellido.data, form.email.data)
         flash("Usuario actualizado con éxito!", "success")
         return redirect(url_for("users.user_profile", user_id=user.id))
 
@@ -178,19 +176,27 @@ def update_role_institution(institution_id, user_id):
     Esta función actualiza el rol del usuario en una institución.
     Esta implementación es posible ya que sabemos el id de cada rol (definido por nosotros en la BD)
     """
-    new_role = get_role_requested(request.form.get("new_role"))
+    if not has_permissions(['user_update']):
+        abort(401)
 
-    users.update_role_for_user_in_institution(user_id, institution_id, new_role)
+    new_role = get_role_requested(request.form.get("new_role"))
+    if (new_role != -1):
+        users.update_role_for_user_in_institution(user_id, institution_id, new_role)
+    else:
+        users.delete_role_in_institution_to_user_by_id(institution_id, user_id)
     return redirect(url_for("users.user_profile", user_id=user_id))
 
 
 @users_bp.post("/assign_role_institution/<int:institution_id>/<int:user_id>")
 @login_required
 def assign_role_institution(institution_id, user_id):
+    if not has_permissions(['user_update']):
+        abort(401)
+
     new_role = get_role_requested(request.form.get("new_role"))
-    role = users.get_role_by_id(new_role)
     user = auth.get_user_by_id(user_id)
     institution = instituciones.find_institucion_by_id(institution_id)
+    role = users.get_role_by_id(new_role)
 
     users.assign_role_in_institution_to_user(role, institution, user)
     return redirect(url_for("users.user_profile", user_id=user_id))
@@ -203,3 +209,5 @@ def get_role_requested(new_role):
         return 3
     elif (new_role == "operator"):
         return 4
+    elif (new_role == "none"):
+        return -1

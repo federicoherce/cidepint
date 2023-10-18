@@ -9,25 +9,19 @@
 
     <form method="GET" action="{{ url_for('users.index') }}" class="form-inline mb-4 mt-3">
         <div class="form-group">
-            <label for="email" class="mr-2">Correo:</label>
-            {% if request.args.get('email') %}
-                <input type="text" id="email" name="email" value="{{ request.args.get('email') }}" class="form-control">
-            {% else %}
-                <input type="text" id="email" name="email" label="Ingrese un correo" class="form-control">
-            {% endif %}
+            <input type="text" id="email" name="email" 
+            {% if request.args.get('email') %} value="{{request.args.get('email')}}" {% else %} value="" {% endif %} class="form-control" placeholder="Buscar por correo">
         </div>
-        
         <div class="form-group mx-sm-3">
-            <label for="estado" class="mr-2">Activo:</label>
             <select id="estado" name="estado" class="form-control">
-                <option value="todos"></option>
-                <option value="activo">SI</option>
-                <option value="bloqueado">NO</option>
+                <option value="todos">Todos</option>
+                <option value="activo">Activos</option>
+                <option value="bloqueado">Bloqueados</option>
             </select>
         </div>
-        
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
+    
     {% if users %}
     <table class="table table-striped">
         <thead>
@@ -36,7 +30,7 @@
                 <th>Apellido</th>
                 <th>Email</th>
                 <th>Activo</th>
-                <th></th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -47,16 +41,81 @@
                 <td>{{ user.email }}</td>
                 <td>
                     {% if user.activo %}
-                        SI
+                        <span class="badge badge-success">SI</span>
                     {% else %}
-                        NO
+                        <span class="badge badge-danger">NO</span>
                     {% endif %}
                 </td>
-                <td><a href="{{ url_for('users.user_profile', user_id=user.id) }}" class="btn btn-info btn-sm">Ver perfil</a></td>
+                <td>
+                    <a href="{{ url_for('users.user_profile', user_id=user.id) }}" class="btn btn-info btn-sm">Ver perfil</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    
+    <div class="pagination">
+        <span class="step-links">
+            {% if pagination.has_prev %}
+                <a href="?page=1&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">&laquo; first</a>
+                <a href="?page={{ pagination.prev_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">previous</a>
+            {% endif %}
+    
+            {% for page_num in pagination.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <span class="current">{{ page_num }}</span>
+                    {% else %}
+                        <a href="?page={{ page_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="ellipsis">...</span>
+                {% endif %}
+            {% endfor %}
+    
+            {% if pagination.has_next %}
+                <a href="?page={{ pagination.next_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">next</a>
+                <a href="?page={{ pagination.pages }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- <div class="pagination">
+        <ul class="pagination justify-content-center">
+            {% if pagination.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">&laquo; first</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ pagination.prev_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">previous</a>
+                </li>
+            {% endif %}
+    
+            {% for page_num in pagination.iter_pages() %}
+                {% if page_num %}
+                    <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ page_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+    
+            {% if pagination.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ pagination.next_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ pagination.pages }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">last &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>-->
+    
+
+    
     {% else %}
         <h2>No se encontraron usuarios</h2>
     {% endif %}

@@ -5,6 +5,8 @@ from src.core import users
 from src.core import instituciones
 from src.web.helpers.auth import login_required, has_permissions
 from src.web.helpers.auth import login_required, has_permissions, user_is_superadmin
+from src.core import admin_instituciones
+
 admin_bp = Blueprint("admin", __name__, url_prefix="/administracion")
 
 
@@ -26,13 +28,6 @@ def index():
     
     return render_template("admin_insti/buscar_user.html", users=users)
 
-@admin_bp.post("/update_state/<int:user_id>")
-@login_required
-def update_state(user_id):
-    user = auth.get_user_by_id(user_id)
-    auth.update_state(user)
-
-    return redirect(url_for("admin.user_profile", user_id=user_id))
 
 def get_users(email, estado):
     """
@@ -69,34 +64,30 @@ def user_profile(user_id):
     owner = auth.find_user_by_mail(session["user_id"])
     user = auth.get_user_by_id(user_id)
     is_superadmin = user_is_superadmin(user=user)
-    instituciones_del_usuario =  users.get_user_institutions_and_roles(user)
-
-    # Obtengo las instituciones y roles del usuario
     instituciones_roles = users.get_user_institutions_and_roles(owner)
-
 
     return render_template(
         "admin_insti/asignar_rol.html",
         user=user,
         user_is_superadmin=is_superadmin,
         instituciones_roles_owner=instituciones_roles,
-        instituciones_roles_user = instituciones_del_usuario
         
     )
-    
-@admin_bp.post("/assign_role_institution/<int:institution_id>/<int:user_id>")
-@login_required
-def assign_role_institution(institution_id, user_id):
+ 
+
+def assign_role_institution(institution_id, user_id,new_role):
     if not has_permissions(['owner_update']):
         abort(401)
-    new_role = get_role_requested(request.form.get("new_role"))
     user = auth.get_user_by_id(user_id)
     institution = instituciones.find_institucion_by_id(institution_id)
     role = users.get_role_by_id(new_role)
 
     users.assign_role_in_institution_to_user(role, institution, user)
+    
+
+    create_historial(user_id ,institution_id,new_role) #guardo el el historial de asignaciones 
+     
     print(user_id, institution_id, new_role,"PUSO NUEVO ROLLLLLLLLLLLLLLLLL ")
-    return redirect(url_for("admin.user_profile", user_id=user_id))
 
 
 def get_role_requested(new_role):
@@ -110,9 +101,7 @@ def get_role_requested(new_role):
         return -1
 
 
-@admin_bp.post("/update_role_institution/<int:institution_id>/<int:user_id>")
-@login_required
-def update_role_institution(institution_id, user_id):
+def update_role_institution(institution_id, user_id,new_role):
     """
     Esta función actualiza el rol del usuario en una institución.
     Esta implementación es posible ya que sabemos el id de cada rol (definido por nosotros en la BD)
@@ -120,12 +109,41 @@ def update_role_institution(institution_id, user_id):
     if not has_permissions(['owner_update']):
         abort(401)
 
-    new_role = get_role_requested(request.form.get("new_role"))
+    
     if (new_role != -1):
         users.update_role_for_user_in_institution(user_id, institution_id, new_role)
-        print(user_id, institution_id, new_role,"AAAAAAAAAAAAAAAAAAAAA")
-        print("entrooooooooooooooooooooooooooooooooo")
+        
     else:
         users.delete_role_in_institution_to_user_by_id(institution_id, user_id)
-    return redirect(url_for("admin.user_profile", user_id=user_id))
+        
+    create_historial(user_id ,institution_id,new_role)  #guardo el el historial de asignaciones   
 
+
+
+
+def create_historial(user_id , inti_id, rol_id):
+    email = auth.find_user_email_by_id(user_id)
+    historial  = admin_instituciones.create_historial(
+        user_id  = user_id , 
+        institucion_id = inti_id, 
+        rol_id =  rol_id,
+        email = email)
+    return historial
+
+    
+@admin_bp.post("/update_role_institution/<int:institution_id>/<int:user_id>")
+def update_or_assign_rol(institution_id, user_id):
+    """
+    Si tiene rol, lo actualiza; de lo contrario, lo asigna.
+    """
+    new_role = get_role_requested(request.form.get("new_role"))
+
+
+    if users.roles_in_institution(user_id, institution_id):
+        update_role_institution(institution_id, user_id, new_role)
+        print("ACTUALIZAAAAAAAAAAAAAAAA")
+    else:
+        assign_role_institution(institution_id, user_id,new_role)
+        print("ASIGNAAAAAAAAAAAAAA")
+
+    return redirect(url_for("admin.user_profile", user_id=user_id))

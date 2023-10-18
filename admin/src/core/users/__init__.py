@@ -104,3 +104,6 @@ def cascade_delete_user(user_id):
 
 def get_role_by_id(role_id):
     return Roles.query.get_or_404(role_id)
+
+def roles_in_institution(institution_id , user_id):
+    return UserRoleInstitution.query.filter_by(user_id=user_id, institution_id=institution_id).all()

@@ -10,9 +10,8 @@
             </p>
                 <h2 class="mt-2 mb-4">Instituciones y roles: </h2>
                 <div class="list-group-item list-group-item-action">
-                    {% if instituciones_roles_user %}
-                        {% for institucion, rol in instituciones_roles_user %}
-                            <form method="post" action="{{ url_for('admin.update_role_institution', institution_id=institucion.id, user_id=user.id) }}">
+                        {% for institucion, rol in instituciones_roles_owner %}
+                            <form method="post" action="{{ url_for('admin.update_or_assign_rol', institution_id=institucion.id, user_id=user.id) }}">
                                 <span>{{ institucion.nombre }} -</span>
                                 <select name="new_role" class="form-select" onchange="this.form.submit()">
                                     <option value="none">Ningún rol</option>
@@ -21,22 +20,7 @@
                                     <option value="admin" {% if rol.nombre == 'admin' %} selected {% endif %}>Administrador</option>
                                 </select>
                             </form>
-                        {% endfor %}
-                    {% endif %}
-                    {% if not instituciones_roles_user %}
-                        {% for institucion, rol in instituciones_roles_owner %}
-                            <form method="post" action="{{ url_for('admin.assign_role_institution', institution_id=institucion.id, user_id=user.id) }}">
-                                <span>{{  institucion.nombre }} -</span>
-                                <select name="new_role" class="form-select" onchange="this.form.submit()">
-                                    <option value="asignar" selected>Designar rol</option>
-                                    <option value="owner">Dueño</option>
-                                    <option value="operator">Operador</option>
-                                    <option value="admin">Administrador</option>
-                                </select>
-                            </form>
-                        {% endfor %}
-                    {% endif %}
-                </div>                
+                        {% endfor %}        
             <a href="{{ url_for('users.index') }}" class="btn btn-outline-primary mt-2">
                 <i class="fas fa-arrow-left"></i> Volver atrás
             </a>

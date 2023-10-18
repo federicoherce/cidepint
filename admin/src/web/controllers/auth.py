@@ -30,8 +30,6 @@ def authenticate():
         return redirect(url_for("auth.login"))
 
     if configuracion.get_state() and not has_permissions_mail(['config_show'], user.email):
-        print(configuracion.get_state)
-        #print(not has_permissions_mail(['config_show'], user.email))
         return abort(503)
     elif not user.activo:
         return abort(403)
@@ -39,7 +37,7 @@ def authenticate():
         session["user_id"] = user.email
         session["is_superadmin"] = user_is_superadmin(user)
         session["permissions"] = users.list_permissions_by_user(user)
-        flash("La sesion se inicio correctamente", "succes")
+        flash("La sesion se inicio correctamente", "success")
 
     return redirect(url_for("home.index"))
 

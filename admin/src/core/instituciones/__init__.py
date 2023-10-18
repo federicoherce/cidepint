@@ -38,4 +38,3 @@ def list_instituciones():
 
 def paginate_instituciones(page, per_page):
     return Institucion.query.filter(Institucion.id != 1).paginate(page=page, per_page=per_page)
-

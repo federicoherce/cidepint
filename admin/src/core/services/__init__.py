@@ -32,8 +32,8 @@ def delete_service(service):
 # ------------------------ SOLICITUDES
 
 
-def list_solicitudes():
-    solicitudes = Solicitud.query.all()
+def paginate_solicitudes(page, per_page):
+    solicitudes = Solicitud.query.paginate(page=page, per_page=per_page)
     return solicitudes
 
 
@@ -59,6 +59,7 @@ def create_solicitud(**kwargs):
     solicitud = Solicitud(**kwargs)
     db.session.add(solicitud)
     db.session.commit()
+    return solicitud
 
 
 def paginate_services(page, per_page):

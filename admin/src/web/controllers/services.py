@@ -101,7 +101,9 @@ def index_solicitudes():
     if not has_permissions(['solicitudes_index']):
         abort(401)
     form = FiltroSolicitudesForm()  # Asume que tienes un formulario para el filtrado
-    solicitudes = services.list_solicitudes()
+    page = request.args.get('page', type=int, default=1)
+    per_page = app.config['PER_PAGE']
+    solicitudes = services.paginate_solicitudes(page, per_page)
 
     if form.validate_on_submit():
         if form.fecha_inicio.data:

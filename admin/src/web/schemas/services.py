@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validate
 
 
 class ServiceSchema(Schema):
@@ -17,9 +17,21 @@ class SolicitudSchema(Schema):
     cliente_id = fields.Int()
     servicio_id = fields.Str()
     detalles = fields.Str()
+    estado = fields.Str()
+    fecha_creacion = fields.Str()
 
 
-solicitud_schema = SolicitudSchema()
+solicitud_schema = SolicitudSchema(exclude=['fecha_creacion', 'estado'])
+get_solicitud_schema = SolicitudSchema()
+
+
+class PaginatedSolicitudesSchema(Schema):
+    data = fields.Nested(SolicitudSchema, many=True)
+    page = fields.Integer(validate=validate.Range(min=1), missing=1)
+    per_page = fields.Integer(validate=validate.Range(min=1, max=10), missing=1)
+    total = fields.Integer()
+
+solicitudes_schema = PaginatedSolicitudesSchema()
 
 
 class RequestShowSchema(Schema):

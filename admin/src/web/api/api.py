@@ -48,11 +48,32 @@ def services_type():
     return service_type.dump({"data": services_type_list}), 200
 
 
+@api_bp.get("/institutions")
+def institutions():
+    try:
+        request_data = paginated_schema.load(request.args)
+    except ValidationError:
+        return jsonify({"error": "Parametros invalidos"}), 400
+
+    page = request_data['page']
+    per_page = request_data['per_page']
+    list_institutions_paginated = module_institutions.paginate_institutions_habilited(page, per_page)
+    serialized_institutions = institution_schema.dump(list_institutions_paginated.items, many=True)
+    response_data = {
+        "data": serialized_institutions,
+        "page": page,
+        "per_page": per_page,
+        "total": list_institutions_paginated.total
+    }
+
+    return paginated_schema.dump(response_data), 200
+
+
 @api_bp.post("/me/requests")
 def solicitud():
     try:
         data = request.json
-        
+
         # Valida y carga los datos en el esquema
         errors = solicitud_schema.validate(data)
 

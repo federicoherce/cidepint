@@ -22,6 +22,14 @@ def login():
 
 @auth_bp.post("/authenticate")
 def authenticate():
+    """
+    Esta función verifica las credenciales ingresadas.
+    - Si el modo mantenimiento está activado y el usuario no cuenta con
+    los permisos -> 503
+    - Si el usuario está bloqueado -> 403
+    - Sino, se crea la sesión con el mail del usuario, sus permisos y si es
+    superadmin (solo lo usamos para las vistas).
+    """
     params = request.form
     user = auth.check_user(params["email"], params["password"])
 
@@ -67,6 +75,11 @@ def register():
 @auth_bp.post("/register_user")
 @maintenanceActivated
 def register_user():
+    """
+    Ésta función registra al usuario, verifica que el mail ingresado no se
+    repita, crea un token que servirá hasta que el usuario termine su registro
+    y envía un correo al mail ingresado para que continue con el registro.
+    """
     form = SignUpForm()
     if form.validate_on_submit():
         existe = auth.find_user_by_mail(form.email.data)

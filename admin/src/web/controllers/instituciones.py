@@ -7,9 +7,17 @@ from flask import current_app as app
 instituciones_bp = Blueprint("instituciones", __name__, url_prefix="/instituciones")
 
 
+
+
 @instituciones_bp.route('/', methods=['GET'])
 @login_required
 def list_instituciones():
+
+    """
+    Este método se encarga de traer las instituciones,
+    paginadas según las configuraciones aplicadas. 
+    """
+
     if not has_permissions(['institution_index']):
         abort(401)
 
@@ -31,6 +39,10 @@ def show(id):
 @instituciones_bp.route('/habilitar_institucion/<int:id>', methods=['POST'])
 @login_required
 def habilitar_institucion(id):
+    """
+    Este método cambia el flag de Habilitado de una institucion.
+    Si está habilitada, la deshabilita y viceversa
+    """
     if not has_permissions(['institution_update']):
         abort(401)
     instit = instituciones.find_institucion_by_id(id)
@@ -73,6 +85,12 @@ def create_institucion():
 @instituciones_bp.route('/update/<int:id>', methods=['POST', 'GET'])
 @login_required
 def update(id):
+
+    """
+    Este método actualiza la institución con los
+    nuevos valores que se obtienen desde el formulario
+    """
+
     if not has_permissions(['institution_update']):
         abort(401)
     instit = instituciones.find_institucion_by_id(id)
@@ -80,15 +98,16 @@ def update(id):
     form = InstitucionForm(obj=instit)
 
     if form.validate_on_submit():
-        instituciones.update_institucion(instit,
+        instituciones.update_institucion(
+            instit,
             nombre=form.nombre.data,
-            informacion = form.informacion.data,
-            direccion = form.direccion.data,
-            localizacion = form.localizacion.data,
-            palabras_claves = form.palabras_claves.data,
-            horarios = form.horarios.data,
-            web = form.web.data,
-            contacto = form.contacto.data
+            informacion=form.informacion.data,
+            direccion=form.direccion.data,
+            localizacion=form.localizacion.data,
+            palabras_claves=form.palabras_claves.data,
+            horarios=form.horarios.data,
+            web=form.web.data,
+            contacto=form.contacto.data
         )
 
         flash('Institución actualizada exitosamente', 'success')

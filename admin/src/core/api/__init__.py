@@ -9,7 +9,7 @@ def create_user(**kwargs):
     kwargs["password"] = hashed_password
     user = ApiUsers(**kwargs)
     db.session.add(user)
-    db.session.commit()       
+    db.session.commit()
     return user
 
 

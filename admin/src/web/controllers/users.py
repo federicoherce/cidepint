@@ -174,7 +174,8 @@ def create_user():
 def update_role_institution(institution_id, user_id):
     """
     Esta función actualiza el rol del usuario en una institución.
-    Esta implementación es posible ya que sabemos el id de cada rol (definido por nosotros en la BD)
+    Esta implementación es posible ya que sabemos el id de cada rol
+    (definido por nosotros en la BD)
     """
     if not has_permissions(['user_update']):
         abort(401)

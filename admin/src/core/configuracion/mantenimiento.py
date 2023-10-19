@@ -10,7 +10,6 @@ class Mantenimiento(db.Model):
 
     # Resto de los campos de la clase
 
-    def __init__(self, mode=False , mensaje = None):
+    def __init__(self, mode=False, mensaje=None):
         self.mode = mode
         self.mensaje = mensaje
-

@@ -121,6 +121,11 @@ def eliminar(servicio_id, institucion_id):
 @services_bp.route("/index_solicitudes", methods=['POST', 'GET'])
 @login_required
 def index_solicitudes():
+    """
+    Este método lista todas las solicitudes y permite filtrarlas
+    por un rango de fechas, username del cliente que la realizó
+    estado de la solicitud o tipo de servicio de la misma
+    """
     if not has_permissions(['solicitudes_index']):
         abort(401)
     form = FiltroSolicitudesForm()  # Asume que tienes un formulario para el filtrado
@@ -144,7 +149,6 @@ def index_solicitudes():
         if form.cliente_username.data:
             solicitudes = [solicitud for solicitud in solicitudes if solicitud.cliente.username == form.cliente_username.data]
 
-
     return render_template("services/index_solicitudes.html", solicitudes=solicitudes, form=form)
 
 
@@ -162,6 +166,14 @@ def show_solicitud(id):
 @services_bp.post("/update_solicitud/<int:id>")
 @login_required
 def update_solicitud(id):
+    """
+    Este método permite cambiar el estado de una solicitud.
+    Si está 'En proceso' puede ser 'Aceptada' o 'Rechazada',
+    y si es 'Aceptada' puede pasar a 'Finalizada' o 'Cancelada'
+    Ademas puede realizar una observacion con respecto a 
+    dicho cambio y escribir un comentario general en la misma.
+    """
+
     if not has_permissions(['solicitudes_update']):
         abort(401)
     solicitud = services.show_solicitud(id)
@@ -170,21 +182,21 @@ def update_solicitud(id):
 
     if form.validate_on_submit():
         if (form.estado.data == solicitud.estado and form.comentario.data != ''):
-            services.update_solicitud(solicitud, comentario = form.comentario.data)
+            services.update_solicitud(solicitud, comentario=form.comentario.data)
         elif (form.comentario.data == ''):
             services.update_solicitud(
                 solicitud,
-                estado = form.estado.data,
-                observacion_cambio_estado = form.observacion_cambio_estado.data,
-                fecha_cambio_estado = datetime.utcnow(),
+                estado=form.estado.data,
+                observacion_cambio_estado=form.observacion_cambio_estado.data,
+                fecha_cambio_estado=datetime.utcnow(),
             )
         else:
             services.update_solicitud(
                 solicitud,
-                estado = form.estado.data,
-                observacion_cambio_estado = form.observacion_cambio_estado.data,
-                fecha_cambio_estado = datetime.utcnow(),
-                comentario = form.comentario.data
+                estado=form.estado.data,
+                observacion_cambio_estado=form.observacion_cambio_estado.data,
+                fecha_cambio_estado=datetime.utcnow(),
+                comentario=form.comentario.data
             )
 
         flash('Solicitud actualizada exitosamente', 'success')
@@ -202,7 +214,3 @@ def destroy_solicitud(id):
     services.delete_solicitud(id)
     flash('Solicitud eliminada exitosamente', 'success')
     return redirect(url_for('services.index_solicitudes'))
-
-
-
-

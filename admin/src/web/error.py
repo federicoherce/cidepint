@@ -1,6 +1,7 @@
 from flask import render_template
 from src.core import configuracion
 
+
 def not_found_error(e):
     kwargs = {
         "error_name": "404 Not Found Error",

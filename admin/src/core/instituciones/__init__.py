@@ -5,7 +5,7 @@ from src.core.database import database as db
 def create_institucion(**kwargs):
     institucion = Institucion(**kwargs)
     db.session.add(institucion)
-    db.session.commit()      # Efectuamos la query
+    db.session.commit()
     return institucion
 
 

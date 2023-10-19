@@ -223,19 +223,11 @@ def run():
         nombre="f",
         descripcion="f",
         keywords="f",
-        centros="f",
         tipo_servicio="Desarrollo",
         habilitado=True,
         institucion=cidepint_institution
     )
-
-    services.create_solicitud(
-        servicio_id=1,
-        cliente_id=1,
-        detalles="Detalles"
-    )
-
-def run_api():
+    
     api.create_user(
         username="fedeherce",
         nombre="Federico",
@@ -247,3 +239,10 @@ def run_api():
         email="fede@gmail.com",
         password="1234"
     )
+
+    services.create_solicitud(
+        servicio_id=1,
+        cliente_id=1,
+        detalles="Detalles"
+    )
+

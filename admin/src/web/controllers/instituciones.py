@@ -111,7 +111,7 @@ def update(id):
         )
 
         flash('Institución actualizada exitosamente', 'success')
-        return redirect(url_for('home.index'))
+        return redirect(url_for('instituciones.list_instituciones'))
 
     return render_template("instituciones/update_institucion.html", instit=instit, form=form)
 

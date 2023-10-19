@@ -14,11 +14,10 @@ class Servicio(db.Model):
     institucion_id = db.Column(db.Integer, db.ForeignKey('instituciones.id'))
     institucion = db.relationship("Institucion", back_populates='servicios')
 
-    def __init__(self, nombre, descripcion, keywords, centros, tipo_servicio, habilitado, institucion):
+    def __init__(self, nombre, descripcion, keywords, tipo_servicio, habilitado, institucion):
         self.nombre = nombre
         self.descripcion = descripcion
         self.keywords = keywords
-        self.centros = centros
         self.tipo_servicio = tipo_servicio
         self.habilitado = habilitado
         self.institucion = institucion

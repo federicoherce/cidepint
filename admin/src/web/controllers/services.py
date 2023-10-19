@@ -109,8 +109,7 @@ def editar_servicio(servicio_id, institucion_id):
 def eliminar(servicio_id, institucion_id):
     if not has_permissions(['services_destroy']):
         abort(401)
-    servicio = services.get_service(servicio_id)
-    services.delete_service(servicio)
+    services.delete_service(servicio_id)
     flash('Servicio eliminado correctamente', 'success')
     return redirect(url_for("services.index", institucion_id=institucion_id))
 

@@ -22,6 +22,13 @@ def assign_role_in_institution_to_user(role, institution, user):
     insertion = UserRoleInstitution(user.id, institution.id, role.id)
     db.session.add(insertion)
     db.session.commit()
+    
+    
+    
+def assign_role_in_institution_to_user_by_id(role, institution, user):
+    insertion = UserRoleInstitution(user, institution, role)
+    db.session.add(insertion)
+    db.session.commit()
 
 
 def delete_role_in_institution_to_user_by_id(institution_id, user_id):
@@ -78,6 +85,15 @@ def get_user_institutions(user):
             institutions.add(t.institution)
     return list(institutions)
 
+def get_user_institutions_by_role(user_id,role_id):
+    tuplas = UserRoleInstitution.query.filter_by(user_id=user_id, role_id=role_id).all()
+    institutions = set()
+    for t in tuplas:
+        if t.institution_id != 1:
+            institutions.add(t.institution)
+    return list(institutions)
+
+
 
 def get_user_institutions_and_roles(user):
     """
@@ -111,3 +127,9 @@ def cascade_delete_user(user_id):
 
 def get_role_by_id(role_id):
     return Roles.query.get_or_404(role_id)
+
+
+def get_role_in_institution(user_id, institution_id):
+    return UserRoleInstitution.query.filter_by(user_id=user_id, institution_id=institution_id).first()
+
+

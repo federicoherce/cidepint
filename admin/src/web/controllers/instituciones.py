@@ -123,3 +123,6 @@ def destroy(id):
     instituciones.delete_institucion(id)
     flash('Institución eliminada exitosamente', 'success')
     return redirect(url_for('instituciones.list_instituciones'))
+
+
+

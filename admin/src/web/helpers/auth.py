@@ -1,6 +1,7 @@
 from flask import session, abort
 from src.core import auth
 from src.core import users
+from src.core import instituciones
 from functools import wraps
 
 
@@ -42,6 +43,7 @@ def is_superadmin():
         return False
 
     return session.get("is_superadmin")
+
 
 
 def user_is_superadmin(user):

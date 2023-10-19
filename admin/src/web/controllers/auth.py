@@ -99,7 +99,6 @@ def register_user():
         return redirect(url_for('home.index'))
 
 
-
 def send_confirmation_email(email, token):
     """
     Este metodo envia un email al usuario registrado para que 

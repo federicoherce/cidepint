@@ -93,6 +93,11 @@ def eliminar(servicio_id, institucion_id):
 @services_bp.route("/index_solicitudes", methods=['POST', 'GET'])
 @login_required
 def index_solicitudes():
+    """
+    Este método lista todas las solicitudes y permite filtrarlas
+    por un rango de fechas, username del cliente que la realizó
+    estado de la solicitud o tipo de servicio de la misma
+    """
     if not has_permissions(['solicitudes_index']):
         abort(401)
     form = FiltroSolicitudesForm()  # Asume que tienes un formulario para el filtrado
@@ -133,6 +138,14 @@ def show_solicitud(id):
 @services_bp.post("/update_solicitud/<int:id>")
 @login_required
 def update_solicitud(id):
+    """
+    Este método permite cambiar el estado de una solicitud.
+    Si está 'En proceso' puede ser 'Aceptada' o 'Rechazada',
+    y si es 'Aceptada' puede pasar a 'Finalizada' o 'Cancelada'
+    Ademas puede realizar una observacion con respecto a 
+    dicho cambio y escribir un comentario general en la misma.
+    """
+
     if not has_permissions(['solicitudes_update']):
         abort(401)
     solicitud = services.show_solicitud(id)

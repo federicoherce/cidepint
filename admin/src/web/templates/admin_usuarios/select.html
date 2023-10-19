@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label for="institucion_id">Selecciona una institución:</label>
                 <select class="form-control" id="institucion_id" name="institucion_id">
-                    {% for institucion in instituciones %}
+                    {% for institucion in list_instituciones %}
                         <option value="{{ institucion.id }}">{{ institucion.nombre }}</option>
                     {% endfor %}
                 </select>

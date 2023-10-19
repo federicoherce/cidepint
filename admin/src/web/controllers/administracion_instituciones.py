@@ -60,12 +60,13 @@ def asignar(institucion_id, user_id):
     rol = int(request.form['rol']) 
     if users.get_role_in_institution(user_id, institucion_id) is None: 
         users.assign_role_in_institution_to_user_by_id(rol, institucion_id, user_id)   
+        flash("Se asigno el rol correctamente") 
     elif (rol == 5): 
         users.delete_role_in_institution_to_user_by_id(institucion_id, user_id)   
         flash("Se ha quitado el rol correctamente")   
     else:
         users.update_role_for_user_in_institution(user_id, institucion_id, rol)     
-    flash("Se asigno el rol correctamente")      
+        flash("Se actualizo el rol correctamente")      
     create_historial(user_id , institucion_id, rol)  
     return redirect(url_for('admin.buscar_usuario'))
 
@@ -108,4 +109,4 @@ def select():
     if not has_permissions(['owner_index']):
         abort(401)
     inst = institutions_of_owner()
-    return render_template("admin_usuarios/select.html", instituciones=inst)
+    return render_template("admin_usuarios/select.html", list_instituciones=inst)

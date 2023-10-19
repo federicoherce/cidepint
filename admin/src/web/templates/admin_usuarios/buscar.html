@@ -25,11 +25,12 @@
                 <label for="email">Correo Electrónico:</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
-            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="submit" class="btn btn-primary">Buscar</button>  <br>
+            <br>
+            <br>
+            <a class="btn btn-secondary" href="{{ url_for('admin.select') }}">Ver historial de asignaciones en mis instituciones</a> <br>
         </form>
     </div>
-
 </body>
 </html>
-
 {% endblock %}

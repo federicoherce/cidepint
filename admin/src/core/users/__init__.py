@@ -81,6 +81,15 @@ def get_user_institutions(user):
             institutions.add(t.institution)
     return list(institutions)
 
+def get_user_institutions_by_role(user_id,role_id):
+    tuplas = UserRoleInstitution.query.filter_by(user_id=user_id, role_id=role_id).all()
+    institutions = set()
+    for t in tuplas:
+        if t.institution_id != 1:
+            institutions.add(t.institution)
+    return list(institutions)
+
+
 
 def get_user_institutions_and_roles(user):
     """
@@ -117,5 +126,3 @@ def get_role_in_institution(user_id, institution_id):
     return UserRoleInstitution.query.filter_by(user_id=user_id, institution_id=institution_id).first()
 
 
-def get_institutios_of_user_by_role(user_id, rol_id):
-     return UserRoleInstitution.query.filter_by(user_id=user_id,  role_id = rol_id).all()

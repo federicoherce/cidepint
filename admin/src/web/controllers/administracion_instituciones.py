@@ -2,21 +2,22 @@ from flask import Blueprint, render_template,request,session
 from flask import redirect, url_for, flash
 from src.core import auth
 from src.core import users
-from src.core import instituciones
 from src.core import admin_instituciones
 from src.forms.admin_institucion_form import adminInstitucionForm
 from src.web.helpers.auth import login_required, has_permissions
 from flask import current_app as app
 
 
-
 admin_users_bp = Blueprint("admin", __name__, url_prefix="/administracion")
 
+def institutions_of_owner():
+    owner = auth.find_user_by_mail(session["user_id"])
+    return users.get_user_institutions_by_role(owner.id, 2) 
 
 @admin_users_bp.get("/")
 def buscar_usuario():
-    inst = inst_of_owner
-    return render_template("admin_usuarios/buscar.html" , instituciones=inst_of_owner)
+    inst = institutions_of_owner()
+    return render_template("admin_usuarios/buscar.html" , inst=inst)
 
 
 @admin_users_bp.post("/")
@@ -24,7 +25,7 @@ def buscar():
     email = request.form['email']
     institucion_id = request.form['institucion_id']
     if auth.find_user_by_mail(email):
-        return redirect(url_for('admin.asignar_rol',institucion_id = institucion_id , email = email))
+        return redirect(url_for('admin.asignar_rol',institucion_id = institucion_id , email=email))
     else:
         flash("Ese usuario no se encuentra registrado")
         return redirect(url_for('admin.buscar'))
@@ -62,15 +63,6 @@ def create_historial(user_id , inti_id, rol_id):
     return historial
 
 
-
-def inst_of_owner():
-    owner = auth.find_user_by_mail(session["user_id"])
-    institutions_ids = users.get_institutios_of_user_by_role(owner.id, 2)
-    inst_of_owner = instituciones.get_institutions_by_id(institutions_ids)
-    return inst_of_owner
-
-
-
 @admin_users_bp.get("/ver_historial/<int:institucion_id>")
 def ver_historial(institucion_id):
     page = request.args.get('page', type=int, default=1)
@@ -78,14 +70,14 @@ def ver_historial(institucion_id):
     asigns = admin_instituciones.paginate_historial(page,per_page,institucion_id)
     return render_template("admin_usuarios/historial.html", asigns=asigns)
 
+
 @admin_users_bp.post("/historial")
 def historial():
     institucion_id = request.form['institucion_id']
     return redirect(url_for('admin.ver_historial', institucion_id=institucion_id))
 
 
-
 @admin_users_bp.get("/select")
 def select():
-    inst = inst_of_owner
+    inst = institutions_of_owner()
     return render_template("admin_usuarios/select.html", instituciones=inst)

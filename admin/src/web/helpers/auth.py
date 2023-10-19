@@ -46,7 +46,7 @@ def is_superadmin():
 
 def is_owner():
     owner = auth.find_user_by_mail(session["user_id"])
-    inst = users.get_institutios_of_user_by_role(owner.id, 2)
+    inst = users.get_institutions_of_user_by_role(owner.id, 2)
     if len(instituciones.get_institutions_by_id(inst)) > 0:
         return True
     else:

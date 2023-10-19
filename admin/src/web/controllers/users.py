@@ -20,12 +20,8 @@ def index():
     page = request.args.get('page', type=int, default=1)
     per_page = app.config['PER_PAGE']
 
-    if request.args:
-        email = request.args.get('email')
-        estado = request.args.get('estado')
-    else:
-        email = ""
-        estado = "todos"
+    email = request.args.get('email', default="")
+    estado = request.args.get('estado', default="todos")
 
     users = get_users(email, estado, page, per_page)
 

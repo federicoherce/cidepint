@@ -25,7 +25,8 @@ def update_service(form, service):
     db.session.commit()
 
 
-def delete_service(service):
+def delete_service(id):
+    service = Servicio.query.filter_by(id=id).first()
     db.session.delete(service)
     db.session.commit()
 

@@ -14,14 +14,7 @@
                                 <b>Correo Electrónico:</b> {{ asign.email }}
                             </div>
                             <div class="col-md-6">
-                                <b>Rol:</b>
-                                {% if asign.rol_id == 2 %}
-                                    Dueño
-                                {% elif asign.rol_id == 3 %}
-                                    Administrador
-                                {% elif asign.rol_id == 4 %}
-                                    Operador
-                                {% endif %}
+                                <b>Rol:</b> {{roles[asign.rol_id]}}
                             </div>
                         </div>
                     </li>

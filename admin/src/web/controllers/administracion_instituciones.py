@@ -7,6 +7,7 @@ from src.core import admin_instituciones
 from src.forms.admin_institucion_form import adminInstitucionForm
 from src.web.helpers.auth import login_required, has_permissions
 from flask import current_app as app
+from flask import abort
 
 
 
@@ -15,12 +16,16 @@ admin_users_bp = Blueprint("admin", __name__, url_prefix="/administracion")
 
 @admin_users_bp.get("/")
 def buscar_usuario():
+    if not has_permissions(['owner_index']):
+        abort(401)
     inst = inst_of_owner
     return render_template("admin_usuarios/buscar.html" , instituciones=inst_of_owner)
 
 
 @admin_users_bp.post("/")
 def buscar():
+    if not has_permissions(['owner_update']):
+        abort(401)
     email = request.form['email']
     institucion_id = request.form['institucion_id']
     if auth.find_user_by_mail(email):
@@ -32,6 +37,8 @@ def buscar():
 
 @admin_users_bp.get("/asignar_rol/<int:institucion_id>/<string:email>")
 def asignar_rol(institucion_id, email):
+    if not has_permissions(['owner_index']):
+        abort(401)
     rolActual = ''
     user_id = auth.find_user_by_mail(email).id
     rol_actual_id = users.get_role_in_institution(user_id, institucion_id)
@@ -42,6 +49,8 @@ def asignar_rol(institucion_id, email):
 
 @admin_users_bp.post("/asignar_rol_post/<int:institucion_id>/<int:user_id>")
 def asignar(institucion_id, user_id):
+    if not has_permissions(['owner_update']) and not has_permissions(['owner_create']):
+        abort(401)
     rol = int(request.form['rol']) 
     if users.get_role_in_institution(user_id, institucion_id) is None: 
         users.assign_role_in_institution_to_user_by_id(rol, institucion_id, user_id)   
@@ -70,16 +79,24 @@ def inst_of_owner():
     return inst_of_owner
 
 
-
 @admin_users_bp.get("/ver_historial/<int:institucion_id>")
 def ver_historial(institucion_id):
+    if not has_permissions(['owner_index']):
+        abort(401)
     page = request.args.get('page', type=int, default=1)
     per_page = app.config['PER_PAGE']
     asigns = admin_instituciones.paginate_historial(page,per_page,institucion_id)
-    return render_template("admin_usuarios/historial.html", asigns=asigns)
+    roles = {
+        2:"dueño",
+        3:"Administrador",
+        4:"operador",
+    }
+    return render_template("admin_usuarios/historial.html",asigns=asigns, roles=roles)
 
 @admin_users_bp.post("/historial")
 def historial():
+    if not has_permissions(['owner_update']):
+        abort(401)
     institucion_id = request.form['institucion_id']
     return redirect(url_for('admin.ver_historial', institucion_id=institucion_id))
 
@@ -87,5 +104,7 @@ def historial():
 
 @admin_users_bp.get("/select")
 def select():
+    if not has_permissions(['owner_index']):
+        abort(401)
     inst = inst_of_owner
     return render_template("admin_usuarios/select.html", instituciones=inst)

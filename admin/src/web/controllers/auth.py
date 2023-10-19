@@ -7,7 +7,7 @@ from flask_mail import Message
 from core.mail import mail
 import secrets
 from src.web.helpers.auth import has_permissions_mail, user_is_superadmin
-from flask import current_app as app
+from flask import current_app
 from src.web.helpers.maintenance import maintenanceActivated
 from src.core import configuracion
 
@@ -97,15 +97,21 @@ def register_user():
         send_confirmation_email(form.email.data, token)
         flash('Tu cuenta ha sido creada, te enviamos un mail', 'success')
         return redirect(url_for('home.index'))
-    return render_template("auth/register.html", form=form)
+
 
 
 def send_confirmation_email(email, token):
+    """
+    Este metodo envia un email al usuario registrado para que 
+    confirme su registro, y enviará una url distinta si el sitio
+    se encuentra corriendo en Producción o Desarrollo
+    """
     msg = Message(
         'Confirma tu registro',
         sender='cidepint.proyecto@gmail.com',
         recipients=[email])
-    confirmation_link = f'http://127.0.0.1:5000/sesion/confirmar_registro/{email}/{token}'
+    url = current_app.config['URL_REGISTRO']
+    confirmation_link = f'{url}/{email}/{token}'
     msg.html = f'Para confirmar tu registro, haz clic en el siguiente enlace: <a href="{confirmation_link}">Confirmar Registro</a>'
     mail.send(msg)
 

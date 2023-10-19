@@ -42,6 +42,4 @@ class Solicitud(db.Model):
     def __init__(self, servicio_id, cliente_id, detalles):
         self.servicio_id = servicio_id
         self.cliente_id = cliente_id
-        detalles = detalles
-        
-        
+        self.detalles = detalles

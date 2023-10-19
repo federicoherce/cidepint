@@ -12,9 +12,22 @@ class ServiceSchema(Schema):
 
 service_schema = ServiceSchema()
 
+
 class SolicitudSchema(Schema):
     cliente_id = fields.Int()
     servicio_id = fields.Str()
     detalles = fields.Str()
 
+
 solicitud_schema = SolicitudSchema()
+
+
+class RequestShowSchema(Schema):
+    id = fields.Int(dump_only=True)
+    fecha_creacion = fields.Date()
+    fecha_cambio_estado = fields.Date()
+    estado = fields.Str()
+    detalles = fields.Str()
+
+
+request_show_schema = RequestShowSchema()

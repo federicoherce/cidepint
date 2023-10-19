@@ -8,9 +8,9 @@ from src.core import configuracion
 def run():
     configuracion.create_maintenance(
         mensaje="Estamos en mantenimiento",
-        mode = False
+        mode=False
     )
-    
+
     configuracion.create_info_contacto(
         email="",
         telefono="",
@@ -26,7 +26,7 @@ def run():
         apellido="Perez",
         activo=True
     )
-    
+
 
     user_op1 = auth.create_User(
         email="ana@op.com",
@@ -88,7 +88,7 @@ def run():
         web="https://cidepint.ing.unlp.edu.ar/",
         contacto="0221 421-6214"
     )
-    
+
     nueva_institucion = instituciones.create_institucion(
         nombre="Nueva Institucion",
         informacion="Somos",
@@ -111,19 +111,9 @@ def run():
         contacto="0221 427-7270"
     )
 
-    institucion1 = instituciones.create_institucion(
-        nombre="Institución 1",
-        informacion="Somos la institución 1",
-        direccion="Calle 50 & Av. 120",
-        localizacion="La Plata",
-        palabras_claves="Software Proyecto",
-        horarios="10:00hs - 19:00hs",
-        web="https://www.info.unlp.edu.ar/",
-        contacto="0221 427-7270"
-    )
 
     # Creación de permisos:
-    #Modulo usuarios
+    # Modulo usuarios
     user_index_permission = users.create_permission(nombre="user_index")
     user_show_permission = users.create_permission(nombre="user_show")
     user_new_permission = users.create_permission(nombre="user_new")
@@ -131,15 +121,15 @@ def run():
     user_update_permission = users.create_permission(nombre="user_update")
 
 
-    #Modulo instituciones
+    # Modulo instituciones
     institution_index_permission = users.create_permission(nombre="institution_index")
     institution_show_permission = users.create_permission(nombre="institution_show")
     institution_new_permission = users.create_permission(nombre="institution_new")
     institution_destroy_permission = users.create_permission(nombre="institution_destroy")
     institution_update_permission = users.create_permission(nombre="institution_update")
-    
-    
-    #Modulo configuracion
+
+
+    # Modulo configuracion
     user_config_show_permission = users.create_permission(nombre="config_show")
     user_config_update_permission = users.create_permission(nombre="config_update")
     
@@ -237,6 +227,12 @@ def run():
         tipo_servicio="Desarrollo",
         habilitado=True,
         institucion=cidepint_institution
+    )
+
+    services.create_solicitud(
+        servicio_id=1,
+        cliente_id=1,
+        detalles="Detalles"
     )
 
 

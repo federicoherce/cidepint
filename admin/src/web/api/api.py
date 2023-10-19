@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from src.core import api
 from src.web.schemas.auth import auth_schema, profile_schema
-from src.web.schemas.services import service_schema, solicitud_schema
+from src.web.schemas.services import service_schema, solicitud_schema, request_show_schema
 from src.web.schemas.service_type import service_type
 from src.web.schemas.institutions import paginated_schema, institution_schema
 from marshmallow import ValidationError
@@ -69,6 +69,14 @@ def institutions():
     return paginated_schema.dump(response_data), 200
 
 
+@api_bp.get("/me/requests/<id>")
+def get_request(id):
+    request = services.show_solicitud(id)
+    if request is None:
+        return jsonify({"error": "Parametros invalidos"}), 400
+    return request_show_schema.dump(request), 200
+
+
 @api_bp.post("/me/requests")
 def solicitud():
     try:
@@ -81,4 +89,4 @@ def solicitud():
     except ValidationError:
         return jsonify({"error": "Parametros invalidos"}), 400
 
-    return jsonify({'result': 'succes'}), 200
+    return jsonify({'result': 'succes'}), 201

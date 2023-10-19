@@ -85,7 +85,7 @@ def register_user():
         )
         send_confirmation_email(form.email.data, token)
         flash('Tu cuenta ha sido creada, te enviamos un mail', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('home.index'))
     return render_template("auth/register.html", form=form)
 
 

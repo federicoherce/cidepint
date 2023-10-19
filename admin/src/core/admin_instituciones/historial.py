@@ -1,7 +1,7 @@
 from src.core.database import database as db
 
 class Historial(db.Model):
-    __tablename__ = "historial de usuarios"
+    __tablename__ = "historial"
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255),nullable=False)

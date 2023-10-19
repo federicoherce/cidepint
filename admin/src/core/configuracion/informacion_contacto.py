@@ -1,7 +1,7 @@
 from src.core.database import database as db
 
 class Contacto(db.Model):
-    __tablename__ = "informacion_de_contacto"
+    __tablename__ = "contacto"
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255))

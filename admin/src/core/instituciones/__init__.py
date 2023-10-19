@@ -41,7 +41,7 @@ def paginate_instituciones(page, per_page):
 
 
 
-def get_institutions_of_owner(inst):
+def get_institutions_by_id(inst):
     insti = set()
     for t in inst:
         if t.institution_id != 1:

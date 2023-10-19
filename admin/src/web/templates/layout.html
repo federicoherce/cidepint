@@ -37,6 +37,11 @@
                                     {% endfor %}
                                 </div>
                             </div>
+                            {% if is_owner() %}
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ url_for('admin.buscar_usuario') }}"> <i class="fa fa-user-plus"></i></a>
+                            </li>
+                            {% endif %}
                         {% endif %}    
                     </li>
                     {% if is_superadmin() %}

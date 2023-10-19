@@ -7,11 +7,11 @@
             <h1>historial de asignaciones</h1>
             {% if asigns %}
             <ul class="list-group">
-                {% for asign in asigns.items %}
+                {% for asign in asigns.items %} 
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-md-6">
-                                <b>Correo Electrónico:</b> {{ asign.email }}
+                                {{asign.id}} <b>Correo Electrónico:</b> {{ asign.email }}
                             </div>
                             <div class="col-md-6">
                                 <b>Rol:</b> {{roles[asign.rol_id]}}

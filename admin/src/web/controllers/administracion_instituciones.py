@@ -92,6 +92,7 @@ def ver_historial(institucion_id):
         2:"dueño",
         3:"Administrador",
         4:"operador",
+        5:"se quito rol "
     }
     return render_template("admin_usuarios/historial.html",asigns=asigns, roles=roles)
 

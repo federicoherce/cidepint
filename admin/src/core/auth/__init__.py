@@ -70,8 +70,10 @@ def find_user_by_state(state, page, per_page):
     return Users.query.filter(Users.activo == (state == 'activo')).paginate(page=page, per_page=per_page)
 
 
-
 def find_user_by_email_and_state(email, state, page, per_page):
+    """
+    Esta función filtra primero por email y después por el estado (según si se busca por activo o bloqueado)
+    """
     query = Users.query
 
     if email:

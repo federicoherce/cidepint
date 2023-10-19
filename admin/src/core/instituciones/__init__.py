@@ -41,4 +41,7 @@ def paginate_instituciones(page, per_page):
 
 
 def paginate_institutions_habilited(page, per_page):
+    """
+    Retorna todas las instituciones habilitadas de manera paginada
+    """
     return Institucion.query.filter(Institucion.id != 1, Institucion.habilitado == True).paginate(page=page, per_page=per_page)

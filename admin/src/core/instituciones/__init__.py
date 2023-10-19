@@ -40,7 +40,7 @@ def habilitar_institucion(institucion, value):
 
 
 def list_instituciones():
-    instituciones = Institucion.query.filter(id!=1).all()
+    instituciones = Institucion.query.filter(Institucion.id != 1).all()
     return instituciones
 
 

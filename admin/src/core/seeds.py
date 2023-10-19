@@ -235,7 +235,7 @@ def run():
         detalles="Detalles"
     )
 
-
+""""
 def run_api():
     api.create_user(
         username="fedeherce",
@@ -248,3 +248,4 @@ def run_api():
         email="fede@gmail.com",
         password="1234"
     )
+"""

@@ -42,7 +42,7 @@ class DevelopmentConfig(Config):
     )
 
     URL_REGISTRO = "http://127.0.0.1:5000/sesion/confirmar_registro"
-
+    URL_MAIN = "https://admin-grupo17.proyecto2023.linti.unlp.edu.ar/sesion/confirmar_registro"
 
 class TestingConfig(Config):
     # Configuracion de testeo

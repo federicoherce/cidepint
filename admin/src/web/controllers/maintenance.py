@@ -44,7 +44,7 @@ def toggle_maintenance():
 @maintenance
 def index_contacto():
     form = ContactoForm()
-    return render_template('configuraciones/update_info.html', form=form)    
+    return render_template('configuraciones/update_info.html', form=form)
 
 
 @maintenance_bp.get('/info_contacto')

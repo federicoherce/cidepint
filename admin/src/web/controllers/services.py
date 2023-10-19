@@ -116,7 +116,6 @@ def index_solicitudes():
         if form.cliente_username.data:
             solicitudes = [solicitud for solicitud in solicitudes if solicitud.cliente.username == form.cliente_username.data]
 
-
     return render_template("services/index_solicitudes.html", solicitudes=solicitudes, form=form)
 
 
@@ -142,21 +141,21 @@ def update_solicitud(id):
 
     if form.validate_on_submit():
         if (form.estado.data == solicitud.estado and form.comentario.data != ''):
-            services.update_solicitud(solicitud, comentario = form.comentario.data)
+            services.update_solicitud(solicitud, comentario=form.comentario.data)
         elif (form.comentario.data == ''):
             services.update_solicitud(
                 solicitud,
-                estado = form.estado.data,
-                observacion_cambio_estado = form.observacion_cambio_estado.data,
-                fecha_cambio_estado = datetime.utcnow(),
+                estado=form.estado.data,
+                observacion_cambio_estado=form.observacion_cambio_estado.data,
+                fecha_cambio_estado=datetime.utcnow(),
             )
         else:
             services.update_solicitud(
                 solicitud,
-                estado = form.estado.data,
-                observacion_cambio_estado = form.observacion_cambio_estado.data,
-                fecha_cambio_estado = datetime.utcnow(),
-                comentario = form.comentario.data
+                estado=form.estado.data,
+                observacion_cambio_estado=form.observacion_cambio_estado.data,
+                fecha_cambio_estado=datetime.utcnow(),
+                comentario=form.comentario.data
             )
 
         flash('Solicitud actualizada exitosamente', 'success')
@@ -174,7 +173,3 @@ def destroy_solicitud(id):
     services.delete_solicitud(id)
     flash('Solicitud eliminada exitosamente', 'success')
     return redirect(url_for('services.index_solicitudes'))
-
-
-
-

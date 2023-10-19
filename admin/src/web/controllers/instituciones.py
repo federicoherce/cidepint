@@ -80,15 +80,16 @@ def update(id):
     form = InstitucionForm(obj=instit)
 
     if form.validate_on_submit():
-        instituciones.update_institucion(instit,
+        instituciones.update_institucion(
+            instit,
             nombre=form.nombre.data,
-            informacion = form.informacion.data,
-            direccion = form.direccion.data,
-            localizacion = form.localizacion.data,
-            palabras_claves = form.palabras_claves.data,
-            horarios = form.horarios.data,
-            web = form.web.data,
-            contacto = form.contacto.data
+            informacion=form.informacion.data,
+            direccion=form.direccion.data,
+            localizacion=form.localizacion.data,
+            palabras_claves=form.palabras_claves.data,
+            horarios=form.horarios.data,
+            web=form.web.data,
+            contacto=form.contacto.data
         )
 
         flash('Institución actualizada exitosamente', 'success')

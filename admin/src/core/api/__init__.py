@@ -12,6 +12,7 @@ def create_user(**kwargs):
     db.session.commit()       
     return user
 
+
 def get_user_by_id(id):
     return ApiUsers.query.filter_by(id=id).first()
 
@@ -19,6 +20,7 @@ def get_user_by_id(id):
 def find_user_by_mail(email):
     user = ApiUsers.query.filter_by(email=email).first()
     return user
+
 
 def check_user(email, password):
     """

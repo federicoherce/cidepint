@@ -8,8 +8,8 @@ from src.web import error_handlers
 from src.web import jinja
 import logging
 
-#logging.basicConfig()
-#logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 
 def create_app(env="development", static_folder="../../static"):
@@ -22,6 +22,5 @@ def create_app(env="development", static_folder="../../static"):
     commands.register_commands(app)
     error_handlers.register_errors(app)
     jinja.register_jinja_env_globals(app)
-
 
     return app

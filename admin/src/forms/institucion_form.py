@@ -12,5 +12,3 @@ class InstitucionForm(FlaskForm):
     horarios = StringField('Horarios', validators=[Length(max=50)])
     web = StringField('Web', validators=[Length(max=50)])
     contacto = StringField('Contacto', validators=[DataRequired(), Length(max=50)])
-
-    

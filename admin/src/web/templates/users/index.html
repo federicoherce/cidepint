@@ -9,14 +9,13 @@
 
     <form method="GET" action="{{ url_for('users.index') }}" class="form-inline mb-4 mt-3">
         <div class="form-group">
-            <input type="text" id="email" name="email" 
-            {% if request.args.get('email') %} value="{{request.args.get('email')}}" {% else %} value="" {% endif %} class="form-control" placeholder="Buscar por correo">
+            <input type="text" id="email" name="email" value="{{ request.args.get('email', '') }}" class="form-control" placeholder="Buscar por correo">
         </div>
         <div class="form-group mx-sm-3">
             <select id="estado" name="estado" class="form-control">
-                <option value="todos">Todos</option>
-                <option value="activo">Activos</option>
-                <option value="bloqueado">Bloqueados</option>
+                <option value="todos" {% if request.args.get('estado') == 'todos' %} selected {% endif %}>Todos</option>
+                <option value="activo" {% if request.args.get('estado') == 'activo' %} selected {% endif %}>Activos</option>
+                <option value="bloqueado" {% if request.args.get('estado') == 'bloqueado' %} selected {% endif %}>Bloqueados</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
@@ -53,12 +52,11 @@
             {% endfor %}
         </tbody>
     </table>
-    
     <div class="pagination">
         <span class="step-links">
             {% if pagination.has_prev %}
-                <a href="?page=1&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">&laquo; first</a>
-                <a href="?page={{ pagination.prev_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">previous</a>
+                <a href="{{ url_for('users.index', page=1, email=request.args.get('email'), estado=request.args.get('estado')) }}">&laquo; first</a>
+                <a href="{{ url_for('users.index', page=pagination.prev_num, email=request.args.get('email'), estado=request.args.get('estado')) }}">previous</a>
             {% endif %}
     
             {% for page_num in pagination.iter_pages() %}
@@ -66,7 +64,7 @@
                     {% if page_num == pagination.page %}
                         <span class="current">{{ page_num }}</span>
                     {% else %}
-                        <a href="?page={{ page_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">{{ page_num }}</a>
+                        <a href="{{ url_for('users.index', page=page_num, email=request.args.get('email'), estado=request.args.get('estado')) }}">{{ page_num }}</a>
                     {% endif %}
                 {% else %}
                     <span class="ellipsis">...</span>
@@ -74,48 +72,11 @@
             {% endfor %}
     
             {% if pagination.has_next %}
-                <a href="?page={{ pagination.next_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">next</a>
-                <a href="?page={{ pagination.pages }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">last &raquo;</a>
+                <a href="{{ url_for('users.index', page=pagination.next_num, email=request.args.get('email'), estado=request.args.get('estado')) }}">next</a>
+                <a href="{{ url_for('users.index', page=pagination.pages, email=request.args.get('email'), estado=request.args.get('estado')) }}">last &raquo;</a>
             {% endif %}
         </span>
     </div>
-
-    <!-- <div class="pagination">
-        <ul class="pagination justify-content-center">
-            {% if pagination.has_prev %}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">&laquo; first</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ pagination.prev_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">previous</a>
-                </li>
-            {% endif %}
-    
-            {% for page_num in pagination.iter_pages() %}
-                {% if page_num %}
-                    <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
-                        <a class="page-link" href="?page={{ page_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">{{ page_num }}</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                {% endif %}
-            {% endfor %}
-    
-            {% if pagination.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ pagination.next_num }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">next</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ pagination.pages }}&email={{ request.args.get('email') }}&estado={{ request.args.get('estado') }}">last &raquo;</a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>-->
-    
-
-    
     {% else %}
         <h2>No se encontraron usuarios</h2>
     {% endif %}

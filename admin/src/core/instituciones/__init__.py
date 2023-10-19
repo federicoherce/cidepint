@@ -1,16 +1,24 @@
 from src.core.instituciones.institucion import Institucion
+from src.core.users import UserRoleInstitution
 from src.core.database import database as db
 
 
 def create_institucion(**kwargs):
     institucion = Institucion(**kwargs)
     db.session.add(institucion)
-    db.session.commit()      # Efectuamos la query
+    db.session.commit()
     return institucion
 
 
 def delete_institucion(id):
+    """
+    Elimina la institucion y genera un borrado en cascada de todas las 
+    tupas de UserRoleInstitution en donde se encontraba referenciada
+    """
     institucion = Institucion.query.filter_by(id=id).first()
+    user_institution_roles = UserRoleInstitution.query.filter_by(institution_id=id).all()
+    for uir in user_institution_roles:
+        db.session.delete(uir)
     db.session.delete(institucion)
     db.session.commit()
 

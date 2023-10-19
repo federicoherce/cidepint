@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, BooleanField, SubmitField, DateField, IntegerField
 from wtforms.validators import DataRequired, Optional
 
+
 class ServiciosForm(FlaskForm):
     nombre = StringField('Nombre del Servicio', validators=[DataRequired()])
     descripcion = StringField('Descripción del Servicio', validators=[DataRequired()])
@@ -25,10 +26,11 @@ class ActualizarSolicitudesForm(FlaskForm):
             'EN PROCESO': [('ACEPTADA', 'ACEPTADA'), ('RECHAZADA', 'RECHAZADA')],
             'ACEPTADA': [('FINALIZADA', 'FINALIZADA'), ('CANCELADA', 'CANCELADA')],
         }
-        
+
         self.estado.choices = estados_disponibles.get(solicitud.estado, [])
         if not self.estado.choices:
             self.estado.choices = [('EN PROCESO', 'EN PROCESO')]
+
 
 class FiltroSolicitudesForm(FlaskForm):
     fecha_inicio = DateField('Fecha de inicio', format='%Y-%m-%d', validators=[Optional()])

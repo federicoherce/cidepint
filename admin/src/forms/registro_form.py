@@ -11,4 +11,3 @@ class SignUpForm(FlaskForm):
 
 class PasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
-

@@ -223,7 +223,6 @@ def run():
         nombre="f",
         descripcion="f",
         keywords="f",
-        centros="f",
         tipo_servicio="Desarrollo",
         habilitado=True,
         institucion=cidepint_institution

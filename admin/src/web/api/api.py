@@ -42,6 +42,11 @@ def service(id):
     return data, 200
 
 
+@api_bp.get("/services-type")
+def services_type():
+    services_type_list = ["Analisis", "Consultoria", "Desarrollo"]
+    return service_type.dump({"data": services_type_list}), 200
+
 
 @api_bp.post("/me/requests")
 def solicitud():

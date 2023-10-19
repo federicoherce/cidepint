@@ -20,12 +20,8 @@ def index():
     page = request.args.get('page', type=int, default=1)
     per_page = app.config['PER_PAGE']
 
-    if request.args:
-        email = request.args.get('email')
-        estado = request.args.get('estado')
-    else:
-        email = ""
-        estado = "todos"
+    email = request.args.get('email', default="")
+    estado = request.args.get('estado', default="todos")
 
     users = get_users(email, estado, page, per_page)
 
@@ -100,10 +96,7 @@ def update_user(user_id):
                 flash('Este correo electrónico ya está en uso. Por favor, elige otro.', 'error')
                 return redirect(url_for("users.update_user", user_id=user.id))
 
-        user.nombre = form.nombre.data
-        user.apellido = form.apellido.data
-        user.email = form.email.data
-        auth.update_user()
+        auth.update_name_surname_email(user, form.nombre.data, form.apellido.data, form.email.data)
         flash("Usuario actualizado con éxito!", "success")
         return redirect(url_for("users.user_profile", user_id=user.id))
 
@@ -177,7 +170,8 @@ def create_user():
 def update_role_institution(institution_id, user_id):
     """
     Esta función actualiza el rol del usuario en una institución.
-    Esta implementación es posible ya que sabemos el id de cada rol (definido por nosotros en la BD)
+    Esta implementación es posible ya que sabemos el id de cada rol
+    (definido por nosotros en la BD)
     """
     if not has_permissions(['user_update']):
         abort(401)

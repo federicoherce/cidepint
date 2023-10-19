@@ -53,6 +53,10 @@ def assign_permission_role(role, permission):
 
 
 def list_permissions_by_user(user):
+    """
+    Obtiene los permisos de un usuario.
+    Solo se usaría cuando el usuario se autentica.
+    """
     list_permissions = set()
     for role in get_user_roles(user):
         for permission in role.permisos:
@@ -105,6 +109,9 @@ def get_user_institutions_and_roles(user):
 
 
 def update_role_for_user_in_institution(user_id, institution_id, new_role_id):
+    """
+    Actualiza el rol de un usuario en una institución
+    """
     user_institution_relationship = UserRoleInstitution.query.filter_by(
         user_id=user_id, institution_id=institution_id
     ).first()

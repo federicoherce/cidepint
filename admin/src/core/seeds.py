@@ -8,9 +8,9 @@ from src.core import configuracion
 def run():
     configuracion.create_maintenance(
         mensaje="Estamos en mantenimiento",
-        mode = False
+        mode=False
     )
-    
+
     configuracion.create_info_contacto(
         email="",
         telefono="",
@@ -26,7 +26,7 @@ def run():
         apellido="Perez",
         activo=True
     )
-    
+
 
     user_op1 = auth.create_User(
         email="ana@op.com",
@@ -88,7 +88,7 @@ def run():
         web="https://cidepint.ing.unlp.edu.ar/",
         contacto="0221 421-6214"
     )
-    
+
     nueva_institucion = instituciones.create_institucion(
         nombre="Nueva Institucion",
         informacion="Somos",
@@ -111,7 +111,9 @@ def run():
         contacto="0221 427-7270"
     )
 
+
     # Creación de permisos:
+    # Modulo usuarios
     user_index_permission = users.create_permission(nombre="user_index")
     user_show_permission = users.create_permission(nombre="user_show")
     user_new_permission = users.create_permission(nombre="user_new")
@@ -131,16 +133,33 @@ def run():
     
 
 
-    admintasks_permission = users.create_permission(nombre="admintasks")
+    # Modulo instituciones
+    institution_index_permission = users.create_permission(nombre="institution_index")
+    institution_show_permission = users.create_permission(nombre="institution_show")
+    institution_new_permission = users.create_permission(nombre="institution_new")
+    institution_destroy_permission = users.create_permission(nombre="institution_destroy")
+    institution_update_permission = users.create_permission(nombre="institution_update")
+
+
+    # Modulo configuracion
     user_config_show_permission = users.create_permission(nombre="config_show")
     user_config_update_permission = users.create_permission(nombre="config_update")
     
     
+    #Modulo servicios
     services_index_permission = users.create_permission(nombre="services_index")
     services_show_permission = users.create_permission(nombre="services_show")
     services_new_permission = users.create_permission(nombre="services_new")
     services_destroy_permission = users.create_permission(nombre="services_destroy")
     services_update_permission = users.create_permission(nombre="services_update")
+    
+    
+    #Modulo Solicitudes
+    solicitudes_index_permission = users.create_permission(nombre="solicitudes_index")
+    solicitudes_show_permission = users.create_permission(nombre="solicitudes_show")
+    solicitudes_destroy_permission = users.create_permission(nombre="solicitudes_destroy")
+    solicitudes_update_permission = users.create_permission(nombre="solicitudes_update")
+
 
     # users.assign_role_user(user_superadmin, superadmin_role)
     # Asignación de usuarios en una institución con un rol:
@@ -151,13 +170,22 @@ def run():
     users.assign_role_in_institution_to_user(operator_role, cidepint_institution, user_to_delete)
     users.assign_role_in_institution_to_user(admin_role, nueva_institucion, user_ow1 )
     
+    
     # Asignación de permisos y roles:
-    users.assign_permission_role(superadmin_role, admintasks_permission)
+    #Modulo Instituciones
+    users.assign_permission_role(superadmin_role, institution_index_permission)
+    users.assign_permission_role(superadmin_role, institution_show_permission)
+    users.assign_permission_role(superadmin_role, institution_new_permission)
+    users.assign_permission_role(superadmin_role, institution_destroy_permission)
+    users.assign_permission_role(superadmin_role, institution_update_permission)
+    
+    
+    #Modulo configuracion
     users.assign_permission_role(superadmin_role, user_config_update_permission)
     users.assign_permission_role(superadmin_role, user_config_show_permission)
     
     
-    
+    #Modulo usuarios
     users.assign_permission_role(superadmin_role, user_index_permission)
     users.assign_permission_role(superadmin_role, user_show_permission)
     users.assign_permission_role(superadmin_role, user_new_permission)
@@ -165,6 +193,7 @@ def run():
     users.assign_permission_role(superadmin_role, user_update_permission)
 
     
+    #Modulo servicios
     users.assign_permission_role(owner_role, services_index_permission)
     users.assign_permission_role(owner_role, services_show_permission)
     users.assign_permission_role(owner_role, services_update_permission)
@@ -193,20 +222,37 @@ def run():
     users.assign_permission_role(owner_role,owner_destroy_permission)
     users.assign_permission_role(owner_role,owner_update_permission)
     
+
+    #Modulo Solicitudes
+    users.assign_permission_role(owner_role, solicitudes_index_permission)
+    users.assign_permission_role(owner_role, solicitudes_show_permission)
+    users.assign_permission_role(owner_role, solicitudes_update_permission)
+    users.assign_permission_role(owner_role, solicitudes_destroy_permission)
+
+    users.assign_permission_role(admin_role, solicitudes_index_permission)
+    users.assign_permission_role(admin_role, solicitudes_show_permission)
+    users.assign_permission_role(admin_role, solicitudes_update_permission)
+    users.assign_permission_role(admin_role, solicitudes_destroy_permission)
+
+    users.assign_permission_role(operator_role, solicitudes_index_permission)
+    users.assign_permission_role(operator_role, solicitudes_show_permission)
+    users.assign_permission_role(operator_role, solicitudes_update_permission)
+                
+
+
     services.create_service(
         nombre="f",
         descripcion="f",
         keywords="f",
-        centros="f",
         tipo_servicio="Desarrollo",
         habilitado=True,
         institucion=cidepint_institution
     )
-
-
-def run_api():
+    
     api.create_user(
         username="fedeherce",
+        nombre="Federico",
+        apellido="Herce",
         tipo_documento="DNI",
         nro_documento="42708561",
         direccion="10 y 60",
@@ -214,3 +260,10 @@ def run_api():
         email="fede@gmail.com",
         password="1234"
     )
+
+    services.create_solicitud(
+        servicio_id=1,
+        cliente_id=1,
+        detalles="Detalles"
+    )
+

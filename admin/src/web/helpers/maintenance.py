@@ -5,6 +5,7 @@ from flask import current_app as app
 from flask import render_template
 from src.core import configuracion
 
+
 def maintenance(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -12,6 +13,7 @@ def maintenance(f):
             return abort(401)
         return f(*args, **kwargs)
     return decorated_function
+
 
 def maintenanceActivated(f):
     @wraps(f)

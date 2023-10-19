@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Registro de Usuarios{% endblock %}
 {% block content %}
+<a class="btn btn-primary" href="{{ url_for('instituciones.create') }}">Crear Institución</a>
+<br>
+<br>
 <div class="container">
     <div class="row">
         <div class="col-12">
@@ -54,7 +57,6 @@
                 </nav>
             {% else %}
                 <p>No hay instituciones.</p>
-                <a class="btn btn-primary" href="{{ url_for('instituciones.create') }}">Crear Institución</a>
             {% endif %}
         </div>
     </div>

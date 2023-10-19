@@ -11,13 +11,13 @@ class Users(db.Model):
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=True)
     token = db.Column(db.String(32), unique=True, nullable=True)
-    activo = db.Column(db.Boolean, default=True)
+    activo = db.Column(db.Boolean, default=False)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
     inserted_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, nombre, apellido, email, token=None, password=None, activo=True):
+    def __init__(self, nombre, apellido, email, token=None, password=None, activo=False):
         self.nombre = nombre
         self.apellido = apellido
         self.email = email

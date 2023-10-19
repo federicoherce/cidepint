@@ -1,14 +1,6 @@
 from src.core.database import database as db
 
 
-#user_institution_role = db.Table(
-#    "user_institution_role",
-#    db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
-#    db.Column("institution_id", db.Integer, db.ForeignKey("instituciones.id")),
-#    db.Column("role_id", db.Integer, db.ForeignKey("roles.id"))
-#)
-
-
 role_permissions = db.Table(
     "role_permissions",
     db.Column("role_id",

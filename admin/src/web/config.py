@@ -2,12 +2,11 @@ from os import environ
 
 
 class Config(object):
-    #Clase base
+    # Clase base
 
     SECRET_KEY = "secret"
     TESTING = False
     SESSION_TYPE = "filesystem"
-    
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USERNAME = 'cidepint.proyecto@gmail.com'
@@ -15,7 +14,8 @@ class Config(object):
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     PER_PAGE = 5
-    
+
+
 class ProductionConfig(Config):
 
     DB_USER = environ.get("DB_USER")
@@ -26,14 +26,12 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}"
     )
-    
     URL_REGISTRO = "https://admin-grupo17.proyecto2023.linti.unlp.edu.ar/sesion/confirmar_registro"
-    
 
 
 class DevelopmentConfig(Config):
-    #Configuracion de desarollo
-    
+    # Configuracion de desarollo
+
     DB_USER = "postgres"
     DB_PASS = "postgres"
     DB_HOST = "localhost"
@@ -44,9 +42,10 @@ class DevelopmentConfig(Config):
     )
 
     URL_REGISTRO = "http://127.0.0.1:5000/sesion/confirmar_registro"
-  
+    URL_MAIN = "https://admin-grupo17.proyecto2023.linti.unlp.edu.ar/sesion/confirmar_registro"
+
 class TestingConfig(Config):
-    #Configuracion de testeo
+    # Configuracion de testeo
 
     TESTING = True
 

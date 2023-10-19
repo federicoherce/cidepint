@@ -10,11 +10,13 @@ def create_info_contacto(**kwargs):
 
     return info_contacto
 
+
 def get_info_contacto():
     info = Contacto.query.first()
     return info
 
-def update_info(tel , email , direc):
+
+def update_info(tel, email, direc):
     info = Contacto.query.first()
     info.email = email
     info.telefono = tel
@@ -26,14 +28,17 @@ def update_state(mode):
     mant = Mantenimiento.query.first()
     mant.mode = mode
     db.session.commit()
-    
+
+
 def get_state():
     mant = Mantenimiento.query.first()
     return mant.mode
 
+
 def get_mensaje():
     mant = Mantenimiento.query.first()
     return mant.mensaje
+
 
 def create_maintenance(**kwargs):
     maintenance = Mantenimiento(**kwargs)
@@ -41,6 +46,7 @@ def create_maintenance(**kwargs):
     db.session.commit()
 
     return maintenance
+
 
 def update_mensaje(mensaje):
     mant = Mantenimiento.query.first()

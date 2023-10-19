@@ -50,11 +50,19 @@ def asignar_rol(institucion_id, email):
 
 @admin_users_bp.post("/asignar_rol_post/<int:institucion_id>/<int:user_id>")
 def asignar(institucion_id, user_id):
-    if not has_permissions(['owner_update','owner_create']):
+    """
+    se le crea un rol al usuario en la institucion si no posee uno , si ya tiene uno se le actualiza
+    y tambien puedes eleiminar el rol del usuario en la institucion
+    
+    """
+    if not has_permissions(['owner_update','owner_create','owner_distroy']):
         abort(401)
     rol = int(request.form['rol']) 
     if users.get_role_in_institution(user_id, institucion_id) is None: 
         users.assign_role_in_institution_to_user_by_id(rol, institucion_id, user_id)   
+    elif (rol == 5): 
+        users.delete_role_in_institution_to_user_by_id(institucion_id, user_id)   
+        flash("Se ha quitado el rol correctamente")   
     else:
         users.update_role_for_user_in_institution(user_id, institucion_id, rol)     
     flash("Se asigno el rol correctamente")      

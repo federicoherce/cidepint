@@ -51,3 +51,11 @@ def user_is_superadmin(user):
         if role.nombre == "superadmin":
             return True
     return False
+
+
+def is_owner():
+    user = auth.find_user_by_mail(session["user_id"])
+    for role in users.get_user_roles(user):
+        if role.nombre == "owner":
+            return True
+    return False

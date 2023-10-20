@@ -52,13 +52,13 @@ files = [
 
 [[package]]
 name = "cachelib"
-version = "0.10.2"
+version = "0.9.0"
 description = "A collection of cache libraries in the same API interface."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "cachelib-0.10.2-py3-none-any.whl", hash = "sha256:42d49f2fad9310dd946d7be73d46776bcd4d5fde4f49ad210cfdd447fbdfc346"},
-    {file = "cachelib-0.10.2.tar.gz", hash = "sha256:593faeee62a7c037d50fc835617a01b887503f972fb52b188ae7e50e9cb69740"},
+    {file = "cachelib-0.9.0-py3-none-any.whl", hash = "sha256:811ceeb1209d2fe51cd2b62810bd1eccf70feba5c52641532498be5c675493b3"},
+    {file = "cachelib-0.9.0.tar.gz", hash = "sha256:38222cc7c1b79a23606de5c2607f4925779e37cdcea1c2ad21b8bae94b5425a5"},
 ]
 
 [[package]]
@@ -183,6 +183,21 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-caching"
+version = "2.1.0"
+description = "Adds caching support to Flask applications."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "Flask-Caching-2.1.0.tar.gz", hash = "sha256:b7500c145135836a952e3de3a80881d9654e327a29c852c9265607f5c449235c"},
+    {file = "Flask_Caching-2.1.0-py3-none-any.whl", hash = "sha256:f02645a629a8c89800d96dc8f690a574a0d49dcd66c7536badc6d362ba46b716"},
+]
+
+[package.dependencies]
+cachelib = ">=0.9.0,<0.10.0"
+Flask = "*"
+
+[[package]]
 name = "flask-mail"
 version = "0.9.1"
 description = "Flask extension for sending email"
@@ -194,20 +209,6 @@ files = [
 
 [package.dependencies]
 blinker = "*"
-Flask = "*"
-
-[[package]]
-name = "flask-paginate"
-version = "2023.10.8"
-description = "Simple paginate support for flask"
-optional = false
-python-versions = "*"
-files = [
-    {file = "flask-paginate-2023.10.8.tar.gz", hash = "sha256:3fa43f43afa45336f2fb05cf8ceed3aa378bf4bc9da9b36071ebb68ee59e1293"},
-    {file = "flask_paginate-2023.10.8-py2.py3-none-any.whl", hash = "sha256:24be7d70eb6f5e1e1e6fa09539655892c2bb8ee63692431fae4b8a74658125b2"},
-]
-
-[package.dependencies]
 Flask = "*"
 
 [[package]]
@@ -1006,4 +1007,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "2bc5dd6089698ec166df99b5aaef6f1a820e750e5e57f52dc08405179182a12c"
+content-hash = "41561da4c1e6d7aa81e949e81d11d0db01d89e0b3d8a4027c48db77cdb0ee259"

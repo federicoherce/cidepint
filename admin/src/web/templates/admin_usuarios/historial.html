@@ -11,7 +11,7 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-md-6">
-                                {{asign.id}} <b>Correo Electrónico:</b> {{ asign.email }}
+                                 <b>Correo Electrónico:</b> {{ asign.email }}
                             </div>
                             <div class="col-md-6">
                                 <b>Rol:</b> {{roles[asign.rol_id]}}
@@ -60,6 +60,7 @@
                     </ul>
                 </nav>
             {% endif %}
+            <a class="btn btn-secondary" href="{{ url_for('admin.buscar') }}">volver atras</a> <br>
         </div>
     </div>
 </div>

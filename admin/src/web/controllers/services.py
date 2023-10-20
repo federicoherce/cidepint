@@ -129,25 +129,31 @@ def index_solicitudes():
     form = FiltroSolicitudesForm()  # Asume que tienes un formulario para el filtrado
     page = request.args.get('page', type=int, default=1)
     per_page = app.config['PER_PAGE']
-    solicitudes = services.paginate_solicitudes(page, per_page)
 
     if form.validate_on_submit():
+        inicio = None
+        fin = None
+        estado = None
+        tipo = None
+        username = None
         if form.fecha_inicio.data:
-            fecha_inicio = datetime.combine(form.fecha_inicio.data, time.min)
-            solicitudes = [solicitud for solicitud in solicitudes if solicitud.fecha_creacion >= fecha_inicio]
+            inicio = form.fecha_inicio.data
 
         if form.fecha_fin.data:
-            fecha_fin = datetime.combine(form.fecha_fin.data, time.min)
-            solicitudes = [solicitud for solicitud in solicitudes if solicitud.fecha_creacion <= fecha_fin]
+            fin = form.fecha_fin.data
 
         if form.estado.data:
-            solicitudes = [solicitud for solicitud in solicitudes if solicitud.estado == form.estado.data]
+            estado = form.estado.data
 
         if form.tipo_servicio.data:
-            solicitudes = [solicitud for solicitud in solicitudes if solicitud.servicio.tipo_servicio == form.tipo_servicio.data]
+            tipo = form.tipo_servicio.data
 
         if form.cliente_username.data:
-            solicitudes = [solicitud for solicitud in solicitudes if solicitud.cliente.username == form.cliente_username.data]
+            username = form.cliente_username.data
+        
+        solicitudes = services.paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username)
+    else:
+        solicitudes = services.paginate_solicitudes(page, per_page)
 
     return render_template("services/index_solicitudes.html", solicitudes=solicitudes, form=form)
 

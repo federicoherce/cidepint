@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, abort
 from src.web.helpers.auth import login_required, has_permissions
 from src.web.helpers.maintenance import maintenance
+from src.web.helpers.maintenance import info_contacto as cache_info_contacto
 from flask import current_app as app
 from forms.maintenance_form import MaintenanceForm
 from forms.maintenance_form import ContactoForm
 from forms.maintenance_form import paginadoForm
 from src.core import configuracion
+from src.web.config import cache
 
 
 maintenance_bp = Blueprint("maintenance", __name__, url_prefix="/maintenance")
@@ -79,6 +81,9 @@ def update_contacto():
     form = ContactoForm()
     if form.validate_on_submit():
         configuracion.update_info(form.telefono.data, form.email.data, form.direccion.data)
+        cache.delete('info_contacto')
+        c = cache_info_contacto()
+
         flash("Se guardaron los cambios correctamente", "info")
         return redirect(url_for('maintenance.info_contacto'))
     return render_template('configuraciones/update_info.html', form=form)

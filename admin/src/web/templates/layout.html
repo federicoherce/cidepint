@@ -114,10 +114,11 @@
                                 <i class="fab fa-gitlab"></i> Enlace al GitLab del proyecto
                             </a>
                         </p>
-                        {% with contact_info=get_contact_info() %}
+                        {% with contact_info=info_contacto() %}
                         <p>{{ contact_info.address }}</p>
-                        <p>Teléfono: {{ contact_info.phone }}</p>
+                        <p>Teléfono: {{ contact_info.telefono }}</p>
                         <p>Correo Electrónico: {{ contact_info.email }}</p>
+                        <p>Dirección: {{ contact_info.direccion }}</p>
                         {% endwith %}
                     </div>
                 </div>

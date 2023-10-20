@@ -16,6 +16,7 @@ class InstitutionSchema(Schema):
 
 class PaginatedInstitutionSchema(Schema):
     data = fields.Nested(InstitutionSchema, many=True)
+    tipo = fields.Str(alias="type")
     page = fields.Integer(validate=validate.Range(min=1), missing=1)
     per_page = fields.Integer(validate=validate.Range(min=1, max=10), missing=1)
     total = fields.Integer()

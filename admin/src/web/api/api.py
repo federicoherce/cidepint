@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 from src.core import api
 from src.web.schemas.auth import auth_schema, profile_schema
-from src.web.schemas.services import service_schema, solicitud_schema, request_show_schema, solicitudes_schema, get_solicitud_schema
+from src.web.schemas.services import service_schema, solicitud_schema, request_show_schema
+from src.web.schemas.services import solicitudes_schema, get_solicitud_schema, paginated_services
 from src.web.schemas.service_type import service_type
 from src.web.schemas.institutions import paginated_schema, institution_schema
 from marshmallow import ValidationError
@@ -47,6 +48,30 @@ def services_type():
     services_type_list = ["Analisis", "Consultoria", "Desarrollo"]
     return service_type.dump({"data": services_type_list}), 200
 
+
+@api_bp.get("/services/search")
+def search_services():
+    try:
+        request_data = paginated_services.load(request.args)
+    except ValidationError:
+        return jsonify({"error": "Parametros invalidos"}), 400
+    
+    page = request_data['page']
+    per_page = request_data['per_page']
+    q = request_data['q']
+    if 'tipo' in request_data and request_data['tipo'] is not None:
+        tipo = request_data['tipo']
+        list_services_paginated = services.paginate_services_type_and_keywords(tipo, q, page, per_page)
+    else:
+        list_services_paginated = services.paginate_services_keyword(q, page, per_page)
+    serialized_services = service_schema.dump(list_services_paginated.items, many=True)
+    response_data = {
+        "data": serialized_services,
+        "page": page,
+        "per_page": per_page,
+        "total": list_services_paginated.total
+    }
+    return paginated_services.dump(response_data), 200
 
 @api_bp.get("/institutions")
 def institutions():

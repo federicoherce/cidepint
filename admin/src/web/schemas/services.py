@@ -6,12 +6,20 @@ class ServiceSchema(Schema):
     nombre = fields.Str()
     descripcion = fields.Str()
     keywords = fields.Str()
-    centros = fields.Str()
     habilitado = fields.Boolean()
 
 
 service_schema = ServiceSchema()
 
+class PaginatedServicesSchema(Schema):
+    data = fields.Nested(ServiceSchema, many=True)
+    tipo = fields.Str()
+    q = fields.Str(required=True)
+    page = fields.Integer(validate=validate.Range(min=1), missing=1)
+    per_page = fields.Integer(validate=validate.Range(min=1, max=10), missing=1)
+    total = fields.Integer()
+
+paginated_services = PaginatedServicesSchema()
 
 class SolicitudSchema(Schema):
     cliente_id = fields.Int()

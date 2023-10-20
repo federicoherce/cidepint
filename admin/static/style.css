@@ -4,7 +4,7 @@ body {
 }
 
 #content {
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -20,9 +20,9 @@ body {
 
 
 .image-container {
-    width: 120px; /* Ancho deseado del contenedor */
-    height: 120px; /* Altura deseada del contenedor */
-    border: 5px solid green; /* Borde inicial (verde) */
+    width: 110px; /* Ancho deseado del contenedor */
+    height: 110px; /* Altura deseada del contenedor */
+    border: 4px solid green; /* Borde inicial (verde) */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,8 +31,9 @@ body {
   }
   
   #logo {
-    max-width: 117%; /* Asegura que la imagen no exceda el tamaño del contenedor */
-    max-height: 115%; /* Asegura que la imagen no exceda el tamaño del contenedor */
+    max-width: 118%; /* Asegura que la imagen no exceda el tamaño del contenedor */
+    max-height: 118%; /* Asegura que la imagen no exceda el tamaño del contenedor */
+    padding: 8px;
   }
   
   .image-container:hover {
@@ -55,5 +56,19 @@ body {
     }
   }
 
-  
+  /* Estilos para la imagen */
+.row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-.5 * var(--bs-gutter-x));
+  margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+#image {
+  max-width: 100%;
+  max-height: 100%;
+}
       

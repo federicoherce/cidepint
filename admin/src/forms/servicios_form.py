@@ -36,6 +36,6 @@ class FiltroSolicitudesForm(FlaskForm):
     fecha_inicio = DateField('Fecha de inicio', format='%Y-%m-%d', validators=[Optional()])
     fecha_fin = DateField('Fecha de fin', format='%Y-%m-%d', validators=[Optional()])
     estado = SelectField('Estado', choices=[('', 'Todos'), ('ACEPTADA', 'ACEPTADA'), ('RECHAZADA', 'RECHAZADA'), ('EN PROCESO', 'EN PROCESO'), ('FINALIZADA', 'FINALIZADA'), ('CANCELADA', 'CANCELADA')])
-    tipo_servicio = SelectField('Tipo de Servicio', choices=[('', 'Todos'), ('Desarrollo', 'Desarrollo'), ('Analisis', 'Análisis'), ('Consultoria', 'Consultoría')])
+    tipo_servicio = SelectField('Tipo de Servicio', choices=[('', 'Todos'), ('Desarrollo', 'Desarrollo'), ('Análisis', 'Análisis'), ('Consultoría', 'Consultoría')])
     cliente_username = StringField('Username de Cliente', validators=[Optional()])
     submit = SubmitField('Filtrar')

@@ -1,4 +1,5 @@
 from src.core.services.services import Servicio, Solicitud
+from src.core.api.api_user import ApiUsers
 from src.core.database import database as db
 
 
@@ -36,6 +37,35 @@ def delete_service(id):
 def paginate_solicitudes(page, per_page):
     solicitudes = Solicitud.query.paginate(page=page, per_page=per_page)
     return solicitudes
+
+def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username):
+    """
+    Este metodo recibe los filtros a aplicar en las solicitudes
+    y, valga la redundancia, aplica aquellos que se hayan enviado.
+    Luego pagina los resultados y los devuelve
+    """
+    query = Solicitud.query
+
+    if inicio:
+        query = query.filter(Solicitud.fecha_creacion > inicio)
+
+    if fin:
+        query = query.filter(Solicitud.fecha_creacion < fin)
+
+    if estado:
+        query = query.filter(Solicitud.estado == estado)
+
+    if tipo:
+        query = query.join(Solicitud.servicio).filter(Servicio.tipo_servicio == tipo)
+
+    if username:
+        query = query.join(Solicitud.cliente).filter(ApiUsers.username == username)
+
+    # Ejecuta la consulta y obtén los resultados
+    solicitudes = query.paginate(page=page, per_page=per_page)
+
+    return solicitudes
+
 
 
 def show_solicitud(id):

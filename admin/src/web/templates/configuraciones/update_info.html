@@ -1,12 +1,26 @@
 {% extends "layout.html" %}
 {% block title %}Contacto{% endblock %}
 {% block content %}
-<h1>Editar informacion de contacto</h1>
-<form action="{{ url_for('maintenance.update_contacto') }}" method="POST">
-        {{form.email.label}} {{form.email}}
-        {{form.telefono.label}} {{form.telefono}}
-        {{form.direccion.label}} {{form.direccion}}
-        {{form.guardar}}
- </form>       
- <a href="{{ url_for('maintenance.info_contacto') }}" class="btn btn-primary mt-2">volver atras</a>
+<div class="container mt-5">
+    <h1>Editar información de contacto</h1>
+    <form action="{{ url_for('maintenance.update_contacto') }}" method="POST">
+        <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            {{ form.email(class="form-control") }}
+        </div>
+        <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            {{ form.telefono(class="form-control") }}
+        </div>
+        <div class="form-group">
+            <label for="direccion">Dirección</label>
+            {{ form.direccion(class="form-control") }}
+        </div>
+        {{ form.guardar(class="btn btn-primary") }}
+        {% for error in form.email.errors %}
+        <span style="color: red;">Introduzca un email valido</span>
+        {% endfor %}
+    </form>
+    <a href="{{ url_for('maintenance.info_contacto') }}" class="btn btn-secondary mt-3">Volver atrás</a>
+</div>
 {% endblock %}

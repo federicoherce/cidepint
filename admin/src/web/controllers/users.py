@@ -38,7 +38,7 @@ def get_users(email, estado, page, per_page):
       igual al recibido
     - Si solo se busca por un criterio, se aplicará solo ese al listado.
     """
-    if email == "" and estado == "todos":
+    if email == "" or estado == "todos":
         return auth.list_users(page, per_page)
 
     elif email != "" and estado != "todos":

@@ -15,17 +15,17 @@
         <p> <b> El usuario actualmente es operador, seleccione el nuevo rol </b> </p>
         <button type="submit" class="btn btn-primary" name="rol" value="2" >Dueño</button>
         <button type="submit" class="btn btn-primary" name="rol" value="3" >Administrador</button>
-        <button type="submit" class="btn btn-primary" name="rol" value="5" >Quitar rol</button> 
+        <button type="submit" class="btn btn-danger" name="rol" value="5" >Quitar rol</button> 
     {% elif rolActual == 'admin' %}
         <p> <b>El usuario actualmente es administrador, seleccione el nuevo rol </b> </p>
         <button type="submit" class="btn btn-primary" name="rol" value="4" >Operador</button>
         <button type="submit" class="btn btn-primary" name="rol" value="2" >Dueño</button>
-        <button type="submit" class="btn btn-primary" name="rol" value="5" >Quitar rol</button> 
+        <button type="submit" class="btn btn-danger" name="rol" value="5" >Quitar rol</button> 
     {% elif rolActual == 'owner' %}
         <p> <b>El usuario actualmente es dueño, seleccione el nuevo rol  </b> </p>
         <button type="submit" class="btn btn-primary" name="rol" value="3" >Administrador</button>
         <button type="submit" class="btn btn-primary" name="rol" value="4" >Operador</button>
-        <button type="submit" class="btn btn-primary" name="rol" value="5" >Quitar rol</button>     
+        <button type="submit" class="btn btn-danger" name="rol" value="5" >Quitar rol</button>     
     {% else %}
         <p> <b> El usuario no posee un rol en la institucion, seleccione su nuevo rol </b> </p>
         <button type="submit" class="btn btn-primary" name="rol" value="3" >Administrador</button>

@@ -19,7 +19,6 @@ def index(institucion_id):
     """
      Este método se encarga de mostrar los servicios de manera páginada 
      segun el valor que se encuentre en el archivo de configuración.
-     Si el superadmin no lo modifico, el valor por defecto es 5
     """
     if not has_permissions(['services_index']):
         abort(401)

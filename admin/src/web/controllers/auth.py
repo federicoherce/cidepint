@@ -97,6 +97,7 @@ def register_user():
         send_confirmation_email(form.email.data, token)
         flash('Tu cuenta ha sido creada, te enviamos un mail', 'success')
         return redirect(url_for('home.index'))
+    return render_template("auth/register.html", form=form)
 
 
 def send_confirmation_email(email, token):
@@ -111,9 +112,11 @@ def send_confirmation_email(email, token):
         recipients=[email])
     url = current_app.config['URL_REGISTRO']
     confirmation_link = f'{url}/{email}/{token}'
-    msg.html = f'Para confirmar tu registro, haz clic en el siguiente enlace: <a href="{confirmation_link}">Confirmar Registro</a>'
+    msg.html = f"""
+                Para confirmar tu registro, haz clic en el siguiente enlace:
+                <a href="{confirmation_link}">Confirmar Registro</a>'
+                """
     mail.send(msg)
-
 
 
 @auth_bp.get("/confirmar_registro/<email>/<token>")

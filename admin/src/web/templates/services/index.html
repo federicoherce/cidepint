@@ -14,9 +14,6 @@
                 <th>Tipo</th>
                 <th>Habilitado</th>
                 <th>Editar</th>
-                {% if has_permissions(['services_destroy']) %}
-                    <th>Eliminar</th>
-                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -36,13 +33,6 @@
                     <td>
                         <a href="{{ url_for('services.editar', servicio_id=service.id, institucion_id=institucion_id) }}" class="btn btn-info btn-sm">Editar</a>
                     </td>
-                    {% if has_permissions(['services_destroy']) %}
-                        <td>
-                            <form method="POST" action="{{ url_for('services.eliminar', servicio_id=service.id, institucion_id=institucion_id) }}">
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
-                        </td>
-                    {% endif %}
                 </tr>
             </tr>
             {% endfor %}

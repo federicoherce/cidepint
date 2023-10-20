@@ -3,8 +3,8 @@ from flask import session, abort
 from src.web.helpers.auth import is_authenticated, has_permissions
 from flask import current_app as app
 from flask import render_template
+from src.web.config import cache
 from src.core import configuracion
-from src.web import cache
 
 
 def maintenance(f):

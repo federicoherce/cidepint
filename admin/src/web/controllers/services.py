@@ -116,9 +116,10 @@ def eliminar(servicio_id, institucion_id):
 #------------------------------------------------
 
 
-@services_bp.route("/index_solicitudes", methods=['POST', 'GET'])
+@services_bp.route("/index_solicitudes/<int:institucion_id>", methods=['POST', 'GET'])
 @login_required
-def index_solicitudes():
+@user_in_institution
+def index_solicitudes(institucion_id):
     """
     Este método lista todas las solicitudes y permite filtrarlas
     por un rango de fechas, username del cliente que la realizó
@@ -151,11 +152,11 @@ def index_solicitudes():
         if form.cliente_username.data:
             username = form.cliente_username.data
         
-        solicitudes = services.paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username)
+        solicitudes = services.paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username, institucion_id)
     else:
-        solicitudes = services.paginate_solicitudes(page, per_page)
+        solicitudes = services.paginate_solicitudes(page, per_page, institucion_id)
 
-    return render_template("services/index_solicitudes.html", solicitudes=solicitudes, form=form)
+    return render_template("services/index_solicitudes.html", solicitudes=solicitudes, form=form, institucion_id=institucion_id)
 
 
 @services_bp.route("/show_solicitud/<int:id>", methods=['POST', 'GET'])

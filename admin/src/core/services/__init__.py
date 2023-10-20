@@ -50,17 +50,18 @@ def paginate_services(page, per_page):
 # ------------------------ SOLICITUDES
 
 
-def paginate_solicitudes(page, per_page):
-    solicitudes = Solicitud.query.paginate(page=page, per_page=per_page)
+def paginate_solicitudes(page, per_page, institucion_id):
+    solicitudes = Solicitud.query.join(Solicitud.servicio).filter(Servicio.institucion_id == institucion_id).paginate(page=page, per_page=per_page)
     return solicitudes
 
-def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username):
+def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username, institucion_id):
     """
     Este metodo recibe los filtros a aplicar en las solicitudes
     y, valga la redundancia, aplica aquellos que se hayan enviado.
     Luego pagina los resultados y los devuelve
     """
     query = Solicitud.query
+    query = query.join(Solicitud.servicio).filter(Servicio.institucion_id == institucion_id)
 
     if inicio:
         query = query.filter(Solicitud.fecha_creacion > inicio)

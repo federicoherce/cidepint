@@ -22,9 +22,9 @@ def has_permissions(required_permissions_list):
     user_permission_list = session["permissions"]
 
     for permission in required_permissions_list:
-        if permission in user_permission_list:
-            return True
-    return False
+        if not permission in user_permission_list:
+            return False
+    return True
 
 
 # Cambiar por session["permissions"]

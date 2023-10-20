@@ -15,6 +15,11 @@ api_bp = Blueprint("api", __name__, url_prefix="/api")
 
 @api_bp.post("/auth")
 def login():
+    """
+    Recibe el email y contraseña de un usuario. Si el usuario
+    se encuentra registrado, retorna 'succes', de lo contrario,
+    retorna 'fail'.
+    """
     try:
         data = auth_schema.load(request.json)
     except ValidationError:
@@ -28,6 +33,11 @@ def login():
 
 @api_bp.get("/me/profile/<id>")
 def profile(id):
+    """
+    Retorna la informacion de un usuario a partir de su ID
+    """
+    if not id.isdigit():
+        return jsonify({"error": "Parametros invalidos"}), 400
     user = api.get_user_by_id(id)
     if user is None:
         return jsonify({"error": "Parametros invalidos"}), 400
@@ -36,6 +46,8 @@ def profile(id):
 
 @api_bp.get("/services/<id>")
 def service(id):
+    if not id.isdigit():
+        return jsonify({"error": "Parametros invalidos"}), 400
     service = services.get_service(id)
     if service is None:
         return jsonify({"error": "Parametros invalidos"}), 404

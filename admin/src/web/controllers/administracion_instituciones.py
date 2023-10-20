@@ -54,7 +54,7 @@ def asignar_rol(institucion_id, email):
     para mostrar en el template la opcion de asignar el rol por primera vez, 
     actualizarlo o quitarlo
     """
-    if not has_permissions(['owner_update', 'owner_create', 'owner_destroy']):
+    if not has_permissions(['owner_update', 'owner_new', 'owner_destroy']):
         abort(401)
        
     rolActual = ''

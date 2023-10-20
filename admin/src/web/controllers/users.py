@@ -7,6 +7,7 @@ from src.core import instituciones
 # from src.core.users.role import user_institution_role
 from src.forms.users_form import CreateUserForm, UpdateUserForm
 from src.web.helpers.auth import login_required, has_permissions, user_is_superadmin
+from src.core import configuracion
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
 
@@ -18,7 +19,7 @@ def index():
         abort(401)
 
     page = request.args.get('page', type=int, default=1)
-    per_page = app.config['PER_PAGE']
+    per_page = configuracion.get_per_page()
 
     email = request.args.get('email', default="")
     estado = request.args.get('estado', default="todos")

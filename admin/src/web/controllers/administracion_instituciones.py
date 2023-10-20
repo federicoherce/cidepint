@@ -7,7 +7,7 @@ from src.web.helpers.auth import login_required, has_permissions
 from flask import current_app as app
 from flask import abort
 from src.web.helpers.auth import user_is_superadmin
-
+from src.core import configuracion
 
 admin_users_bp = Blueprint("admin", __name__, url_prefix="/administracion")
 
@@ -107,7 +107,7 @@ def ver_historial(institucion_id):
     if not has_permissions(['owner_index']):
         abort(401)
     page = request.args.get('page', type=int, default=1)
-    per_page = app.config['PER_PAGE']
+    per_page = configuracion.get_per_page()
     asigns = admin_instituciones.paginate_historial(page, per_page, institucion_id)
     roles = {
         2: "dueño",

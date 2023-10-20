@@ -52,3 +52,14 @@ def update_mensaje(mensaje):
     mant = Mantenimiento.query.first()
     mant.mensaje = mensaje
     db.session.commit()
+
+
+def update_per_page(per_page):
+    mant = Mantenimiento.query.first()
+    mant.per_page = per_page
+    db.session.commit()
+
+
+def get_per_page():
+    mant = Mantenimiento.query.first()
+    return mant.per_page

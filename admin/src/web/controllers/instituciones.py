@@ -3,6 +3,7 @@ from src.core import instituciones
 from src.web.helpers.auth import login_required, has_permissions
 from forms.institucion_form import InstitucionForm
 from flask import current_app as app
+from src.core import configuracion
 
 instituciones_bp = Blueprint("instituciones", __name__, url_prefix="/instituciones")
 
@@ -22,7 +23,7 @@ def list_instituciones():
         abort(401)
 
     page = request.args.get('page', type=int, default=1)
-    per_page = app.config['PER_PAGE']
+    per_page = configuracion.get_per_page()
     paginated_instits = instituciones.paginate_instituciones(page, per_page)
     return render_template("instituciones/list_instituciones.html", instits=paginated_instits)
 

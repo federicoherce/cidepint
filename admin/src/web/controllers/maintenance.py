@@ -105,7 +105,7 @@ def update_paginado():
         abort(401)
     form = paginadoForm()
     if form.validate_on_submit():
-        app.config['PER_PAGE'] = form.per_page.data
+        configuracion.update_per_page(form.per_page.data)
         flash("Se guardaron los cambios correctamente", "info")
         return redirect(url_for('maintenance.index_paginado'))
     return render_template('configuraciones/paginado.html')

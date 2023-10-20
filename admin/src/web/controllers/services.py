@@ -8,6 +8,7 @@ from src.web.helpers.auth import login_required, has_permissions
 from src.web.helpers.institutions import user_in_institution
 from src.core import services, instituciones, api
 from flask import current_app as app
+from src.core import configuracion
 
 services_bp = Blueprint("services", __name__, url_prefix="/services")
 
@@ -23,7 +24,7 @@ def index(institucion_id):
     if not has_permissions(['services_index']):
         abort(401)
     page = request.args.get('page', type=int, default=1)
-    per_page = app.config['PER_PAGE']
+    per_page = configuracion.get_per_page()
     paginated_services = services.paginate_services(page, per_page)
     return render_template("services/index.html",
                            services=paginated_services,
@@ -129,7 +130,7 @@ def index_solicitudes(institucion_id):
         abort(401)
     form = FiltroSolicitudesForm()  # Asume que tienes un formulario para el filtrado
     page = request.args.get('page', type=int, default=1)
-    per_page = app.config['PER_PAGE']
+    per_page = configuracion.get_per_page()
 
     if form.validate_on_submit():
         inicio = None

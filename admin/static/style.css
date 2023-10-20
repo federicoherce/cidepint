@@ -22,7 +22,7 @@ body {
 .image-container {
     width: 120px; /* Ancho deseado del contenedor */
     height: 120px; /* Altura deseada del contenedor */
-    border: 2px solid green; /* Borde inicial (verde) */
+    border: 5px solid green; /* Borde inicial (verde) */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,8 +31,8 @@ body {
   }
   
   #logo {
-    max-width: 100%; /* Asegura que la imagen no exceda el tamaño del contenedor */
-    max-height: 100%; /* Asegura que la imagen no exceda el tamaño del contenedor */
+    max-width: 117%; /* Asegura que la imagen no exceda el tamaño del contenedor */
+    max-height: 115%; /* Asegura que la imagen no exceda el tamaño del contenedor */
   }
   
   .image-container:hover {

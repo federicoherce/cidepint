@@ -122,9 +122,11 @@ def update_name_surname_email(user, name, surname, email):
     user.email = email
     db.session.commit()
 
+
 def find_user_contains_mail(email):
     users = Users.query.filter(Users.email.contains(f'{email}'))
     return users
+
 
 def find_user_email_by_id(id):
     user = Users.query.filter_by(id=id).first()

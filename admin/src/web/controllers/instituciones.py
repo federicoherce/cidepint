@@ -69,13 +69,13 @@ def create_institucion():
     if form.validate_on_submit():
         instituciones.create_institucion(
             nombre=form.nombre.data,
-            informacion = form.informacion.data,
-            direccion = form.direccion.data,
-            localizacion = form.localizacion.data,
-            palabras_claves = form.palabras_claves.data,
-            horarios = form.horarios.data,
-            web = form.web.data,
-            contacto = form.contacto.data
+            informacion=form.informacion.data,
+            direccion=form.direccion.data,
+            localizacion=form.localizacion.data,
+            palabras_claves=form.palabras_claves.data,
+            horarios=form.horarios.data,
+            web=form.web.data,
+            contacto=form.contacto.data
         )
         flash('Institucion agregada exitosamente', 'success')
         return redirect(url_for('instituciones.list_instituciones'))
@@ -115,6 +115,7 @@ def update(id):
 
     return render_template("instituciones/update_institucion.html", instit=instit, form=form)
 
+
 @instituciones_bp.route('/destroy/<int:id>', methods=['POST', 'DELETE'])
 @login_required
 def destroy(id):
@@ -123,6 +124,3 @@ def destroy(id):
     instituciones.delete_institucion(id)
     flash('Institución eliminada exitosamente', 'success')
     return redirect(url_for('instituciones.list_instituciones'))
-
-
-

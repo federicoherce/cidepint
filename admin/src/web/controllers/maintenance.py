@@ -39,7 +39,20 @@ def toggle_maintenance():
             flash("Se deactivó modo mantenimiento: ", "info")
         if form.mensaje.data:
             configuracion.update_mensaje(form.mensaje.data)
+            flash("Nuevo mensaje guardado con exito ", "info")
         return redirect(url_for('maintenance.index'))
+
+
+@maintenance_bp.get('/info_contacto')
+@login_required
+def info_contacto():
+    """
+    Muestra la informacion de contacto actual
+    """
+    if not has_permissions(['config_show']):
+        abort(401)
+    info = configuracion.get_info_contacto()
+    return render_template('configuraciones/info_contacto.html', info=info)
 
 
 @maintenance_bp.get('/contacto')
@@ -55,18 +68,6 @@ def index_contacto():
     return render_template('configuraciones/update_info.html', form=form)
 
 
-@maintenance_bp.get('/info_contacto')
-@login_required
-def info_contacto():
-    """
-    Muestra la informacion de contacto actual
-    """
-    if not has_permissions(['config_show']):
-        abort(401)
-    info = configuracion.get_info_contacto()
-    return render_template('configuraciones/info_contacto.html', info=info)
-
-
 @maintenance_bp.post('/update_contacto')
 @login_required
 def update_contacto():
@@ -79,7 +80,8 @@ def update_contacto():
     if form.validate_on_submit():
         configuracion.update_info(form.telefono.data, form.email.data, form.direccion.data)
         flash("Se guardaron los cambios correctamente", "info")
-    return redirect(url_for('maintenance.index_contacto'))
+        return redirect(url_for('maintenance.info_contacto'))
+    return render_template('configuraciones/update_info.html', form=form)
 
 
 @maintenance_bp.get('/paginado')

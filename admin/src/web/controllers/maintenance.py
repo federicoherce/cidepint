@@ -14,7 +14,7 @@ maintenance_bp = Blueprint("maintenance", __name__, url_prefix="/maintenance")
 @login_required
 @maintenance
 def index():
-    return render_template('maintenance_form.html', form=MaintenanceForm())
+    return render_template('configuraciones/maintenance_form.html', form=MaintenanceForm())
 
 
 @maintenance_bp.post('/toggle')
@@ -34,8 +34,9 @@ def toggle_maintenance():
         elif form.deactivate_maintenance.data:
             configuracion.update_state(False)
             flash("Se deactivó modo mantenimiento: ", "info")
-        # Ojo que esto puede ejecutar siempre la escritura del mensaje (cambie o no)
-        configuracion.update_mensaje(form.mensaje.data)
+        # Ojo que esto puede ejecutar siempre la escritura del mensaje (cambie o no)#arreglado#
+        if form.mensaje.data:
+            configuracion.update_mensaje(form.mensaje.data)
         return redirect(url_for('maintenance.index'))
 
 

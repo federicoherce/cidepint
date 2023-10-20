@@ -38,17 +38,17 @@ def get_users(email, estado, page, per_page):
       igual al recibido
     - Si solo se busca por un criterio, se aplicará solo ese al listado.
     """
-    if email == "" and estado == "todos":
+    if email == "" or estado == "todos":
         return auth.list_users(page, per_page)
 
     elif email != "" and estado != "todos":
-        return auth.find_user_by_email_and_state(email, estado, page, per_page)
+        return auth.find_user_by_email_and_state_paginated(email, estado, page, per_page)
 
-    if email != "":
-        return auth.find_user_contains_mail(email, page, per_page)
+    elif email != "":
+        return auth.find_user_contains_mail_paginated(email, page, per_page)
 
-    if estado != "todos":
-        return auth.find_user_by_state(estado, page, per_page)
+    elif estado != "todos":
+        return auth.find_user_by_state_paginated(estado, page, per_page)
 
     return []
 

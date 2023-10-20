@@ -22,9 +22,9 @@ def has_permissions(required_permissions_list):
     user_permission_list = session["permissions"]
 
     for permission in required_permissions_list:
-        if permission in user_permission_list:
-            return True
-    return False
+        if permission not in user_permission_list:
+            return False
+    return True
 
 
 # Cambiar por session["permissions"]
@@ -41,13 +41,19 @@ def has_permissions_mail(required_permissions_list, mail):
 def is_superadmin():
     if not is_authenticated(session):
         return False
-
     return session.get("is_superadmin")
-
 
 
 def user_is_superadmin(user):
     for role in users.get_user_roles(user):
         if role.nombre == "superadmin":
+            return True
+    return False
+
+
+def is_owner():
+    user = auth.find_user_by_mail(session["user_id"])
+    for role in users.get_user_roles(user):
+        if role.nombre == "owner":
             return True
     return False

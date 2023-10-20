@@ -5,13 +5,23 @@ class ServiceSchema(Schema):
     id = fields.Int(dump_only=True)
     nombre = fields.Str()
     descripcion = fields.Str()
+    tipo = fields.Str(validate=validate.OneOf(['Análisis', 'Desarrollo', 'Consultoría']))
     keywords = fields.Str()
-    centros = fields.Str()
     habilitado = fields.Boolean()
 
 
 service_schema = ServiceSchema()
 
+
+class PaginatedServicesSchema(Schema):
+    data = fields.Nested(ServiceSchema, many=True)
+    q = fields.Str(required=True)
+    tipo = fields.Str(validate=validate.OneOf(['Análisis', 'Desarrollo', 'Consultoría']))
+    page = fields.Integer(validate=validate.Range(min=1), missing=1)
+    per_page = fields.Integer(validate=validate.Range(min=1, max=10), missing=1)
+    total = fields.Integer()
+
+paginated_services = PaginatedServicesSchema()
 
 class SolicitudSchema(Schema):
     cliente_id = fields.Int()

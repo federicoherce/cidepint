@@ -67,16 +67,16 @@ def list_users(page, per_page):
     return users
 
 
-def find_user_contains_mail(email, page, per_page):
+def find_user_contains_mail_paginated(email, page, per_page):
     users = Users.query.filter(Users.email.contains(f'{email}')).paginate(page=page, per_page=per_page)
     return users
 
 
-def find_user_by_state(state, page, per_page):
+def find_user_by_state_paginated(state, page, per_page):
     return Users.query.filter(Users.activo == (state == 'activo')).paginate(page=page, per_page=per_page)
 
 
-def find_user_by_email_and_state(email, state, page, per_page):
+def find_user_by_email_and_state_paginated(email, state, page, per_page):
     """
     Esta función filtra primero por email y después por el estado (según si se
     busca por activo o bloqueado)
@@ -122,9 +122,11 @@ def update_name_surname_email(user, name, surname, email):
     user.email = email
     db.session.commit()
 
+
 def find_user_contains_mail(email):
     users = Users.query.filter(Users.email.contains(f'{email}'))
     return users
+
 
 def find_user_email_by_id(id):
     user = Users.query.filter_by(id=id).first()

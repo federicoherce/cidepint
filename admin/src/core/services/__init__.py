@@ -31,6 +31,22 @@ def delete_service(id):
     db.session.delete(service)
     db.session.commit()
 
+
+def paginate_services_type_and_keywords(tipo, q, page, per_page):
+    return Servicio.query.filter(Servicio.tipo_servicio==tipo,
+                                 Servicio.habilitado==True,
+                                 Servicio.keywords.like(f"%{q}%")).paginate(page=page, per_page=per_page)
+
+
+def paginate_services_keyword(q, page, per_page):
+    return Servicio.query.filter(Servicio.habilitado==True,
+                                 Servicio.keywords.like(f"%{q}%")).paginate(page=page, per_page=per_page)
+
+
+def paginate_services(page, per_page):
+    return Servicio.query.paginate(page=page, per_page=per_page)
+
+
 # ------------------------ SOLICITUDES
 
 
@@ -93,5 +109,3 @@ def create_solicitud(**kwargs):
     return solicitud
 
 
-def paginate_services(page, per_page):
-    return Servicio.query.paginate(page=page, per_page=per_page)

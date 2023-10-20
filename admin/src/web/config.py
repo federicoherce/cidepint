@@ -1,5 +1,8 @@
 from os import environ
+from flask_caching import Cache
 
+
+cache = Cache(config={"CACHE_TYPE": "simple"})
 
 class Config(object):
     # Clase base
@@ -14,7 +17,6 @@ class Config(object):
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     PER_PAGE = 5
-
 
 class ProductionConfig(Config):
 

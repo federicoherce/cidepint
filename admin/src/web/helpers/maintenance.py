@@ -3,6 +3,7 @@ from flask import session, abort
 from src.web.helpers.auth import is_authenticated, has_permissions
 from flask import current_app as app
 from flask import render_template
+from src.web.config import cache
 from src.core import configuracion
 
 
@@ -26,3 +27,13 @@ def maintenanceActivated(f):
 
 def is_maintenance():
     return configuracion.get_state()
+
+
+def info_contacto():
+    data = cache.get('info_contacto')
+
+    if data is None:
+        data = configuracion.get_info_contacto()
+        cache.set('info_contacto', data, timeout=3600)
+
+    return data

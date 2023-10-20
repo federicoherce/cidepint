@@ -63,6 +63,10 @@ def services_type():
 
 @api_bp.get("/services/search")
 def search_services():
+    """
+    Busqueda de servicios por keywords, tipo, página y número de pagina.
+    El parámetro q es obligatorio y los parámetros tipo, page y per_page opcionales
+    """
     try:
         request_data = paginated_services.load(request.args)
     except ValidationError:
@@ -84,6 +88,7 @@ def search_services():
         "total": list_services_paginated.total
     }
     return paginated_services.dump(response_data), 200
+
 
 @api_bp.get("/institutions")
 def institutions():
@@ -108,6 +113,8 @@ def institutions():
 
 @api_bp.get("/me/requests/<id>")
 def get_request(id):
+    if not id.isdigit():
+        return jsonify({"error": "Parametros invalidos"}), 400
     request = services.show_solicitud(id)
     if request is None:
         return jsonify({"error": "Parametros invalidos"}), 400
@@ -119,7 +126,6 @@ def solicitud():
     try:
         data = request.json
 
-        # Valida y carga los datos en el esquema
         errors = solicitud_schema.validate(data)
 
         solicitud = services.create_solicitud(**data)
@@ -138,8 +144,8 @@ def comentar_solicitud(id):
         services.update_solicitud(solicitud, comentario=comentario)
         services.update_solicitud(solicitud, comentario=comentario)
     except ValidationError as err:
-        print(err.messages)  # => {"email": ['"foo" is not a valid email address.']}
-        print(err.valid_data)  # => {"name": "John"}
+        print(err.messages)  
+        print(err.valid_data) 
         return jsonify({"error": "Parametros invalidos"}), 400
 
     return jsonify({'id': solicitud.id, 'comentario': solicitud.comentario}), 201

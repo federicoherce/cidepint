@@ -1,8 +1,6 @@
 from functools import wraps
-from flask import session, abort
-from src.web.helpers.auth import is_authenticated, has_permissions
-from flask import current_app as app
-from flask import render_template
+from flask import abort
+from src.web.helpers.auth import has_permissions
 from src.web.config import cache
 from src.core import configuracion
 

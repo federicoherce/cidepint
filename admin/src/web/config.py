@@ -4,6 +4,7 @@ from flask_caching import Cache
 
 cache = Cache(config={"CACHE_TYPE": "simple"})
 
+
 class Config(object):
     # Clase base
 
@@ -17,6 +18,7 @@ class Config(object):
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     PER_PAGE = 5
+
 
 class ProductionConfig(Config):
 
@@ -45,6 +47,7 @@ class DevelopmentConfig(Config):
 
     URL_REGISTRO = "http://127.0.0.1:5000/sesion/confirmar_registro"
     URL_MAIN = "https://admin-grupo17.proyecto2023.linti.unlp.edu.ar/sesion/confirmar_registro"
+
 
 class TestingConfig(Config):
     # Configuracion de testeo

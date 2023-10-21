@@ -1,10 +1,8 @@
 from flask import Blueprint, render_template, abort, request
 from flask import redirect, url_for, flash
-from flask import current_app as app
 from src.core import auth
 from src.core import users
 from src.core import instituciones
-# from src.core.users.role import user_institution_role
 from src.forms.users_form import CreateUserForm, UpdateUserForm
 from src.web.helpers.auth import login_required, has_permissions, user_is_superadmin
 from src.core import configuracion

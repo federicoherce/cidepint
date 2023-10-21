@@ -1,6 +1,5 @@
 from src.core.database import database as db
 from datetime import datetime
-from src.core.users.role import UserRoleInstitution
 
 
 class Users(db.Model):

@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, session
-from src.core import users, auth
+from flask import Blueprint, render_template
+
 
 home_bp = Blueprint("home", __name__, url_prefix="/")
 

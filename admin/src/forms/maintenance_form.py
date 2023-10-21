@@ -14,7 +14,6 @@ class ContactoForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     telefono = StringField('Telefono', validators=[DataRequired(message="Este campo es obligatorio")])
     direccion = StringField('Direccion', validators=[DataRequired(message="Este campo es obligatorio")])
-
     guardar = SubmitField('Guardar')
 
 

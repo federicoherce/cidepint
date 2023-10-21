@@ -1,4 +1,4 @@
-from datetime import datetime, time
+from datetime import datetime
 from flask import Blueprint, render_template, abort
 from flask import flash, redirect, url_for, request
 from src.forms.servicios_form import ServiciosForm
@@ -7,8 +7,8 @@ from src.forms.servicios_form import FiltroSolicitudesForm
 from src.web.helpers.auth import login_required, has_permissions
 from src.web.helpers.institutions import user_in_institution
 from src.core import services, instituciones, api
-from flask import current_app as app
 from src.core import configuracion
+
 
 services_bp = Blueprint("services", __name__, url_prefix="/services")
 
@@ -25,10 +25,12 @@ def index(institucion_id):
         abort(401)
     page = request.args.get('page', type=int, default=1)
     per_page = configuracion.get_per_page()
-    paginated_services = services.paginate_services(page, per_page)
+    paginated_services = services.paginate_services(page, per_page, institucion_id)
+    nombre_institucion = instituciones.find_institucion_by_id(institucion_id).nombre
     return render_template("services/index.html",
                            services=paginated_services,
-                           institucion_id=institucion_id)
+                           institucion_id=institucion_id,
+                           nombre=nombre_institucion)
 
 
 @services_bp.get("/agregar/<int:institucion_id>")

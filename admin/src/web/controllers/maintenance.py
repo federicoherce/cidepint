@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, abort
 from src.web.helpers.auth import login_required, has_permissions
-from src.web.helpers.maintenance import maintenance
 from src.web.helpers.maintenance import info_contacto as cache_info_contacto
-from flask import current_app as app
 from forms.maintenance_form import MaintenanceForm
 from forms.maintenance_form import ContactoForm
 from forms.maintenance_form import paginadoForm

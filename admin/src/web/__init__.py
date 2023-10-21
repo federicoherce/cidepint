@@ -1,5 +1,4 @@
 from flask import Flask
-from flask import render_template
 from src.core import database, mail
 from src.web.config import config, cache
 from src.web import routes
@@ -9,8 +8,9 @@ from src.web import jinja
 from flask_caching import Cache
 import logging
 
-#logging.basicConfig()
-#logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 
 def create_app(env="development", static_folder="../../static"):

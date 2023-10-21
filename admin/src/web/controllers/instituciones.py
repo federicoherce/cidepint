@@ -5,9 +5,8 @@ from forms.institucion_form import InstitucionForm
 from flask import current_app as app
 from src.core import configuracion
 
+
 instituciones_bp = Blueprint("instituciones", __name__, url_prefix="/instituciones")
-
-
 
 
 @instituciones_bp.route('/', methods=['GET'])

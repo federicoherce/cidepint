@@ -33,18 +33,18 @@ def delete_service(id):
 
 
 def paginate_services_type_and_keywords(tipo, q, page, per_page):
-    return Servicio.query.filter(Servicio.tipo_servicio==tipo,
-                                 Servicio.habilitado==True,
+    return Servicio.query.filter(Servicio.tipo_servicio == tipo,
+                                 Servicio.habilitado == True,
                                  Servicio.keywords.like(f"%{q}%")).paginate(page=page, per_page=per_page)
 
 
 def paginate_services_keyword(q, page, per_page):
-    return Servicio.query.filter(Servicio.habilitado==True,
+    return Servicio.query.filter(Servicio.habilitado == True,
                                  Servicio.keywords.like(f"%{q}%")).paginate(page=page, per_page=per_page)
 
 
-def paginate_services(page, per_page):
-    return Servicio.query.paginate(page=page, per_page=per_page)
+def paginate_services(page, per_page, institucion_id):
+    return Servicio.query.filter_by(institucion_id=institucion_id).paginate(page=page, per_page=per_page)
 
 
 # ------------------------ SOLICITUDES
@@ -52,7 +52,9 @@ def paginate_services(page, per_page):
 
 def paginate_solicitudes(page, per_page, institucion_id):
     solicitudes = Solicitud.query.join(Solicitud.servicio).filter(Servicio.institucion_id == institucion_id).paginate(page=page, per_page=per_page)
+    
     return solicitudes
+
 
 def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username, institucion_id):
     """
@@ -82,7 +84,6 @@ def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, us
     solicitudes = query.paginate(page=page, per_page=per_page)
 
     return solicitudes
-
 
 
 def show_solicitud(id):

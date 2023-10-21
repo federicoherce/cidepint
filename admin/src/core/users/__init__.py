@@ -22,9 +22,8 @@ def assign_role_in_institution_to_user(role, institution, user):
     insertion = UserRoleInstitution(user.id, institution.id, role.id)
     db.session.add(insertion)
     db.session.commit()
-    
-    
-    
+   
+     
 def assign_role_in_institution_to_user_by_id(role, institution, user):
     insertion = UserRoleInstitution(user, institution, role)
     db.session.add(insertion)
@@ -85,14 +84,14 @@ def get_user_institutions(user):
             institutions.add(t.institution)
     return list(institutions)
 
-def get_user_institutions_by_role(user_id,role_id):
+
+def get_user_institutions_by_role(user_id, role_id):
     tuplas = UserRoleInstitution.query.filter_by(user_id=user_id, role_id=role_id).all()
     institutions = set()
     for t in tuplas:
         if t.institution_id != 1:
             institutions.add(t.institution)
     return list(institutions)
-
 
 
 def get_user_institutions_and_roles(user):

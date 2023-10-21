@@ -52,7 +52,13 @@ def paginate_services(page, per_page, institucion_id):
 
 def paginate_solicitudes(page, per_page, institucion_id):
     solicitudes = Solicitud.query.join(Solicitud.servicio).filter(Servicio.institucion_id == institucion_id).paginate(page=page, per_page=per_page)
-    
+
+    return solicitudes
+
+
+def paginate_solicitudes_api(page, per_page):
+    solicitudes = Solicitud.query.join(Solicitud.servicio).paginate(page=page, per_page=per_page)
+
     return solicitudes
 
 

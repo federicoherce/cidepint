@@ -71,7 +71,7 @@ def search_services():
         request_data = paginated_services.load(request.args)
     except ValidationError:
         return jsonify({"error": "Parametros invalidos"}), 400
-    
+
     page = request_data['page']
     per_page = request_data['per_page']
     q = request_data['q']
@@ -160,7 +160,7 @@ def solicitudes():
 
     page = request_data['page']
     per_page = request_data['per_page']
-    solicitudes_paginadas = services.paginate_solicitudes(page, per_page)
+    solicitudes_paginadas = services.paginate_solicitudes_api(page, per_page)
     solicitudes_serializadas = get_solicitud_schema.dump(solicitudes_paginadas.items, many=True)
     response_data = {
         "data": solicitudes_serializadas,

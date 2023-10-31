@@ -260,6 +260,17 @@ def run():
         email="fede@gmail.com",
         password="1234"
     )
+    api.create_user(
+        username="mateo",
+        nombre="mateo",
+        apellido="novo",
+        tipo_documento="DNI",
+        nro_documento="42338561",
+        direccion="10 y 32",
+        telefono='292056757309',
+        email="mateo@gmail.com",
+        password="1234"
+    )
 
     services.create_solicitud(
         servicio_id=1,

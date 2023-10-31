@@ -10,9 +10,9 @@ from src.web.helpers.auth import has_permissions_mail, user_is_superadmin
 from flask import current_app
 from src.web.helpers.maintenance import maintenanceActivated
 from src.core import configuracion
-from flask_jwt_extended import create_access_token, set_access_cookies
-from flask_jwt_extended import jwt_required, get_jwt_identity, unset_jwt_cookies
+from flask_jwt_extended import create_access_token, set_access_cookies,unset_jwt_cookies,jwt_required
 from flask import jsonify
+from src.core import api
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
 
@@ -26,10 +26,10 @@ def login_jwt():
   data = request.get_json()
   email = data['email']
   password = data['password']
-  user = auth.check_user(email, password)
+  user = api.check_user(email, password)
   if user:
     access_token = create_access_token(identity=user.id,fresh=True)
-    response = jsonify("Login exitoso")
+    response = jsonify({'token ':access_token})
     set_access_cookies(response, access_token)
     return response, 201
   else:

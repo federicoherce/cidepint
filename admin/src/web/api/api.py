@@ -12,6 +12,7 @@ from src.core import auth
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
+
 api_bp = Blueprint("api", __name__, url_prefix="/api")
 
 @api_bp.get('/user_jwt')
@@ -134,9 +135,11 @@ def get_request(id):
 
 
 @api_bp.post("/me/requests")
+@jwt_required()
 def solicitud():
     try:
         data = request.json
+        data['cliente_id'] = get_jwt_identity()
 
         errors = solicitud_schema.validate(data)
 
@@ -148,6 +151,7 @@ def solicitud():
 
 
 @api_bp.post("/me/requests/<id>/notes")
+@jwt_required()
 def comentar_solicitud(id):
     try:
         solicitud = services.show_solicitud(id)
@@ -164,6 +168,7 @@ def comentar_solicitud(id):
 
 
 @api_bp.get("/me/requests")
+@jwt_required()
 def solicitudes():
     try:
         request_data = solicitudes_schema.load(request.args)
@@ -172,7 +177,7 @@ def solicitudes():
 
     page = request_data['page']
     per_page = request_data['per_page']
-    solicitudes_paginadas = services.paginate_solicitudes_api(page, per_page)
+    solicitudes_paginadas = services.paginate_solicitudes_api_id(page, per_page, get_jwt_identity())
     solicitudes_serializadas = get_solicitud_schema.dump(solicitudes_paginadas.items, many=True)
     response_data = {
         "data": solicitudes_serializadas,

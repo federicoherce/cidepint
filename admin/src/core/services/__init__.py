@@ -62,6 +62,10 @@ def paginate_solicitudes_api(page, per_page):
     return solicitudes
 
 
+def paginate_solicitudes_api_id(page, per_page,id):
+    solicitudes = Solicitud.query.join(Solicitud.servicio).filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
+    return solicitudes
+
 def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username, institucion_id):
     """
     Este metodo recibe los filtros a aplicar en las solicitudes

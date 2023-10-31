@@ -8,9 +8,18 @@ from src.web.schemas.institutions import paginated_schema, institution_schema
 from marshmallow import ValidationError
 from src.core import services
 from src.core import instituciones as module_institutions
+from src.core import auth
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
+
+@api_bp.get('/user_jwt')
+@jwt_required()
+def user_jwt():
+    current_user = get_jwt_identity()
+    user = auth.get_user_by_id(current_user)
+    return profile_schema.dump(user), 200
 
 
 @api_bp.post("/auth")
@@ -31,17 +40,20 @@ def login():
         return jsonify({'result': 'fail'}), 400
 
 
-@api_bp.get("/me/profile/<id>")
-def profile(id):
+
+@api_bp.get("/me/profile/")
+@jwt_required()
+def profile():
     """
-    Retorna la informacion de un usuario a partir de su ID
+    Retorna la información de un usuario a partir de su ID.
     """
-    if not id.isdigit():
-        return jsonify({"error": "Parametros invalidos"}), 400
-    user = api.get_user_by_id(id)
+    user = auth.get_user_by_id(get_jwt_identity())
+
     if user is None:
-        return jsonify({"error": "Parametros invalidos"}), 400
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
     return profile_schema.dump(user), 200
+
 
 
 @api_bp.get("/services/<id>")

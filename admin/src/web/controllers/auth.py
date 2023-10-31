@@ -10,7 +10,9 @@ from src.web.helpers.auth import has_permissions_mail, user_is_superadmin
 from flask import current_app
 from src.web.helpers.maintenance import maintenanceActivated
 from src.core import configuracion
-
+from flask_jwt_extended import create_access_token, set_access_cookies
+from flask_jwt_extended import jwt_required, get_jwt_identity, unset_jwt_cookies
+from flask import jsonify
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
 
@@ -19,6 +21,27 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
 def login():
     return render_template("auth/login.html")
 
+@auth_bp.post('/login_jwt')
+def login_jwt():
+  data = request.get_json()
+  email = data['email']
+  password = data['password']
+  user = auth.check_user(email, password)
+  if user:
+    access_token = create_access_token(identity=user.id,fresh=True)
+    response = jsonify("Login exitoso")
+    set_access_cookies(response, access_token)
+    return response, 201
+  else:
+    return jsonify(message="debe registrarse antes de hacer el login"), 401
+
+
+@auth_bp.get('/logout_jwt')
+@jwt_required()
+def logout_jwt():
+  response = jsonify(message="Logged out successfully")
+  unset_jwt_cookies(response)
+  return response, 200
 
 @auth_bp.post("/authenticate")
 def authenticate():
@@ -48,6 +71,7 @@ def authenticate():
         flash("La sesion se inicio correctamente", "success")
 
     return redirect(url_for("home.index"))
+
 
 
 @auth_bp.route('/logout')

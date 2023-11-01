@@ -18,6 +18,14 @@ class Config(object):
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     PER_PAGE = 5
+    GOOGLE_CLIENT_ID = '779889385687-1j6e1fv1ml7oev1i28gr41ab4u66d5u9.apps.googleusercontent.com'
+    GOOGLE_CLIENT_SECRET = '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'
+    # OAUTH_CREDENTIALS = {
+    #     'google': {
+    #         'id': '779889385687-1j6e1fv1ml7oev1i28gr41ab4u66d5u9.apps.googleusercontent.com',
+    #         'secret': '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',
+    #     }
+    # }
 
 
 class ProductionConfig(Config):

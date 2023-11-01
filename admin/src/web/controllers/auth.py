@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template
 from flask import redirect, url_for, flash, session, abort, request
+from flask_oauthlib.client import OAuth
 from src.core import auth
 from src.core import users
 from forms.registro_form import SignUpForm, PasswordForm
@@ -164,4 +165,46 @@ def save_password(email, token):
     auth.enter_password(form.password.data, email)
     auth.delete_token(email)
     flash('Contraseña seteada con exito', 'success')
+    return redirect(url_for('home.index'))
+
+
+@auth_bp.get("/google")
+def google():
+    print(f"FFFFFASDASDSAD {current_app.extensions['oauthlib.client'].google}")
+    return current_app.extensions['oauthlib.client'].google.authorize(
+        callback=url_for('auth.google_authorization', _external=True)
+    )
+
+
+@auth_bp.route("/google/authorization")
+def google_authorization():
+    response = current_app.extensions['oauthlib.client'].google.authorized_response()
+    if response is None or response.get('access_token') is None:
+        abort(401)
+
+    print(response)
+    session['google_token'] = (response['access_token'], '')
+    google_user = current_app.extensions['oauthlib.client'].google.get('userinfo')
+    user_info = google_user.data
+
+    user_email = user_info['email']
+    user_name = user_info.get('name')
+    user_lastname = user_info.get('family_name')
+
+    existe = auth.find_user_by_mail(user_email)
+    if existe:
+        flash('Esta cuenta ya fue registrada anteriormente.', 'error')
+        return redirect(url_for('auth.register'))
+
+    token = generate_confirmation_token()
+
+    auth.create_user_no_pw(
+        nombre=user_name,
+        apellido=user_lastname,
+        email=user_email,
+        token=token
+    )
+
+    send_confirmation_email(user_email, token)
+    flash('Tu cuenta ha sido creada, te enviamos un mail', 'success')
     return redirect(url_for('home.index'))

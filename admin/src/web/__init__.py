@@ -1,12 +1,18 @@
 from flask import Flask
+from flask import session
+from flask_oauthlib.client import OAuth
 from src.core import database, mail
 from src.web.config import config, cache
 from src.web import routes
 from src.web import commands
 from src.web import error_handlers
 from src.web import jinja
+<<<<<<< HEAD
 from flask_caching import Cache
 from src.web import jwt
+=======
+from src.web import oauth
+>>>>>>> development
 import logging
 
 #logging.basicConfig()
@@ -25,5 +31,6 @@ def create_app(env="development", static_folder="../../static"):
     error_handlers.register_errors(app)
     jinja.register_jinja_env_globals(app)
     cache.init_app(app)
+    oauth.init_app(app)
 
     return app

@@ -7,12 +7,8 @@ from src.web import routes
 from src.web import commands
 from src.web import error_handlers
 from src.web import jinja
-<<<<<<< HEAD
-from flask_caching import Cache
 from src.web import jwt
-=======
 from src.web import oauth
->>>>>>> development
 import logging
 
 #logging.basicConfig()

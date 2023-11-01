@@ -63,7 +63,11 @@ def paginate_solicitudes_api(page, per_page):
 
 
 def paginate_solicitudes_api_id(page, per_page,id):
-    solicitudes = Solicitud.query.join(Solicitud.servicio).filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
+    solicitudes = Solicitud.query.filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
+    return solicitudes
+
+def solicitudes_api_id(cliente_id, solicitud_id):
+    solicitudes = Solicitud.query.filter(Solicitud.cliente_id == cliente_id, Solicitud.id == solicitud_id).first()
     return solicitudes
 
 def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username, institucion_id):

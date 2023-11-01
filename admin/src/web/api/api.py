@@ -125,12 +125,13 @@ def institutions():
 
 
 @api_bp.get("/me/requests/<id>")
+@jwt_required()
 def get_request(id):
     if not id.isdigit():
         return jsonify({"error": "Parametros invalidos"}), 400
-    request = services.show_solicitud(id)
+    request = services.solicitudes_api_id(get_jwt_identity(),id)
     if request is None:
-        return jsonify({"error": "Parametros invalidos"}), 400
+        return jsonify({"error": "No le pertence ninguna solicitud con ese id"}), 400
     return request_show_schema.dump(request), 200
 
 

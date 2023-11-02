@@ -67,6 +67,10 @@ def paginate_solicitudes_api_id(page, per_page,id):
     return solicitudes
 
 def solicitudes_api_id(cliente_id, solicitud_id):
+    """
+    Este metodo devuelve una solicitud que pertenezca al cliente_id
+    y que tenga el id de solicitud_id
+    """
     solicitudes = Solicitud.query.filter(Solicitud.cliente_id == cliente_id, Solicitud.id == solicitud_id).first()
     return solicitudes
 

@@ -3,6 +3,7 @@
       <ul>
         <li><router-link to="/">Inicio</router-link></li>
         <li><router-link to="/about">Acerca de</router-link></li>
+        <li><router-link to="/login">Iniciar sesión</router-link></li>
       </ul>
     </nav>
   </template>

@@ -21,6 +21,7 @@ marshmallow = "^3.20.1"
 flask-caching = "^2.1.0"
 flask-oauthlib = "^0.9.6"
 flask-jwt-extended = "^4.5.3"
+flask-cors = "^4.0.0"
 
 
 

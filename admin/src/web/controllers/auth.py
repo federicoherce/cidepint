@@ -30,7 +30,7 @@ def login_jwt():
   user = api.check_user(email, password)
   if user:
     access_token = create_access_token(identity=user.id,fresh=True)
-    response = jsonify({'token ':access_token})
+    response = jsonify({'token':access_token})
     set_access_cookies(response, access_token)
     return response, 201
   else:

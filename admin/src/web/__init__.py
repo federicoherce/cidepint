@@ -10,6 +10,8 @@ from src.web import jinja
 from src.web import jwt
 from src.web import oauth
 import logging
+from flask_cors import CORS
+
 
 #logging.basicConfig()
 #logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
@@ -18,7 +20,7 @@ import logging
 def create_app(env="development", static_folder="../../static"):
     app = Flask(__name__, static_folder=static_folder)
     app.config.from_object(config[env])
-
+    CORS(app)
     database.init_app(app)
     mail.init_app(app)
     jwt.init_jwt(app)

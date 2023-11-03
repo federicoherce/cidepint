@@ -17,7 +17,8 @@
     </div>
     <div v-else>
       <p class="success-message">¡Sesión iniciada correctamente!</p>
-      <button type="button" @click="logout">Logout</button>
+      <button class="btn btn-danger" type="button" @click="logout">Logout</button>
+
     </div>
   </div>
 </template>
@@ -124,15 +125,6 @@ export default {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-}
-
-.btn {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 .btn:hover {

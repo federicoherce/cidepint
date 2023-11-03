@@ -74,13 +74,20 @@ export default {
             'Content-Type': 'application/json'
           }
         });
-        
+        const userResponse = await apiService.get('api/user_jwt', {
+           headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${response.data.token}`
+      }
+    });
+
         console.log(response);
         const store = useAuthStore();
-        store.setUser(response);
+        store.setUser(userResponse);
         console.log('User stored in Pinia:', store.getUser);
         localStorage.setItem('jwt', response.data.token);
         console.log(localStorage.getItem('jwt'));
+        console.log(store.user);
       } catch (error) {
         console.error(error);
         this.error = true;

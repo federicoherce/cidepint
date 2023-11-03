@@ -19,7 +19,7 @@ api_bp = Blueprint("api", __name__, url_prefix="/api")
 @jwt_required()
 def user_jwt():
     current_user = get_jwt_identity()
-    user = auth.get_user_by_id(current_user)
+    user = api.get_user_by_id(current_user)
     return profile_schema.dump(user), 200
 
 

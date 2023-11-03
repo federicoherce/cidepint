@@ -54,7 +54,7 @@ export default {
             'Authorization': `Bearer ${localStorage.getItem('jwt')}`
           }})
          localStorage.removeItem('jwt');
-         console.log(response);
+         console.log(response.data.message);
          store.logoutUser()
          this.$router.push({ name: 'Home' });
     }
@@ -74,7 +74,7 @@ export default {
             'Content-Type': 'application/json'
           }
         });
-
+        
         console.log(response);
         const store = useAuthStore();
         store.setUser(response);
@@ -91,12 +91,6 @@ export default {
 </script>
 
 <style scoped>
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
 
 .login-form {
   max-width: 400px;
@@ -106,30 +100,7 @@ export default {
   background-color: #f5f5f5;
 }
 
-.form-title {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.form-group {
-  margin: 10px 0;
-}
-
-.form-label {
-  font-weight: bold;
-}
-
-.form-control {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.btn:hover {
-  background-color: #0056b3;
-}.success-message {
+.success-message {
   color: green; /* Color de texto verde para éxito */
   font-weight: bold; /* Texto en negrita */
   margin-top: 10px; /* Espacio superior */

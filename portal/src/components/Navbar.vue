@@ -3,7 +3,8 @@
       <ul>
         <li><router-link to="/">Inicio</router-link></li>
         <li><router-link to="/about">Acerca de</router-link></li>
-        <li><div v-if="!loggedIn" class="login-form"><router-link to="/login">Iniciar sesión</router-link></div></li> 
+        <li><div v-if="!loggedIn" class="login-form"><router-link to="/login">Iniciar sesión</router-link></div></li>
+        <li><div v-if="loggedIn" class="login-form"><router-link to="/login">Cerrar sesión</router-link></div></li> 
       </ul>
     </nav>
   </template>

@@ -12,9 +12,12 @@ def init_app(app):
 
 
 def config_db(app):
-	@app.teardown_request
-	def close_session(exception=None):
-		database.session.close()
+    """
+    Configura un manejador para cerrar la sesión  de la base de datos al finalizar cada solicitud
+    """
+    @app.teardown_request
+    def close_session(exception=None):
+	    database.session.close()
 
 
 def reset_db():

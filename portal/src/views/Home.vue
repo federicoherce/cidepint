@@ -2,13 +2,11 @@
   <div>
     <h1>Bienvenido a nuestro portal de servicios</h1>
 
-    <!-- Descripción del servicio -->
     <p>
       Aquí encontrarás una amplia gama de servicios ofrecidos por diversas instituciones.
       Puedes explorar y solicitar los servicios que necesitas de manera fácil y rápida.
     </p>
 
-    <!-- Acciones disponibles -->
     <div>
       <h2>Acciones disponibles:</h2>
       <ul>

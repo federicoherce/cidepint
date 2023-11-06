@@ -3,6 +3,8 @@ import Home from '../views/Home.vue'
 import Navbar from '../components/Navbar.vue' 
 import loginView from '../views/loginView.vue'
 import contacto from '../views/contacto.vue'
+import servicios from '../views/servicios.vue'
+import detallesServicio from '../views/detallesServicio.vue'
 
 const routes = [
   {
@@ -24,6 +26,17 @@ const routes = [
     path: '/contacto',
     name: "contacto",
     component: contacto
+  },
+  {
+    path: '/servicios',
+    name: "servicios",
+    component: servicios
+  },
+  {
+    path: '/servicios/:id',
+    name: "detallesServicio",
+    component: detallesServicio,
+    props: true
   }
 ]
 

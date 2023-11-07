@@ -1,6 +1,8 @@
 <template>
-  <div class="container mb-4">
+  <div class="container-fluid mb-4">
     <h1 class="mt-4">Servicios</h1>
+
+    <TiposDeServicios/>
 
     <div class="form-group">
       <input type="text" class="form-control" v-model="titleSearch" placeholder="Buscar por título">
@@ -18,15 +20,7 @@
       <input type="text" class="form-control" v-model="tagsSearch" placeholder="Buscar por palabras clave">
     </div>
 
-    <div class="form-group">
-      <label for="serviceTypeSelect">Tipo de Servicio:</label>
-      <select id="serviceTypeSelect" class="form-control" v-model="selectedServiceType">
-        <option value="">Todos</option>
-        <option value="Tipo 1">Tipo 1</option>
-        <option value="Tipo 2">Tipo 2</option>
-        <!-- Agrega más opciones de tipo de servicio aquí -->
-      </select>
-    </div>
+    
 
     <table class="table table-striped table-bordered">
       <thead>
@@ -36,15 +30,18 @@
           <th>Institución</th>
           <th>Tags</th>
           <th>Tipo de Servicio</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="servicio in servicios" :key="servicio.id">
-          <td>{{ servicio.title }}</td>
-          <td>{{ servicio.description }}</td>
-          <td>{{ servicio.institution }}</td>
-          <td>{{ servicio.tags.join(', ') }}</td>
-          <td>{{ servicio.serviceType }}</td>
+          <router-link :to="{name: 'detallesServicio', params: { id: servicio.id } }">
+          <td>{{ servicio.nombre }}</td>
+          </router-link>
+          <td>{{ servicio.descripcion }}</td>
+          <td>{{ servicio.institucion }}</td>
+          <td>{{ servicio.keywords }}</td>
+          <td>{{ servicio.tipo }}</td>
         </tr>
       </tbody>
     </table>
@@ -62,12 +59,17 @@
   
 <script>
 import { apiService } from '@/api';
+import TiposDeServicios from '../components/TiposDeServicios.vue';
 
 export default {
   data() {
     return {
-      servicios: {}
+      servicios: {},
+      tipoServicioSeleccionado: ''
     };
+  },
+  components: {
+    TiposDeServicios
   },
   methods: {
     async obtenerServicios() {
@@ -75,7 +77,7 @@ export default {
         const respuesta = await apiService.get('api/all_services');
         this.servicios = respuesta.data;
       } catch (error) {
-        console.error('Error al obtener la información de contacto', error);
+        console.error('Error al obtener los servicios', error);
       }
     }
   },

@@ -90,36 +90,12 @@ def services_type():
     return service_type.dump({"data": services_type_list}), 200
 
 
-#@api_bp.get("/services/search")
-#def search_services():
-#    """
-#    Busqueda de servicios por keywords, tipo, página y número de pagina.
-#    El parámetro q es obligatorio y los parámetros tipo, page y per_page opcionales
-#   """
-#   try:
-#       request_data = paginated_services.load(request.args)
-#   except ValidationError:
-#       return jsonify({"error": "Parametros invalidos"}), 400
-#
-#    page = request_data['page']
-#    per_page = request_data['per_page']
-#    q = request_data['q']
-#    if 'tipo' in request_data and request_data['tipo'] is not None:
-#        tipo = request_data['tipo']
-#        list_services_paginated = services.paginate_services_type_and_keywords(tipo, q, page, per_page)
-#    else:
-#        list_services_paginated = services.paginate_services_keyword(q, page, per_page)
-#    serialized_services = service_schema.dump(list_services_paginated.items, many=True)
-#    response_data = {
-#        "data": serialized_services,
-#        "page": page,
-#        "per_page": per_page,
-#        "total": list_services_paginated.total
-#    }
-#    return paginated_services.dump(response_data), 200
-
 @api_bp.get("/services/search")
 def search_services():
+    """
+    Busqueda de servicios por keywords, tipo, página y número de pagina.
+    El parámetro q es obligatorio y los parámetros tipo, page y per_page opcionales
+    """
     try:
         request_data = paginated_services.load(request.args)
     except ValidationError:

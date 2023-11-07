@@ -26,6 +26,8 @@ def create_user_no_pw(**kwargs):
     db.session.add(user)
     db.session.commit()
 
+    return user
+
 
 def enter_password(pw, email):
     """
@@ -100,7 +102,9 @@ def check_user(email, password):
     """
     user = find_user_by_mail(email)
 
-    if user and sha256_crypt.verify(password, user.password):
+    if user is None or user.password is None:
+        return None
+    elif user and sha256_crypt.verify(password, user.password):
         return user
     else:
         return None
@@ -131,3 +135,8 @@ def find_user_contains_mail(email):
 def find_user_email_by_id(id):
     user = Users.query.filter_by(id=id).first()
     return user.email
+
+
+def add_google_id(user, google_id):
+    user.google_id = google_id
+    db.session.commit()

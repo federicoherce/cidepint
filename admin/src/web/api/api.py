@@ -68,6 +68,17 @@ def service(id):
     return data, 200
 
 
+@api_bp.get("/instituciones/<id>")
+def institution(id):
+    if not id.isdigit():
+        return jsonify({"error": "Parametros invalidos"}), 400
+    institucion = module_institutions.find_institucion_by_id(id)
+    if institucion is None:
+        return jsonify({"error": "Parametros invalidos"}), 404
+    data =  institution_schema.dump(institucion)
+    return data, 200
+
+
 @api_bp.get("/contacto")
 def contacto():
     informacion = configuracion.get_info_contacto()

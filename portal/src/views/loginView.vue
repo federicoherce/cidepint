@@ -37,16 +37,18 @@ export default {
       error: false
     };
   },
+  created() {
+    // Al crear el componente, almacena el store en una variable local
+    this.store = useAuthStore();
+  },
   computed: {
     loggedIn() {
       // Usa la información de inicio de sesión para determinar si el usuario ha iniciado sesión
-      const store = useAuthStore();
-      return store.isLoggedIn;
+      return this.store.isLoggedIn;
     }
   },
   methods: {
     async logout() {  
-      const store = useAuthStore();
       try {
          const response = await apiService.get('sesion/logout_jwt',{
           headers: {
@@ -55,13 +57,14 @@ export default {
           }})
          localStorage.removeItem('jwt');
          console.log(response.data.message);
-         store.logoutUser()
+         this.store.logoutUser()
          this.$router.push({ name: 'Home' });
     }
     catch (error) {
         console.error(error);
       }},
 
+         
     async login() {
       try {
         const userData = {
@@ -74,20 +77,10 @@ export default {
             'Content-Type': 'application/json'
           }
         });
-        const userResponse = await apiService.get('api/user_jwt', {
-           headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${response.data.token}`
-      }
-    });
-
-        console.log(response);
-        const store = useAuthStore();
-        store.setUser(userResponse);
-        console.log('User stored in Pinia:', store.getUser);
+        console.log('login : ',response.status , response.statusText);
         localStorage.setItem('jwt', response.data.token);
-        console.log(localStorage.getItem('jwt'));
-        console.log(store.user);
+        await this.store.axiosUser();
+
       } catch (error) {
         console.error(error);
         this.error = true;

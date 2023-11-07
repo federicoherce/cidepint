@@ -50,7 +50,7 @@ export default {
   methods: {
     async logout() {  
       try {
-         const response = await apiService.get('sesion/logout_jwt',{
+         const response = await apiService.get('api/logout_jwt',{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('jwt')}`
@@ -72,7 +72,7 @@ export default {
           password: this.user.password
         };
 
-        const response = await apiService.post('sesion/login_jwt', userData, {
+        const response = await apiService.post('api/login_jwt', userData, {
           headers: {
             'Content-Type': 'application/json'
           }

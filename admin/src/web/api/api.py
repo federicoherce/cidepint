@@ -7,6 +7,7 @@ from src.web.schemas.service_type import service_type
 from src.web.schemas.institutions import paginated_schema, institution_schema
 from marshmallow import ValidationError
 from src.core import services
+from src.core import configuracion
 from src.core import instituciones as module_institutions
 from src.core import auth
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -56,7 +57,6 @@ def profile():
     return profile_schema.dump(user), 200
 
 
-
 @api_bp.get("/services/<id>")
 def service(id):
     if not id.isdigit():
@@ -66,6 +66,22 @@ def service(id):
         return jsonify({"error": "Parametros invalidos"}), 404
     data = service_schema.dump(service)
     return data, 200
+
+
+@api_bp.get("/contacto")
+def contacto():
+    informacion = configuracion.get_info_contacto()
+    return jsonify({'email': informacion.email,
+                    'telefono': informacion.telefono,
+                    'direccion': informacion.direccion}), 200
+
+
+@api_bp.get("/all_services")
+def all_services():
+    services_list = services.get_all_services() 
+    data = service_schema.dump(services_list, many=True)  
+    return data, 200
+    
 
 
 @api_bp.get("/services-type")

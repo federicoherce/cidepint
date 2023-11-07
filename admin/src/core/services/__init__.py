@@ -20,6 +20,8 @@ def get_service(id):
     service = Servicio.query.filter_by(id=id).first()
     return service
 
+def get_all_services():
+    return Servicio.query.all()
 
 def update_service(form, service):
     form.populate_obj(service)

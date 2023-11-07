@@ -9,7 +9,7 @@ def init_app(app):
        consumer_key=app.config['GOOGLE_CLIENT_ID'],
        consumer_secret=app.config['GOOGLE_CLIENT_SECRET'],
        request_token_params={
-           'scope': 'email profile',
+           'scope': 'email profile openid',
        },
        base_url='https://www.googleapis.com/oauth2/v1/',
        request_token_url=None,
@@ -19,5 +19,5 @@ def init_app(app):
     )
 
     @google.tokengetter
-    def get_token(Token=None):
+    def get_google_oauth_token():
         return session.get('google_token')

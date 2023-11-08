@@ -1,3 +1,5 @@
+// https://nominatim.openstreetmap.org/search?country=argentina&city=la+plata&street=1356+Calle+10&format=json
+
 import { apiService } from '@/api';
 
 export default {

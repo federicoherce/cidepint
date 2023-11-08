@@ -27,7 +27,7 @@ class Solicitud(db.Model):
     __tablename__ = "solicitudes"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     servicio_id = db.Column(db.Integer, db.ForeignKey("servicios.id"))
-    cliente_id = db.Column(db.Integer, db.ForeignKey("apiusers.id"))
+    cliente_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     detalles = db.Column(db.String(500), nullable=True)
     estado = db.Column(db.String(20), nullable=False, default='EN PROCESO')  # Estados: aceptada, rechazada, en proceso, finalizada, canceladaa
     fecha_creacion = db.Column(db.DateTime, default=datetime.utcnow)
@@ -35,7 +35,7 @@ class Solicitud(db.Model):
     observacion_cambio_estado = db.Column(db.String(200), default='')
     comentario = db.Column(db.String(500), default='')
     # Falta el campo de archivos adjuntos
-    cliente = db.relationship('ApiUsers', backref='solicitudes')
+    cliente = db.relationship('Users', backref='solicitudes')
     servicio = db.relationship('Servicio', backref='solicitudes')
 
     def __init__(self, servicio_id, cliente_id, detalles):

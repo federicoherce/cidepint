@@ -8,6 +8,7 @@ from src.web.helpers.auth import login_required, has_permissions
 from src.web.helpers.institutions import user_in_institution
 from src.core import services, instituciones, api
 from src.core import configuracion
+from src.core import auth
 
 
 services_bp = Blueprint("services", __name__, url_prefix="/services")
@@ -168,7 +169,7 @@ def show_solicitud(id):
     if not has_permissions(['solicitudes_show']):
         abort(401)
     solicitud = services.show_solicitud(id)
-    cliente = api.get_user_by_id(solicitud.cliente_id)
+    cliente = auth.get_user_by_id(solicitud.cliente_id)
     servicio = services.get_service(solicitud.servicio_id)
     return render_template("services/solicitud.html", solicitud=solicitud, cliente=cliente, servicio=servicio)
 

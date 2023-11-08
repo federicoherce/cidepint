@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from src.core import api
+from src.core import auth
 from src.web.schemas.auth import auth_schema, profile_schema
 from src.web.schemas.services import service_schema, solicitud_schema, request_show_schema
 from src.web.schemas.services import solicitudes_schema, get_solicitud_schema, paginated_services
@@ -10,8 +11,8 @@ from src.core import services
 from src.core import configuracion
 from src.core import instituciones as module_institutions
 from src.core import auth
-from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
+from flask_jwt_extended import set_access_cookies,unset_jwt_cookies,jwt_required
 
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
@@ -20,9 +21,30 @@ api_bp = Blueprint("api", __name__, url_prefix="/api")
 @jwt_required()
 def user_jwt():
     current_user = get_jwt_identity()
-    user = api.get_user_by_id(current_user)
+    user = auth.get_user_by_id(current_user)
     return profile_schema.dump(user), 200
 
+@api_bp.post('/login_jwt')
+def login_jwt():
+  data = request.get_json()
+  email = data['email']
+  password = data['password']
+  user = auth.check_user(email, password)
+  if user:
+    access_token = create_access_token(identity=user.id,fresh=True)
+    response = jsonify({'token':access_token})
+    set_access_cookies(response, access_token)
+    return response, 201
+  else:
+    return jsonify(message="debe registrarse antes de hacer el login"), 401
+
+
+@api_bp.get('/logout_jwt')
+@jwt_required()
+def logout_jwt():
+  response = jsonify(message="Logged out successfully")
+  unset_jwt_cookies(response)
+  return response, 200
 
 @api_bp.post("/auth")
 def login():

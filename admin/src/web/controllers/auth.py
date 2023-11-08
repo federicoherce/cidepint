@@ -22,27 +22,6 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/sesion")
 def login():
     return render_template("auth/login.html")
 
-@auth_bp.post('/login_jwt')
-def login_jwt():
-  data = request.get_json()
-  email = data['email']
-  password = data['password']
-  user = api.check_user(email, password)
-  if user:
-    access_token = create_access_token(identity=user.id,fresh=True)
-    response = jsonify({'token':access_token})
-    set_access_cookies(response, access_token)
-    return response, 201
-  else:
-    return jsonify(message="debe registrarse antes de hacer el login"), 401
-
-
-@auth_bp.get('/logout_jwt')
-@jwt_required()
-def logout_jwt():
-  response = jsonify(message="Logged out successfully")
-  unset_jwt_cookies(response)
-  return response, 200
 
 @auth_bp.post("/authenticate")
 def authenticate():

@@ -1,7 +1,7 @@
 from src.core.services.services import Servicio, Solicitud
 from src.core.api.api_user import ApiUsers
 from src.core.database import database as db
-
+from src.core.auth.user import Users
 
 def create_service(**kwargs):
     service = Servicio(**kwargs)
@@ -98,7 +98,7 @@ def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, us
         query = query.join(Solicitud.servicio).filter(Servicio.tipo_servicio == tipo)
 
     if username:
-        query = query.join(Solicitud.cliente).filter(ApiUsers.username == username)
+        query = query.join(Solicitud.cliente).filter(Users.nombre == username)
 
     # Ejecuta la consulta y obtén los resultados
     solicitudes = query.paginate(page=page, per_page=per_page)

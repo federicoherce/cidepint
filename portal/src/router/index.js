@@ -3,7 +3,7 @@ import Home from '../views/Home.vue'
 import Navbar from '../components/Navbar.vue' 
 import loginView from '../views/loginView.vue'
 import contacto from '../views/contacto.vue'
-import servicios from '../views/servicios.vue'
+import servicios from '../views/ServiciosView.vue'
 import detallesServicio from '../views/detallesServicio.vue'
 
 const routes = [
@@ -29,7 +29,7 @@ const routes = [
   },
   {
     path: '/servicios',
-    name: "servicios",
+    name: "ServiciosView",
     component: servicios
   },
   {
@@ -44,7 +44,5 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-
-
 
 export default router

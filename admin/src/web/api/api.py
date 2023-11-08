@@ -110,17 +110,24 @@ def search_services():
     try:
         request_data = paginated_services.load(request.args)
     except ValidationError:
-        return jsonify({"error": "Parametros invalidos"}), 400
+        return jsonify({"error": "Parámetros inválidos"}), 400
 
     page = request_data['page']
     per_page = request_data['per_page']
     q = request_data['q']
-    if 'tipo' in request_data and request_data['tipo'] is not None:
-        tipo = request_data['tipo']
-        list_services_paginated = services.paginate_services_type_and_keywords(tipo, q, page, per_page)
-    else:
-        list_services_paginated = services.paginate_services_keyword(q, page, per_page)
-    serialized_services = service_schema.dump(list_services_paginated.items, many=True)
+    tipo = request_data.get('tipo')
+
+    list_services_paginated = (
+        services.paginate_services_type_and_keywords(tipo, q, page, per_page)
+        if tipo is not None
+        else services.paginate_services_keyword(q, page, per_page)
+    )
+
+    serialized_services = [
+        {**service_schema.dump(servicio), 'institucion': servicio.institucion.nombre}
+        for servicio in list_services_paginated.items
+    ]
+
     response_data = {
         "data": serialized_services,
         "page": page,
@@ -128,6 +135,7 @@ def search_services():
         "total": list_services_paginated.total
     }
     return paginated_services.dump(response_data), 200
+
 
 
 @api_bp.get("/institutions")

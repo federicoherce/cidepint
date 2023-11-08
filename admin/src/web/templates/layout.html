@@ -103,27 +103,25 @@
     <div id="content">
         {% block content %}{% endblock %}
     </div>
-    <div id="footer">
-        <footer class="bg-light text-dark">
-            <div class="container py-3">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        {% with contact_info=info_contacto() %}
-                        <p>{{ contact_info.address }}</p>
-                        <p>Teléfono: {{ contact_info.telefono }}</p>
-                        <p>Correo Electrónico: {{ contact_info.email }}</p>
-                        <p>Dirección: {{ contact_info.direccion }}</p>
-                        {% endwith %}
-                        <p>Proyecto de Software 2023 - Grupo 17: 
-                            <a href="https://gitlab.catedras.linti.unlp.edu.ar/proyecto2023/proyectos/grupo17">
-                                <i class="fab fa-gitlab"></i> GitLab
-                            </a>
-                        </p>
-                        <img id="logo" src="{{ url_for('static', filename='images/cidepint.jpg') }}" alt="Banner de logos" style="max-width: 100%; height: auto;">
-                    </div>
+    <footer class="bg-light text-dark">
+        <div class="container py-3">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    {% with contact_info=info_contacto() %}
+                    <p>{{ contact_info.address }}</p>
+                    <p>Teléfono: {{ contact_info.telefono }}</p>
+                    <p>Correo Electrónico: {{ contact_info.email }}</p>
+                    <p>Dirección: {{ contact_info.direccion }}</p>
+                    {% endwith %}
+                    <p>Proyecto de Software 2023 - Grupo 17: 
+                        <a href="https://gitlab.catedras.linti.unlp.edu.ar/proyecto2023/proyectos/grupo17">
+                            <i class="fab fa-gitlab"></i> GitLab
+                        </a>
+                    </p>
+                    <img id="logo" src="{{ url_for('static', filename='images/cidepint.jpg') }}" alt="Banner de logos" style="max-width: 100%; height: auto;">
                 </div>
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
 </body>
 </html>

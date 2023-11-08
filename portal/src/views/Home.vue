@@ -1,4 +1,5 @@
 <template>
+  <section>
   <div>
     <h1>Bienvenido a nuestro portal de servicios</h1>
 
@@ -16,6 +17,7 @@
       </ul>
     </div>
   </div>
+  </section>
 </template>
 
 <script>

@@ -5,7 +5,8 @@ class ServiceSchema(Schema):
     id = fields.Int(dump_only=True)
     nombre = fields.Str()
     descripcion = fields.Str()
-    tipo = fields.Str(validate=validate.OneOf(['Análisis', 'Desarrollo', 'Consultoría']))
+    institucion = fields.Str()
+    tipo_servicio = fields.Str(validate=validate.OneOf(['Análisis', 'Desarrollo', 'Consultoría']))
     keywords = fields.Str()
     habilitado = fields.Boolean()
 

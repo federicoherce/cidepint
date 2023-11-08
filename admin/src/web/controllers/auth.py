@@ -57,7 +57,9 @@ def authenticate():
 @auth_bp.route('/logout')
 def logout():
     if 'user_id' in session:
-        session.pop('user_id', None)
+        #session.pop('user_id', None)
+        #session.pop('google_token', None)
+        session.clear()
         return redirect(url_for('home.index'))
     else:
         flash("No hay usuario logueado. Por favor, inicia sesión antes de cerrar sesión.", "warning")
@@ -149,41 +151,46 @@ def save_password(email, token):
 
 @auth_bp.get("/google")
 def google():
-    print(f"FFFFFASDASDSAD {current_app.extensions['oauthlib.client'].google}")
     return current_app.extensions['oauthlib.client'].google.authorize(
-        callback=url_for('auth.google_authorization', _external=True)
+        callback=url_for('auth.google_authorized', _external=True)
     )
 
 
-@auth_bp.route("/google/authorization")
-def google_authorization():
+@auth_bp.get("/google/authorized")
+def google_authorized():
     response = current_app.extensions['oauthlib.client'].google.authorized_response()
     if response is None or response.get('access_token') is None:
         abort(401)
 
-    print(response)
     session['google_token'] = (response['access_token'], '')
     google_user = current_app.extensions['oauthlib.client'].google.get('userinfo')
     user_info = google_user.data
-
-    user_email = user_info['email']
-    user_name = user_info.get('name')
-    user_lastname = user_info.get('family_name')
+    user_email = user_info.get('email')
 
     existe = auth.find_user_by_mail(user_email)
     if existe:
-        flash('Esta cuenta ya fue registrada anteriormente.', 'error')
-        return redirect(url_for('auth.register'))
+        msg = 'La sesión se inició correctamente.'
+        if existe.password is not None and existe.google_id is None:
+            google_id = user_info.get('id')
+            auth.add_google_id(existe, google_id)
+            msg += 'Tu cuenta de Google se asoció junto con la cuenta que ya tenías.'
+        create_session_google(existe, session)
+        flash(msg, 'success')
+        return redirect(url_for('home.index'))
+    else:
+        user_name = user_info.get('given_name')
+        user_lastname = user_info.get('family_name')
+        user = auth.create_user_no_pw(
+            nombre=user_name,
+            apellido=user_lastname,
+            email=user_email
+        )
+        create_session_google(user, session)
+        flash('Tu cuenta de Google ha sido añadida con éxito!', 'success')
+        return redirect(url_for('home.index'))
 
-    token = generate_confirmation_token()
 
-    auth.create_user_no_pw(
-        nombre=user_name,
-        apellido=user_lastname,
-        email=user_email,
-        token=token
-    )
-
-    send_confirmation_email(user_email, token)
-    flash('Tu cuenta ha sido creada, te enviamos un mail', 'success')
-    return redirect(url_for('home.index'))
+def create_session_google(user, session):
+    session['user_id'] = user.email
+    session["is_superadmin"] = user_is_superadmin(user)
+    session["permissions"] = users.list_permissions_by_user(user)

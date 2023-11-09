@@ -14,7 +14,10 @@
     <br>
   </div>
   <br>
-  <button @click="realizarAccion">Solicitar</button>
+<router-link :to="{ name: 'solicitud', params: { id: servicio.id} }">
+  <button>Solicitar</button>
+</router-link>
+
   <br>
   <h1 style="text-align:center">{{ institucion.nombre }}</h1>
   <div class="detalles">

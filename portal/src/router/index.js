@@ -5,6 +5,7 @@ import loginView from '../views/loginView.vue'
 import contacto from '../views/contacto.vue'
 import servicios from '../views/ServiciosView.vue'
 import detallesServicio from '../views/detallesServicio.vue'
+import solicitud from '../views/solicitud.vue'
 
 const routes = [
   {
@@ -37,6 +38,11 @@ const routes = [
     name: "detallesServicio",
     component: detallesServicio,
     props: true
+  },
+  {
+    path: '/solicitud/:id', 
+    name: 'solicitud',
+    component: solicitud, 
   }
 ]
 

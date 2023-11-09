@@ -16,13 +16,18 @@
     name: 'Navbar',
 
 
+  created() {
+    // Al crear el componente, almacena el store en una variable local
+    this.store = useAuthStore();
+  },
+  
   computed: {
     loggedIn(){
-      // Usa la información de inicio de sesión para determinar si el usuario ha iniciado sesión
-      const store = useAuthStore();
-      return store.isLoggedIn;
+      return this.store.getIsLoggedIn;
     }
-  }
+  },
+
+
   }
   </script>
   

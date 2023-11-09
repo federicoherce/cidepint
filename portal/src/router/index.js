@@ -40,7 +40,7 @@ const routes = [
     props: true
   },
   {
-    path: '/solicitud/:id', 
+    path: '/solicitud/:id/:institucion_id', 
     name: 'solicitud',
     component: solicitud, 
   }

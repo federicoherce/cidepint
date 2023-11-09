@@ -14,7 +14,7 @@
     <br>
   </div>
   <br>
-<router-link :to="{ name: 'solicitud', params: { id: servicio.id} }">
+  <router-link :to="{ name: 'solicitud', params: { id: servicio.id,institucion_id: `${institucion.id}`} }">
   <button>Solicitar</button>
 </router-link>
 

@@ -27,19 +27,21 @@ import { apiService } from '@/api';
         detalle: "",
         solicitudEnviada: false,
         servicio : {},
+        institucion : {},
       };
     },
     created() {
         this.obtenerServicio();
+        this.obtenerInstitucion(this.$route.params.institucion_id);
   },
     methods: {
     async enviarSolicitud() {
   try {
     const csrfToken = localStorage.getItem('csrfToken'); 
     const jwtToken = localStorage.getItem('jwt'); 
-    if (!this.servicio.habilitado){
-        alert("El servicio no está habilitado");
-        throw new Error("El servicio no está habilitado");
+    if (!this.institucion.habilitado){
+        alert("El centro no está habilitado");
+        throw new Error("Este centro no está habilitado");
     }
     const respuesta = await apiService.post('api/me/requests', {
       detalles: this.detalle,
@@ -67,7 +69,14 @@ import { apiService } from '@/api';
         console.error('Error al obtener la información del servicio', error);
       }
     },
-
+    async obtenerInstitucion(institucionId) {
+      try {
+        const respuesta = await apiService.get(`/api/instituciones/${institucionId}`);
+        this.institucion = respuesta.data;
+      } catch (error) {
+        console.error('Error al obtener la información de la institución', error);
+      }
+    },
     },
   };
 </script>

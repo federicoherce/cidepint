@@ -69,7 +69,7 @@ import { apiService } from '@/api';
         console.error('Error al obtener la información del servicio', error);
       }
     },
-    async obtenerInstitucion(institucionId) {
+ async obtenerInstitucion(institucionId) {
       try {
         const respuesta = await apiService.get(`/api/instituciones/${institucionId}`);
         this.institucion = respuesta.data;

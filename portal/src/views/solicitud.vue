@@ -37,6 +37,10 @@ import { apiService } from '@/api';
   try {
     const csrfToken = localStorage.getItem('csrfToken'); 
     const jwtToken = localStorage.getItem('jwt'); 
+    if (!this.servicio.habilitado){
+        alert("El servicio no está habilitado");
+        throw new Error("El servicio no está habilitado");
+    }
     const respuesta = await apiService.post('api/me/requests', {
       detalles: this.detalle,
       servicio_id: this.$route.params.id,

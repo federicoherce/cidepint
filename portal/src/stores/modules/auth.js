@@ -6,7 +6,7 @@ export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     user: null,
-    isLoggedIn: false, // Asegúrate de que esta propiedad esté declarada aquí
+    isLoggedIn: localStorage.getItem('jwt') != null ? true : false // Asegúrate de que esta propiedad esté declarada aquí
   }),
   getters: {
     getUser: (state) => state.user,

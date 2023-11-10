@@ -20,7 +20,8 @@
   <div class="detalles">
     <ul> 
       <li> Informacion: {{ institucion.informacion }} </li>
-      <li> Direccion: {{ institucion.direccion }} </li>
+      <li> Calle: {{ institucion.calle }} </li>
+      <li> Numero: {{ institucion.numero }} </li>
       <li> Localización: {{ institucion.localizacion }} </li>
       <li> Horarios: {{ institucion.horarios }} </li>
       <li> Contacto: {{ institucion.contacto }} - va en mapa </li>

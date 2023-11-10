@@ -24,10 +24,8 @@
       <li> Numero: {{ institucion.numero }} </li>
       <li> Localización: {{ institucion.localizacion }} </li>
       <li> Horarios: {{ institucion.horarios }} </li>
-      <li> Contacto: {{ institucion.contacto }} - va en mapa </li>
       <li v-if="institucion.habilitado"> - Habilitado: Si </li>
       <li v-else> Habilitado: No </li>
-      <li>  Web: {{ institucion.web }} - va en mapa </li>
     </ul>
   </div>
   <br>

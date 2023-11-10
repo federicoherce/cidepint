@@ -17,8 +17,6 @@
     </div>
     <div v-else>
       <p class="success-message">¡Sesión iniciada correctamente!</p>
-      <button class="btn btn-danger" type="button" @click="logout">Logout</button>
-
     </div>
   </div>
 </template>
@@ -48,23 +46,6 @@ export default {
     }
   },
   methods: {
-    async logout() {  
-      try {
-         const response = await apiService.get('api/logout_jwt',{
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-          }})
-         localStorage.removeItem('jwt');
-         console.log(response.data.message);
-         this.store.logoutUser()
-         this.$router.push({ name: 'Home' });
-    }
-    catch (error) {
-        console.error(error);
-      }},
-
-         
     async login() {
       try {
         const userData = {

@@ -5,17 +5,23 @@
         <li><router-link to="/contacto">Contacto</router-link></li>
         <li><router-link to="/servicios">Servicios</router-link></li>
         <li><div v-if="!loggedIn" class="login-form"><router-link to="/login">Iniciar sesión</router-link></div></li>
-        <li><div v-if="loggedIn" class="login-form"><router-link to="/login">Cerrar sesión</router-link></div></li> 
+        <li><div v-if="loggedIn" class="login-form"><router-link to="/logout">Cerrar sesión</router-link></div></li> 
       </ul>
     </nav>
   </template>
   
 <script>
   import { useAuthStore } from '@/stores/modules/auth';
+  import logout from '../components/logout.vue'
+
+
+
   export default {
     name: 'Navbar',
 
-
+    components: {
+      logout
+  },
   created() {
     // Al crear el componente, almacena el store en una variable local
     this.store = useAuthStore();

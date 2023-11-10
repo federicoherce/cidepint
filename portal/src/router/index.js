@@ -6,6 +6,7 @@ import contacto from '../views/contacto.vue'
 import servicios from '../views/ServiciosView.vue'
 import detallesServicio from '../views/detallesServicio.vue'
 import solicitud from '../views/solicitud.vue'
+import logout from '../components/logout.vue'
 
 const routes = [
   {
@@ -43,6 +44,12 @@ const routes = [
     path: '/solicitud/:id/:institucion_id', 
     name: 'solicitud',
     component: solicitud, 
+  }
+  ,
+  {
+    path: '/logout',
+    name: 'logout',
+    component: logout, 
   }
 ]
 

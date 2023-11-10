@@ -43,6 +43,10 @@ import { apiService } from '@/api';
         alert("El centro no está habilitado");
         throw new Error("Este centro no está habilitado");
     }
+    if(localStorage.getItem('jwt') == null){
+        alert("Debe iniciar sesión para enviar una solicitud");
+        throw new Error("Debe iniciar sesión para enviar una solicitud");
+    }
     const respuesta = await apiService.post('api/me/requests', {
       detalles: this.detalle,
       servicio_id: this.$route.params.id,

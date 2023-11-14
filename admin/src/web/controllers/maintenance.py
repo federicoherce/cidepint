@@ -93,7 +93,8 @@ def index_paginado():
     if not has_permissions(['config_show']):
         abort(401)
     form = paginadoForm()
-    return render_template('configuraciones/paginado.html', form=form)
+    per_page = configuracion.get_per_page()
+    return render_template('configuraciones/paginado.html', form=form, per_page = per_page)
 
 
 @maintenance_bp.post('/update_paginado')

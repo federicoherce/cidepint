@@ -6,7 +6,9 @@
     <title>Selección de Modo de Mantenimiento</title>
 </head>
 <body>
-    <h1>Activar/Desactivar mantenimiento</h1>
+    <h1>Activar/Desactivar mantenimiento</h1>      
+    <br>
+    <h5><span class="text-success ml-0">Mensaje actual:</span> "{{ mensaje }}"</h5>
     <form method="POST" action="{{ url_for('maintenance.toggle_maintenance') }}">
         {{ form.hidden_tag() }}
         {% if not  is_maintenance() %}

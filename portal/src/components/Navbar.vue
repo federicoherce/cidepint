@@ -38,24 +38,25 @@
   </script>
   
   <style scoped>
-nav {
-  background-color: #333;
-  color: #fff;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  text-decoration: none;
-  color: #fff;
-}
+  nav {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+  } 
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
 </style>

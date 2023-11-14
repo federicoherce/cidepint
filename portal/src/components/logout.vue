@@ -34,6 +34,7 @@ export default {
          this.$router.push({ name: 'Home' });
     }
     catch (error) {
+        this.$router.push({ name: 'loginView' });
         console.error(error);
       }},
 

@@ -63,6 +63,7 @@ import { apiService } from '@/api';
     this.solicitudEnviada = true;
   } catch (error) {
     console.error('Error al enviar la solicitud', error);
+    this.$router.push({ name: 'loginView' });
   }},
 
   async obtenerServicio() {

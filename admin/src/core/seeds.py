@@ -70,7 +70,8 @@ def run():
     superadmin_institution = instituciones.create_institucion(
         nombre="Institucion de Superadministradores",
         informacion="",
-        direccion="",
+        calle="",
+        numero="",
         localizacion="",
         palabras_claves="",
         horarios="",
@@ -81,7 +82,8 @@ def run():
     cidepint_institution = instituciones.create_institucion(
         nombre="Institucion CIDEPINT",
         informacion="Somos la institución principal",
-        direccion="Av. 52 e/ 121 y 122",
+        calle="10",
+        numero="1356",
         localizacion="La Plata",
         palabras_claves="Pinturas Recubrimientos Investigacion Centro",
         horarios="08:00hs - 20:00hs",
@@ -92,7 +94,8 @@ def run():
     nueva_institucion = instituciones.create_institucion(
         nombre="Nueva Institucion",
         informacion="Somos",
-        direccion="Av. 52 ",
+        calle="8",
+        numero="755",
         localizacion="Bs As",
         palabras_claves="Pinturas",
         horarios="24 hs",
@@ -103,7 +106,8 @@ def run():
     institucion1 = instituciones.create_institucion(
         nombre="Institución 1",
         informacion="Somos la institución 1",
-        direccion="Calle 50 & Av. 120",
+        calle="50",
+        numero="1200",
         localizacion="La Plata",
         palabras_claves="Software Proyecto",
         horarios="10:00hs - 19:00hs",

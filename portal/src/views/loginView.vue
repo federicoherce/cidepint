@@ -1,22 +1,27 @@
 <template>
-  <div class="login-container">
-    <div v-if="!loggedIn" class="login-form">
-      <h2 class="form-title">Iniciar Sesión</h2>
-      <form action class = "form" @submit.prevent="login">
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input v-model="user.email" placeholder="Email" class="form-control" type="email" id="email" required>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div v-if="!loggedIn" class="card">
+          <div class="card-body">
+            <h2 class="card-title text-center">Iniciar sesión</h2>
+            <form @submit.prevent="login">
+              <div class="mb-3">
+                <label for="email" class="form-label">Correo electrónico:</label>
+                <input v-model="user.email" type="email" id="email" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input v-model="user.password" type="password" id="password" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+            </form>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input v-model="user.password" placeholder="Password" type="password" class="form-control" id="password" required>
+        <div v-else>
+          <p class="success-message text-center">¡Sesión iniciada correctamente!</p>
         </div>
-        <button class="btn btn-primary" type="submit">Login</button>
-      </form>
-      <p v-if="error" class="error-message">Error: Correo electrónico o contraseña incorrectos.</p>
-    </div>
-    <div v-else>
-      <p class="success-message">¡Sesión iniciada correctamente!</p>
+      </div>
     </div>
   </div>
 </template>

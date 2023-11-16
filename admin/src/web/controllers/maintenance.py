@@ -16,7 +16,8 @@ maintenance_bp = Blueprint("maintenance", __name__, url_prefix="/maintenance")
 def index():
     if not has_permissions(['config_show']):
         abort(401)
-    return render_template('configuraciones/maintenance_form.html', form=MaintenanceForm())
+    mensaje = configuracion.get_mensaje()  
+    return render_template('configuraciones/maintenance_form.html', form=MaintenanceForm(),mensaje=mensaje)
 
 
 @maintenance_bp.post('/toggle')
@@ -93,7 +94,8 @@ def index_paginado():
     if not has_permissions(['config_show']):
         abort(401)
     form = paginadoForm()
-    return render_template('configuraciones/paginado.html', form=form)
+    per_page = configuracion.get_per_page()
+    return render_template('configuraciones/paginado.html', form=form, per_page = per_page)
 
 
 @maintenance_bp.post('/update_paginado')

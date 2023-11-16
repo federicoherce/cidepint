@@ -6,11 +6,15 @@ export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     user: null,
-    isLoggedIn: localStorage.getItem('jwt') != null ? true : false // Asegúrate de que esta propiedad esté declarada aquí
+    isLoggedIn:false // Asegúrate de que esta propiedad esté declarada aquí
   }),
   getters: {
     getUser: (state) => state.user,
     getIsLoggedIn: (state) => state.isLoggedIn,
+  },
+  persist: {
+    storage: sessionStorage,
+    paths: ['isLoggedIn'],
   },
   actions: {
     async axiosUser() {

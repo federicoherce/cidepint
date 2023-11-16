@@ -49,15 +49,15 @@
 
     <nav aria-label="Page navigation">
       <ul class="pagination">
-        <li class="page-item" :class="{ 'disabled': servicios.page === 1 }">
+        <li class="page-item" v-if="servicios.page > 1">
           <a class="page-link" @click="cambiarPagina(servicios.page - 1)" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <li class="page-item" v-for="pageNumber in servicios.pages" :key="pageNumber" :class="{ 'active': servicios.page === pageNumber }">
+        <li class="page-item" v-for="pageNumber in servicios.pages" :key="pageNumber" :class="{ 'active': servicios.page == pageNumber }">
           <a class="page-link" @click="cambiarPagina(pageNumber)">{{ pageNumber }}</a>
         </li>
-        <li class="page-item" :class="{ 'disabled': servicios.page === servicios.pages }">
+        <li class="page-item" v-if="servicios.page < servicios.pages">
           <a class="page-link" @click="cambiarPagina(servicios.page + 1)" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
@@ -77,7 +77,7 @@ export default {
       servicios: {
         items: [],
         page: 1,
-        per_page: 10,
+        per_page: 1,
         total: 0,
         pages: 0
       },
@@ -102,7 +102,7 @@ export default {
         console.error('Error al obtener los servicios', error);
       }
     },
-    cambiarPagina() {
+    cambiarPagina(pageNumber) {
       if (pageNumber >= 1 && pageNumber <= this.servicios.pages) {
         this.servicios.page = pageNumber
         this.obtenerServicios()

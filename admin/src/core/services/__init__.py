@@ -49,6 +49,10 @@ def paginate_services(page, per_page, institucion_id):
     return Servicio.query.filter_by(institucion_id=institucion_id).paginate(page=page, per_page=per_page)
 
 
+def paginate_services_api(page, per_page):
+    return Servicio.query.paginate(page=page, per_page=per_page)
+
+
 # ------------------------ SOLICITUDES
 
 

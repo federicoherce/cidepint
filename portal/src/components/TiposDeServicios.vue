@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="form-group">
       <label for="seleccionTipoServicio">Tipo de Servicio:</label>
       <select id="seleccionTipoServicio" class="form-control" v-model="tipoServicioSeleccionado">
         <option value="">Todos</option>

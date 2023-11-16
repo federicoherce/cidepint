@@ -31,3 +31,7 @@ class Institucion(db.Model):
         self.web = web
         self.contacto = contacto
         self.habilitado = habilitado
+    
+
+    def __str__(self):
+        return self.nombre

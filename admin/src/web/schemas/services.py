@@ -17,11 +17,12 @@ service_schema = ServiceSchema()
 
 class PaginatedServicesSchema(Schema):
     data = fields.Nested(ServiceSchema, many=True)
-    q = fields.Str(required=True)
-    tipo = fields.Str(validate=validate.OneOf(['Análisis', 'Desarrollo', 'Consultoría']))
+    #q = fields.Str(required=True)
+    #tipo = fields.Str(validate=validate.OneOf(['Análisis', 'Desarrollo', 'Consultoría']))
     page = fields.Integer(validate=validate.Range(min=1), missing=1)
     per_page = fields.Integer(validate=validate.Range(min=1, max=10), missing=1)
     total = fields.Integer()
+    pages = fields.Integer()
 
 paginated_services = PaginatedServicesSchema()
 

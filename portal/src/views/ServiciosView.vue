@@ -35,7 +35,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="servicio in servicios" :key="servicio.id">
+        <tr v-for="servicio in servicios.data" :key="servicio.id">
           <router-link :to="{name: 'detallesServicio', params: { id: servicio.id } }">
           <td>{{ servicio.nombre }}</td>
           </router-link>
@@ -46,17 +46,26 @@
         </tr>
       </tbody>
     </table>
-  </div>
-</template>
 
-<!--<ul>
-        <li v-for="servicio in servicios" :key="servicio.id">
-            <router-link :to="{ name: 'detallesServicio', params: { id: servicio.id } }">
-                {{ servicio.nombre }}
-            </router-link>
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" :class="{ 'disabled': servicios.page === 1 }">
+          <a class="page-link" @click="cambiarPagina(servicios.page - 1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" v-for="pageNumber in servicios.pages" :key="pageNumber" :class="{ 'active': servicios.page === pageNumber }">
+          <a class="page-link" @click="cambiarPagina(pageNumber)">{{ pageNumber }}</a>
+        </li>
+        <li class="page-item" :class="{ 'disabled': servicios.page === servicios.pages }">
+          <a class="page-link" @click="cambiarPagina(servicios.page + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
         </li>
       </ul>
-    </div>-->
+    </nav>
+  </div>
+</template>
   
 <script>
 import { apiService } from '@/api';
@@ -65,7 +74,13 @@ import TiposDeServicios from '../components/TiposDeServicios.vue';
 export default {
   data() {
     return {
-      servicios: {},
+      servicios: {
+        items: [],
+        page: 1,
+        per_page: 10,
+        total: 0,
+        pages: 0
+      },
       tipoServicioSeleccionado: ''
     };
   },
@@ -75,10 +90,22 @@ export default {
   methods: {
     async obtenerServicios() {
       try {
-        const respuesta = await apiService.get('api/all_services');
+        const respuesta = await apiService.get('api/all_services', {
+          params: {
+            page: this.servicios.page,
+            per_page: this.servicios.per_page
+          }  
+        });
+        //const respuesta = await apiService.get('api/all_services');
         this.servicios = respuesta.data;
       } catch (error) {
         console.error('Error al obtener los servicios', error);
+      }
+    },
+    cambiarPagina() {
+      if (pageNumber >= 1 && pageNumber <= this.servicios.pages) {
+        this.servicios.page = pageNumber
+        this.obtenerServicios()
       }
     }
   },

@@ -11,13 +11,13 @@ export default {
   },
   mounted() {
     this.obtenerServicio();
+  
   },
   methods: {
     async obtenerServicio() {
       try {
         const respuesta = await apiService.get(`/api/services/${this.id}`);
         this.servicio = respuesta.data;
-
         this.obtenerInstitucion(this.servicio.institucion_id);
       } catch (error) {
         console.error('Error al obtener la información del servicio', error);

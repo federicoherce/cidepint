@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/modules/auth';
 
+const baseURL = process.env.NODE_ENV === 'production' ? 'https://admin-grupo17.proyecto2023.linti.unlp.edu.ar/' : 'http://localhost:5000/';
+
 const apiService = axios.create({
-  baseURL: 'http://localhost:5000/',
+  baseURL,
   withCredentials: true,
   xsrfCookieName: 'csrf_access_token'
 });

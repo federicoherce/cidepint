@@ -3,7 +3,7 @@ from src.core import api
 from src.core import auth
 from src.web.schemas.auth import auth_schema, profile_schema
 from src.web.schemas.services import service_schema, solicitud_schema, request_show_schema
-from src.web.schemas.services import solicitudes_schema, get_solicitud_schema, paginated_services
+from src.web.schemas.services import solicitudes_schema, get_solicitud_schema, paginated_services, paginated_search_services
 from src.web.schemas.service_type import service_type
 from src.web.schemas.institutions import paginated_schema, institution_schema
 from marshmallow import ValidationError
@@ -23,6 +23,7 @@ def user_jwt():
     current_user = get_jwt_identity()
     user = auth.get_user_by_id(current_user)
     return profile_schema.dump(user), 200
+
 
 @api_bp.post('/login_jwt')
 def login_jwt():
@@ -45,6 +46,7 @@ def logout_jwt():
   response = jsonify(message="Logged out successfully")
   unset_jwt_cookies(response)
   return response, 200
+
 
 @api_bp.post("/auth")
 def login():
@@ -111,24 +113,6 @@ def contacto():
 
 @api_bp.get("/all_services")
 def all_services():
-    services_list = services.get_all_services() 
-    data = service_schema.dump(services_list, many=True)  
-    return data, 200
-    
-
-
-@api_bp.get("/services-type")
-def services_type():
-    services_type_list = ["Analisis", "Consultoria", "Desarrollo"]
-    return service_type.dump({"data": services_type_list}), 200
-
-
-@api_bp.get("/services/search")
-def search_services():
-    """
-    Busqueda de servicios por keywords, tipo, página y número de pagina.
-    El parámetro q es obligatorio y los parámetros tipo, page y per_page opcionales
-    """
     try:
         request_data = paginated_services.load(request.args)
     except ValidationError:
@@ -136,28 +120,58 @@ def search_services():
 
     page = request_data['page']
     per_page = request_data['per_page']
-    q = request_data['q']
-    tipo = request_data.get('tipo')
-
-    list_services_paginated = (
-        services.paginate_services_type_and_keywords(tipo, q, page, per_page)
-        if tipo is not None
-        else services.paginate_services_keyword(q, page, per_page)
-    )
-
-    serialized_services = [
-        {**service_schema.dump(servicio), 'institucion': servicio.institucion.nombre}
-        for servicio in list_services_paginated.items
-    ]
+    services_list = services.paginate_services_api(page, per_page)
 
     response_data = {
-        "data": serialized_services,
-        "page": page,
-        "per_page": per_page,
-        "total": list_services_paginated.total
+        'data': service_schema.dump(services_list, many=True),
+        'total': services_list.total,
+        'page': page,
+        'per_page': per_page,
+        'pages': services_list.pages
     }
     return paginated_services.dump(response_data), 200
 
+
+@api_bp.get("/services-type")
+def services_type():
+    services_type_list = ["Análisis", "Consultoría", "Desarrollo"]
+    return service_type.dump({"data": services_type_list}), 200
+
+
+@api_bp.get("/search_services")
+def search_services():
+    try:
+        request_data = paginated_search_services.load(request.args)
+    except ValidationError:
+        return jsonify({"error": "Parámetros inválidos"}), 400
+
+    page = request_data['page']
+    per_page = request_data['per_page']
+    nombre = request_data['nombre']
+    descripcion = request_data['descripcion']
+    institucion = request_data['institucion']
+    tipo_servicio = request_data['tipo_servicio']
+    keywords = request_data['keywords']
+
+    services_list = services.search_services_api(
+        nombre=nombre,
+        descripcion=descripcion,
+        institucion=institucion,
+        tipo_servicio=tipo_servicio,
+        keywords=keywords,
+        page=page,
+        per_page=per_page
+    )
+
+    response_data = {
+        'data': service_schema.dump(services_list, many=True),
+        'total': services_list.total,
+        'page': page,
+        'per_page': per_page,
+        'pages': services_list.pages
+    }
+
+    return paginated_services.dump(response_data), 200
 
 
 @api_bp.get("/institutions")

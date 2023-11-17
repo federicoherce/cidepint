@@ -2,6 +2,7 @@ from src.core.services.services import Servicio, Solicitud
 from src.core.api.api_user import ApiUsers
 from src.core.database import database as db
 from src.core.auth.user import Users
+from src.core.instituciones.institucion import Institucion
 
 def create_service(**kwargs):
     service = Servicio(**kwargs)
@@ -34,17 +35,6 @@ def delete_service(id):
     db.session.commit()
 
 
-def paginate_services_type_and_keywords(tipo, q, page, per_page):
-    return Servicio.query.filter(Servicio.tipo_servicio == tipo,
-                                 Servicio.habilitado == True,
-                                 Servicio.keywords.like(f"%{q}%")).paginate(page=page, per_page=per_page)
-
-
-def paginate_services_keyword(q, page, per_page):
-    return Servicio.query.filter(Servicio.habilitado == True,
-                                 Servicio.keywords.like(f"%{q}%")).paginate(page=page, per_page=per_page)
-
-
 def paginate_services(page, per_page, institucion_id):
     return Servicio.query.filter_by(institucion_id=institucion_id).paginate(page=page, per_page=per_page)
 
@@ -52,6 +42,22 @@ def paginate_services(page, per_page, institucion_id):
 def paginate_services_api(page, per_page):
     return Servicio.query.paginate(page=page, per_page=per_page)
 
+
+def search_services_api(**kwargs):
+    query = Servicio.query
+
+    if 'nombre' in kwargs and kwargs['nombre']:
+        query = query.filter(Servicio.nombre.ilike(f"%{kwargs['nombre']}"))
+    if 'descripcion' in kwargs and kwargs['descripcion']:
+        query = query.filter(Servicio.descripcion.ilike(f"%{kwargs['descripcion']}"))
+    if 'institucion' in kwargs and kwargs['institucion']:
+        query = query.join(Servicio.institucion).filter(Institucion.nombre.ilike(f"%{kwargs['institucion']}"))
+    if 'tipo_servicio' in kwargs and kwargs['tipo_servicio']:
+        query = query.filter(Servicio.tipo_servicio == kwargs['tipo_servicio'])
+    if 'keywords' in kwargs and kwargs['keywords']:
+        query = query.filter(Servicio.keywords.ilike(f"%{kwargs['keywords']}"))
+    
+    return query.paginate(page=kwargs['page'], per_page=kwargs['per_page'])
 
 # ------------------------ SOLICITUDES
 
@@ -72,6 +78,7 @@ def paginate_solicitudes_api_id(page, per_page,id):
     solicitudes = Solicitud.query.filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
     return solicitudes
 
+
 def solicitudes_api_id(cliente_id, solicitud_id):
     """
     Este metodo devuelve una solicitud que pertenezca al cliente_id
@@ -79,6 +86,7 @@ def solicitudes_api_id(cliente_id, solicitud_id):
     """
     solicitudes = Solicitud.query.filter(Solicitud.cliente_id == cliente_id, Solicitud.id == solicitud_id).first()
     return solicitudes
+
 
 def paginate_solicitudes_filtradas(page, per_page, inicio, fin, estado, tipo, username, institucion_id):
     """

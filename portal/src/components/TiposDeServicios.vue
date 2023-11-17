@@ -1,7 +1,7 @@
 <template>
     <div class="form-group">
       <label for="seleccionTipoServicio">Tipo de Servicio:</label>
-      <select id="seleccionTipoServicio" class="form-control" v-model="tipoServicioSeleccionado">
+      <select id="seleccionTipoServicio" class="form-control" v-model="tipoServicio" @change="emitTipoServicio">
         <option value="">Todos</option>
         <option v-for="tipo in tiposDeServicios" :key="tipo">
           {{ tipo }}
@@ -14,26 +14,40 @@
   import { apiService } from '@/api';
   
   export default {
+    props: ['tipoElegido'],
+
     data() {
       return {
-        tipoServicioSeleccionado: '',
+        tipoServicio: this.tipoElegido,
         tiposDeServicios: [],
       };
     },
+
     async created() {
       await this.obtenerTiposDeServicio();
     },
+
     methods: {
       async obtenerTiposDeServicio() {
         try {
           const respuesta = await apiService.get('/api/services-type');
           this.tiposDeServicios = respuesta.data.data;
-          console.log('Tipos de servicio obtenidos:', this.tiposDeServicios);
         } catch (error) {
           console.error('Error al obtener tipos de servicio:', error);
         }
       },
+      emitTipoServicio() {
+        this.$emit('tipo-servicio-seleccionado', this.tipoServicio);
+      }
     },
+    watch: {
+      tipoElegido: function (nuevoValor) {
+        this.tipoServicio = nuevoValor;
+      },
+      tipoServicio: function (nuevoValor) {
+        this.$emit('update:tipoElegido', nuevoValor);
+      },
+    }
   };
 </script>
 

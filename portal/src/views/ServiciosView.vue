@@ -3,25 +3,30 @@
     <br>
     <h1 class="mt-4">Servicios</h1>
 
-    <TiposDeServicios/>
+    <TiposDeServicios :selectedTipo="tipoServicio" @tipo-servicio-seleccionado="actualizarTipoServicio"></TiposDeServicios>
 
     <div class="form-group">
-      <input type="text" class="form-control" v-model="titleSearch" placeholder="Buscar por título">
+      <input type="text" class="form-control" v-model="nombre" placeholder="Buscar por título">
     </div>
 
     <div class="form-group">
-      <input type="text" class="form-control" v-model="descriptionSearch" placeholder="Buscar por descripción">
+      <input type="text" class="form-control" v-model="descripcion" placeholder="Buscar por descripción">
     </div>
 
     <div class="form-group">
-      <input type="text" class="form-control" v-model="institutionSearch" placeholder="Buscar por institución">
+      <input type="text" class="form-control" v-model="institucion" placeholder="Buscar por institución">
     </div>
 
     <div class="form-group">
-      <input type="text" class="form-control" v-model="tagsSearch" placeholder="Buscar por palabras clave">
+      <input type="text" class="form-control" v-model="keywords" placeholder="Buscar por palabras clave">
     </div>
 
-    
+    <div class="form-group">
+      <button class="btn btn-primary" @click="buscarServicios">Buscar</button>
+      <button v-if="busqueda" class="btn btn-secondary" @click="deshacerBusqueda">Deshacer Búsqueda</button>
+    </div>
+
+
 
     <table class="table table-striped table-bordered">
       <thead>
@@ -42,7 +47,7 @@
           <td>{{ servicio.descripcion }}</td>
           <td>{{ servicio.institucion }}</td>
           <td>{{ servicio.keywords }}</td>
-          <td>{{ servicio.tipo }}</td>
+          <td>{{ servicio.tipo_servicio }}</td>
         </tr>
       </tbody>
     </table>
@@ -77,11 +82,16 @@ export default {
       servicios: {
         items: [],
         page: 1,
-        per_page: 1,
+        per_page: 3,
         total: 0,
         pages: 0
       },
-      tipoServicioSeleccionado: ''
+      busqueda: false,
+      nombre: '',
+      descripcion: '',
+      institucion: '',
+      keywords: '',
+      tipoServicio: ''
     };
   },
   components: {
@@ -96,17 +106,53 @@ export default {
             per_page: this.servicios.per_page
           }  
         });
-        //const respuesta = await apiService.get('api/all_services');
         this.servicios = respuesta.data;
+        this.busqueda = false;
       } catch (error) {
         console.error('Error al obtener los servicios', error);
       }
     },
+    async buscarServicios() {
+      try {
+        const respuesta = await apiService.get('api/search_services', {
+          params: {
+            nombre: this.nombre,
+            descripcion: this.descripcion,
+            institucion: this.institucion,
+            keywords: this.keywords,
+            tipo_servicio: this.tipoServicio,
+            page: this.servicios.page,
+            per_page: this.servicios.per_page
+          }
+        });
+        this.servicios = respuesta.data;
+        this.busqueda = true;
+      } catch(error) {
+          console.error('Error al obtener los servicios', error);
+      }
+    },
     cambiarPagina(pageNumber) {
       if (pageNumber >= 1 && pageNumber <= this.servicios.pages) {
-        this.servicios.page = pageNumber
-        this.obtenerServicios()
+        this.servicios.page = pageNumber;
+        if(!this.busqueda) {
+          this.obtenerServicios();
+        } else {
+          this.buscarServicios();
+        }
       }
+    },
+    actualizarTipoServicio(valor) {
+      this.tipoServicio = valor;
+    },
+    deshacerBusqueda() {
+      this.nombre = '';
+      this.descripcion = '';
+      this.institucion = '';
+      this.keywords = '';
+      this.tipoServicio = '';
+      this.busqueda = false;
+      this.obtenerServicios();
+
     }
   },
   mounted() {
@@ -116,4 +162,8 @@ export default {
 </script>
 
 <style>
+ .form-group {
+    display: flex;
+    justify-content: space-between;
+  }
 </style>

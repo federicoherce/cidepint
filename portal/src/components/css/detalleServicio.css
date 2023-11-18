@@ -1,13 +1,3 @@
-button {
-    font-size: 1em;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-    
 #mapa { 
     height: 400px;
     display: block;

@@ -1,14 +1,27 @@
 <template>
-    <nav>
-      <ul>
-        <li><router-link to="/">Inicio</router-link></li>
-        <li><router-link to="/contacto">Contacto</router-link></li>
-        <li><router-link to="/servicios">Servicios</router-link></li>
-        <li><div v-if="!loggedIn" class="login-form"><router-link to="/login">Iniciar sesión</router-link></div></li>
-        <li><div v-if="loggedIn" class="login-form"><router-link to="/logout">Cerrar sesión</router-link></div></li> 
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">CIDEPINT</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <router-link to="/" class="nav-link">Inicio</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/servicios" class="nav-link">Servicios</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/contacto" class="nav-link">Contacto</router-link>
+        </li>
+        <li v-if="!loggedIn" class="nav-item">
+          <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
+        </li>
+        <li v-if="loggedIn" class="nav-item">
+          <router-link to="/logout" class="nav-link">Cerrar sesión</router-link>
+        </li>
       </ul>
-    </nav>
-  </template>
+    </div>
+  </nav>
+</template>
   
 <script>
   import { useAuthStore } from '@/stores/modules/auth';

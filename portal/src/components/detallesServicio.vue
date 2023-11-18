@@ -1,45 +1,49 @@
 <template>
-  <div class="container my-5">
-    <h1 class="display-4 text-center">{{ servicio.nombre }}</h1>
-
-    <div class="detalles mt-4">
-      <h2>Detalles</h2>
-      <ul class="list-group">
-        <li class="list-group-item">Descripción: {{ servicio.descripcion }}</li>
-        <li class="list-group-item">Tipo: {{ servicio.tipo_servicio }}</li>
-        <li class="list-group-item" v-if="servicio.habilitado">Habilitado: Si</li>
-        <li class="list-group-item" v-else>Habilitado: No</li>
-      </ul>
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h1> Servicio </h1>
+          <p class="card-title"><b>Nombre: </b>{{servicio.nombre}}</p>
+          <p class="card-text"><b>Descripcion: </b>{{ servicio.descripcion }}</p>
+          <p class="card-text"><b>Tipo: </b>{{ servicio.tipo_servicio }}</p>
+          <p class="card-text"><b>Palabras Clave: </b>{{ servicio.keywords}}</p>
+          <p class="card-text" v-if="servicio.habilitado"><b>Habilitado: </b>Si</p>
+          <p class="card-text" v-else><b>Habilitado: </b>No</p>
+          <router-link :to="{ name: 'solicitud', params: { id: servicio.id, institucion_id: `${institucion.id}` } }">
+                <button class="btn btn-primary">Solicitar</button>
+          </router-link>
+        </div>
+      </div>
     </div>
-
-    <br>
-
-    <router-link :to="{ name: 'solicitud', params: { id: servicio.id, institucion_id: `${institucion.id}` } }">
-      <button class="btn btn-primary mt-3">Solicitar</button>
-    </router-link>
-
-    <br>
-
-    <h1 class="display-4 text-center mt-4">{{ institucion.nombre }}</h1>
-
-    <div class="detalles mt-4">
-      <ul class="list-group">
-        <li class="list-group-item">Información: {{ institucion.informacion }}</li>
-        <li class="list-group-item">Calle: {{ institucion.calle }}</li>
-        <li class="list-group-item">Número: {{ institucion.numero }}</li>
-        <li class="list-group-item">Localización: {{ institucion.localizacion }}</li>
-        <li class="list-group-item">Horarios: {{ institucion.horarios }}</li>
-        <li class="list-group-item" v-if="institucion.habilitado">Habilitado: Si</li>
-        <li class="list-group-item" v-else>Habilitado: No</li>
-      </ul>
-    </div>
-
-    <br>
-    <br>
-
-    <div id="mapa" class="mt-4" style="height: 400px;"></div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+        <h1> Institucion </h1>
+        <p class="card-title"><b>Nombre: </b>{{institucion.nombre}}</p>
+        <p class="card-text"><b>Informacion: </b>{{ institucion.informacion }}</p>
+        <p class="card-text"><b>Calle: </b>{{ institucion.calle }}</p>
+        <p class="card-text"><b>Numero: </b>{{ institucion.numero }}</p>
+        <p class="card-text"><b>Horarios: </b>{{ institucion.horarios }}</p>
+        <p class="card-text" v-if="institucion.habilitado"><b>Habilitado: </b>Si</p>
+        <p class="card-text" v-else><b>Habilitado: </b>No</p>
+        <p class="card-text"></p>
+       </div>
+     </div>
+   </div>
   </div>
+    <br>
+    <h2 style="text-align:center">Ubicacion</h2>
+    <div class="row mt-4">
+      <div class="col">
+        <div id="mapa" style="height: 400px;"></div>
+      </div>
+    </div>
 </template>
+
+
 
 <script>
 import detalleServicio from './javascript/detalleServicio.js';

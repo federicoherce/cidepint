@@ -6,11 +6,11 @@ export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     user: null,
-    isLoggedIn:false // Asegúrate de que esta propiedad esté declarada aquí
+    isLoggedIn:false
   }),
   getters: {
     getUser: (state) => state.user,
-    getIsLoggedIn: (state) => state.isLoggedIn,
+    getIsLoggedIn: (state) => state.isLoggedIn
   },
   persist: {
     storage: sessionStorage,
@@ -32,11 +32,6 @@ export const useAuthStore = defineStore({
         console.error(error);
         this.error = true;
       }},
-
-
-
-
-
     setUser(user) {
       this.user = user;
       this.isLoggedIn = true;

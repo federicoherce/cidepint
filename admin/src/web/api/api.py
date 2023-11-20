@@ -10,9 +10,10 @@ from marshmallow import ValidationError
 from src.core import services
 from src.core import configuracion
 from src.core import instituciones as module_institutions
-from src.core import auth
+from src.core import auth, users
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_jwt_extended import set_access_cookies,unset_jwt_cookies,jwt_required
+from src.web.helpers.auth import has_permissions
 
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
@@ -22,7 +23,13 @@ api_bp = Blueprint("api", __name__, url_prefix="/api")
 def user_jwt():
     current_user = get_jwt_identity()
     user = auth.get_user_by_id(current_user)
-    return profile_schema.dump(user), 200
+
+    statistics_permissions = [p for p in users.list_permissions_by_user(user) if p.startswith("statistics_")]
+
+    user_data = profile_schema.dump(user)
+    user_data["statistics_permissions"] = statistics_permissions
+
+    return user_data, 200
 
 
 @api_bp.post('/login_jwt')
@@ -37,7 +44,7 @@ def login_jwt():
     set_access_cookies(response, access_token)
     return response, 201
   else:
-    return jsonify(message="debe registrarse antes de hacer el login"), 401
+    return jsonify(message="Debe registrarse antes de hacer el login"), 401
 
 
 @api_bp.get('/logout_jwt')

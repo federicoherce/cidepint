@@ -11,13 +11,6 @@ def create_role(**kwargs):
     return role
 
 
-# Provisoriamente la dejo
-def assign_role_user(user, role):
-    user.roles.append(role)
-    role.usuarios.append(user)
-    db.session.commit()
-
-
 def assign_role_in_institution_to_user(role, institution, user):
     insertion = UserRoleInstitution(user.id, institution.id, role.id)
     db.session.add(insertion)

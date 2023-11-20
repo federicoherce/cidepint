@@ -282,3 +282,8 @@ def run():
         detalles="Detalles"
     )
 
+    services.create_solicitud(
+        servicio_id=1,
+        cliente_id=1,
+        detalles="Otros detalles"
+    )

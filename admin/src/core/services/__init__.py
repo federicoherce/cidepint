@@ -78,6 +78,18 @@ def paginate_solicitudes_api_id(page, per_page,id):
     solicitudes = Solicitud.query.filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
     return solicitudes
 
+def paginate_solicitudes_api_id(page, per_page, id, sort, order):
+
+    if order == 'asc':
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.asc(sort))
+    elif order == 'desc':
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.desc(sort))
+    else:
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id)
+
+    paginated_solicitudes = solicitudes.paginate(page=page, per_page=per_page)
+
+    return paginated_solicitudes
 
 def solicitudes_api_id(cliente_id, solicitud_id):
     """

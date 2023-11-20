@@ -244,12 +244,16 @@ def comentar_solicitud(id):
 def solicitudes():
     try:
         request_data = solicitudes_schema.load(request.args)
-    except ValidationError:
+    except ValidationError as err:
+        print(err.messages)  
+        print(err.valid_data) 
         return jsonify({"error": "Parametros invalidos"}), 400
 
     page = request_data['page']
     per_page = request_data['per_page']
-    solicitudes_paginadas = services.paginate_solicitudes_api_id(page, per_page, get_jwt_identity())
+    sort = request_data['sort']
+    order = request_data['order']
+    solicitudes_paginadas = services.paginate_solicitudes_api_id(page, per_page, get_jwt_identity(), sort, order)
     solicitudes_serializadas = get_solicitud_schema.dump(solicitudes_paginadas.items, many=True)
     response_data = {
         "data": solicitudes_serializadas,

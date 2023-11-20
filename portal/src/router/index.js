@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.vue'
 import loginView from '../views/loginView.vue'
 import contacto from '../components/contacto.vue'
 import servicios from '../views/ServiciosView.vue'
+import solicitudes from '../views/MisSolicitudes.vue'
 import detallesServicio from '../components/detallesServicio.vue'
 import solicitud from '../views/solicitud.vue'
 import logout from '../components/logout.vue'
@@ -50,6 +51,11 @@ const routes = [
     path: '/logout',
     name: 'logout',
     component: logout, 
+  },
+  {
+    path: '/solicitudes',
+    name: 'solicitudes',
+    component: solicitudes
   }
 ]
 

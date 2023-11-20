@@ -35,10 +35,10 @@ import { apiService } from '@/api';
         this.obtenerInstitucion(this.$route.params.institucion_id);
   },
     methods: {
-    async enviarSolicitud() {
+      async enviarSolicitud() {
   try {
     const csrfToken = localStorage.getItem('csrfToken'); 
-    const jwtToken = localStorage.getItem('jwt'); 
+    const jwtToken = localStorage.getItem('jwt');
     if (!this.institucion.habilitado){
         alert("El centro no está habilitado");
         throw new Error("Este centro no está habilitado");

@@ -34,8 +34,10 @@
      </div>
    </div>
   </div>
+  <br>
+  <br>
+  <hr>
     <br>
-    <h2 style="text-align:center">Ubicacion</h2>
     <div class="row mt-4">
       <div class="col">
         <div id="mapa" style="height: 400px;"></div>
@@ -52,6 +54,11 @@ export default detalleServicio;
 </script>
 
 <style>
-@import './css/detalleServicio.css';
-
+#mapa { 
+    height: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px
+}
 </style>

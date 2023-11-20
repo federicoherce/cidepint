@@ -2,17 +2,19 @@
   <section>
     <div class="container my-5">
       <h1 class="display-4 text-center">Bienvenido a CIDEPINT - Sitio público</h1>
+      <hr>
       <div class="image-container">
         <img src="cidepint1.jpg">
         <img src="cidepint2.jpg">
         <img src="cidepint3.jpg">
         <img src="cidepint4.jpg">
       </div>
+      <br>
       <p class="lead text-center">
         Aquí encontrarás una amplia gama de servicios ofrecidos por diversas instituciones.
         Puedes explorar y solicitar los servicios que necesitas de manera fácil y rápida.
       </p>
-
+      <hr>
       <ul class="list-group">
         <li class="list-group-item">
             <div>
@@ -50,16 +52,21 @@ export default {
 <style scoped>
     .image-container {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* Dos columnas */
-      gap: 10px; /* Espacio entre imágenes */
-      max-width: 600px; /* Ancho máximo del contenedor */
-      margin: 0 auto; /* Centrar el contenedor */
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 10px; 
+      max-width: 600px; 
+      margin: 0 auto; 
     }
 
     .image-container img {
-      width: 100%; /* Ocupar el 100% del ancho del contenedor */
-      height: auto; /* Mantener la proporción original */
-      max-width: 100%; /* Evitar que las imágenes se amplíen más allá de su tamaño original */
-      display: block; /* Eliminar el espacio adicional debajo de las imágenes */
+      width: 100%; 
+      height: auto;
+      max-width: 100%; 
+      display: block; 
+    }
+    hr {
+      border: 1px solid #131111; 
+      margin-top: 10px;
+      margin-bottom: 30px; 
     }
 </style>

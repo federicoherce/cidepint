@@ -1,7 +1,7 @@
 <template>
 <div class="container my-5">
     <h2 class="display-4 text-center">Información de Contacto</h2>
-
+    <hr>
     <div class="row mt-4">
         <div class="col-md-4">
             <div class="card">
@@ -62,4 +62,9 @@ export default {
 </script>
 
 <style>
+    hr {
+      border: 1px solid #131111; 
+      margin-top: 10px;
+      margin-bottom: 30px; 
+    }
 </style>

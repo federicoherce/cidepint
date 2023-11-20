@@ -10,7 +10,8 @@ export const useAuthStore = defineStore({
   }),
   getters: {
     getUser: (state) => state.user,
-    getIsLoggedIn: (state) => state.isLoggedIn
+    getIsLoggedIn: (state) => state.isLoggedIn,
+    getUserPermissions: (state) => state.user ? state.user.statistics_permissions : []
   },
   persist: {
     storage: sessionStorage,

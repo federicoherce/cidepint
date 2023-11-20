@@ -7,6 +7,10 @@ import servicios from '../views/ServiciosView.vue'
 import detallesServicio from '../components/detallesServicio.vue'
 import solicitud from '../views/solicitud.vue'
 import logout from '../components/logout.vue'
+import estadisticas from '../views/EstadisticasView.vue'
+import solicitudesPorEstado from '../components/SolicitudesPorEstado.vue'
+import topInstituciones from '../components/TopInstituciones.vue'
+import rankingServicios from '../components/RankingServicios.vue'
 
 const routes = [
   {
@@ -50,6 +54,28 @@ const routes = [
     path: '/logout',
     name: 'logout',
     component: logout, 
+  },
+  {
+    path: '/estadisticas',
+    name: 'EstadisticasView',
+    component: estadisticas,
+    children: [
+      {
+        path: 'solicitudes-por-estado',
+        name: 'SolicitudesPorEstado',
+        component: solicitudesPorEstado
+      },
+      {
+        path: 'top-10-instituciones',
+        name: 'TopInstituciones',
+        component: topInstituciones
+      },
+      {
+        path: 'ranking-servicios',
+        name: 'RankingServicios',
+        component: rankingServicios
+      }
+    ]
   }
 ]
 

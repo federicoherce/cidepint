@@ -6,15 +6,23 @@
         <li class="nav-item">
           <router-link to="/" class="nav-link">Inicio</router-link>
         </li>
+
         <li class="nav-item">
           <router-link to="/servicios" class="nav-link">Servicios</router-link>
         </li>
+
         <li class="nav-item">
           <router-link to="/contacto" class="nav-link">Contacto</router-link>
         </li>
+
+        <li v-if="tienePermisosDeEstadistica" class="nav-item">
+          <router-link to="/estadisticas" class="nav-link">Estadísticas</router-link>
+        </li>
+
         <li v-if="!loggedIn" class="nav-item">
           <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
         </li>
+
         <li v-if="loggedIn" class="nav-item">
           <router-link to="/logout" class="nav-link">Cerrar sesión</router-link>
         </li>
@@ -43,6 +51,15 @@
   computed: {
     loggedIn(){
       return this.store.getIsLoggedIn;
+    },
+
+    tienePermisosDeEstadistica() {
+      const userPermissions = this.store.getUserPermissions;
+      if (userPermissions) {
+        return userPermissions.includes('statistics_index');
+      } else {
+        return false;
+      }
     }
   },
 

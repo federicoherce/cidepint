@@ -7,6 +7,7 @@ import servicios from '../views/ServiciosView.vue'
 import detallesServicio from '../components/detallesServicio.vue'
 import solicitud from '../views/solicitud.vue'
 import logout from '../components/logout.vue'
+import { useAuthStore } from '@/stores/modules/auth';
 
 const routes = [
   {
@@ -43,7 +44,10 @@ const routes = [
   {
     path: '/solicitud/:id/:institucion_id', 
     name: 'solicitud',
-    component: solicitud, 
+    component: solicitud,
+    meta: {
+      requiresAuth: true
+    }, 
   }
   ,
   {
@@ -57,5 +61,6 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
 
 export default router

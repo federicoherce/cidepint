@@ -43,9 +43,13 @@ import { apiService } from '@/api';
         alert("El centro no está habilitado");
         throw new Error("Este centro no está habilitado");
     }
+    if(!this.servicio.habilitado){
+        alert("El servicio no está habilitado");
+        throw new Error("Este servicio no está habilitado");
+    }
     if(localStorage.getItem('jwt') == null){
         alert("Debe iniciar sesión para enviar una solicitud");
-        throw new Error("Debe iniciar sesión para enviar una solicitud");
+        this.$router.push({ name: 'loginView' });
     }
     const respuesta = await apiService.post('api/me/requests', {
       detalles: this.detalle,
@@ -63,7 +67,6 @@ import { apiService } from '@/api';
     this.solicitudEnviada = true;
   } catch (error) {
     console.error('Error al enviar la solicitud', error);
-    this.$router.push({ name: 'loginView' });
   }},
 
   async obtenerServicio() {

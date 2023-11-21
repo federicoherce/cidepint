@@ -37,7 +37,7 @@ def login_jwt():
     set_access_cookies(response, access_token)
     return response, 201
   else:
-    return jsonify(message="debe registrarse antes de hacer el login"), 401
+    return jsonify(message="debe registrarse antes de hacer el login"), 403
 
 
 @api_bp.get('/logout_jwt')

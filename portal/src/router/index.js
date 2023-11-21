@@ -62,5 +62,17 @@ const router = createRouter({
   routes
 })
 
-
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const store = useAuthStore();
+    if (store.getIsLoggedIn) {
+      next();
+    } else {
+      alert("Debe iniciar sesión para acceder a esta página");
+      next({ name:'loginView'});
+    }
+  } else {
+    next();
+  }
+});
 export default router

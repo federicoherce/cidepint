@@ -59,24 +59,25 @@ const routes = [
     path: '/estadisticas',
     name: 'EstadisticasView',
     component: estadisticas,
-    children: [
-      {
-        path: 'solicitudes-por-estado',
-        name: 'SolicitudesPorEstado',
-        component: solicitudesPorEstado
-      },
-      {
-        path: 'top-10-instituciones',
-        name: 'TopInstituciones',
-        component: topInstituciones
-      },
-      {
-        path: 'ranking-servicios',
-        name: 'RankingServicios',
-        component: rankingServicios
-      }
-    ]
+  },
+  {
+    path: '/top-10-instituciones',
+    name: 'TopInstituciones',
+    component: topInstituciones
+  },
+  {
+    path: '/solicitudes-por-estado',
+    name: 'SolicitudesPorEstado',
+    component: solicitudesPorEstado
+  },
+  {
+    path: '/ranking-servicios',
+    name: 'RankingServicios',
+    component: rankingServicios
   }
+
+
+
 ]
 
 const router = createRouter({

@@ -19,7 +19,7 @@
           <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
         </li>
         <li v-if="loggedIn" class="nav-item">
-          <router-link to="/logout" class="nav-link">Cerrar sesión</router-link>
+          <a href="#" class="nav-link" @click.prevent="logout">Cerrar sesión</a>
         </li>
       </ul>
     </div>
@@ -48,8 +48,17 @@
       return this.store.getIsLoggedIn;
     }
   },
-
-
+  methods: {
+  async logout() {
+      try {
+        await this.store.logout();
+        this.$router.push({ name: 'Home' });
+      } catch (error) {
+        this.$router.push({ name: 'loginView' });
+        console.error(error);
+      }
+    }
+  }
   }
   </script>
   

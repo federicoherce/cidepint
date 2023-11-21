@@ -32,10 +32,20 @@ export const useAuthStore = defineStore({
         console.error(error);
         this.error = true;
       }},
-
-
-
-
+  async logout() {  
+        try {
+           const response = await apiService.get('api/logout_jwt',{
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+            }})
+           localStorage.removeItem('jwt');
+           console.log(response.data.message);
+           this.logoutUser()
+      }
+      catch (error) {
+          console.error(error);
+        }},
 
     setUser(user) {
       this.user = user;

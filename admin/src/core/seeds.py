@@ -164,6 +164,10 @@ def run():
     solicitudes_destroy_permission = users.create_permission(nombre="solicitudes_destroy")
     solicitudes_update_permission = users.create_permission(nombre="solicitudes_update")
 
+    # Estadísticas de Vue
+    statistics_index = users.create_permission(nombre="statistics_index")
+    statistics_all_institutions = users.create_permission(nombre="statistics_all_institutions")
+
 
     # users.assign_role_user(user_superadmin, superadmin_role)
     # Asignación de usuarios en una institución con un rol:
@@ -242,6 +246,10 @@ def run():
     users.assign_permission_role(operator_role, solicitudes_show_permission)
     users.assign_permission_role(operator_role, solicitudes_update_permission)
                 
+    # Asignación de permisos para estadísticas
+    users.assign_permission_role(owner_role, statistics_index)
+    users.assign_permission_role(superadmin_role, statistics_index)
+    users.assign_permission_role(superadmin_role, statistics_all_institutions)
 
 
     services.create_service(

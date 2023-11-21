@@ -8,7 +8,14 @@ import solicitudes from '../views/MisSolicitudes.vue'
 import detallesServicio from '../components/detallesServicio.vue'
 import solicitud from '../views/solicitud.vue'
 import logout from '../components/logout.vue'
-import { useAuthStore } from '@/stores/modules/auth';
+import estadisticas from '../views/EstadisticasView.vue'
+import solicitudesPorEstado from '../components/SolicitudesPorEstado.vue'
+import topInstituciones from '../components/TopInstituciones.vue'
+import rankingServicios from '../components/RankingServicios.vue'
+import { useAuthStore } from '@/stores/modules/auth'
+
+
+
 
 const routes = [
   {
@@ -60,13 +67,80 @@ const routes = [
     path: '/solicitudes',
     name: 'solicitudes',
     component: solicitudes
+  },
+  {
+    path: '/estadisticas',
+    name: 'EstadisticasView',
+    component: estadisticas,
+    meta: { requiresStatisticsPermission: 'statistics_index' }
+  },
+  {
+    path: '/top-10-instituciones',
+    name: 'TopInstituciones',
+    component: topInstituciones,
+    meta: { requiresStatisticsPermission: 'statistics_all_institutions' }
+  },
+  {
+    path: '/solicitudes-por-estado',
+    name: 'SolicitudesPorEstado',
+    component: solicitudesPorEstado,
+    meta: { requiresStatisticsPermission: 'statistics_index' }
+  },
+  {
+    path: '/ranking-servicios',
+    name: 'RankingServicios',
+    component: rankingServicios,
+    meta: { requiresStatisticsPermission: 'statistics_index' }
   }
+
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+
+  console.log('User Permissions:', authStore.getUserPermissions);
+
+  if (to.meta.requiresStatisticsPermission) {
+    const requiredPermission = to.meta.requiresStatisticsPermission
+
+    if (authStore.getUserPermissions && authStore.getUserPermissions.includes(requiredPermission)) {
+      console.log('Access granted!');
+      next();
+    } else {
+      console.log('Access denied!');
+      next('/');
+    }
+  } else {
+    console.log('No special permission required.');
+    next();
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+
+  console.log('User Permissions:', authStore.getUserPermissions);
+
+  if (to.meta.requiresStatisticsPermission) {
+    const requiredPermission = to.meta.requiresStatisticsPermission
+
+    if (authStore.getUserPermissions && authStore.getUserPermissions.includes(requiredPermission)) {
+      console.log('Access granted!');
+      next();
+    } else {
+      console.log('Access denied!');
+      next('/');
+    }
+  } else {
+    console.log('No special permission required.');
+    next();
+  }
+});
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {

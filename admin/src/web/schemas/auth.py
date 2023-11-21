@@ -10,6 +10,7 @@ class AuthSchema(Schema):
     telefono = fields.Str()
     email = fields.Email()
     password = fields.Str()
+    statistics_permissions = fields.List(fields.Str(), dump_only=True)
 
 
 auth_schema = AuthSchema(only=["email", "password"])

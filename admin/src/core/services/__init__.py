@@ -143,3 +143,23 @@ def create_solicitud(**kwargs):
     return solicitud
 
 
+def get_top_institutions():
+    subquery = (
+        db.session.query(
+            Servicio.institucion_id,
+            db.func.sum(Solicitud.updated_at - Solicitud.inserted_at).label("tiempo_resolucion")
+        )
+        .join(Solicitud, Servicio.id == Solicitud.servicio_id)
+        .filter(Solicitud.estado.like('FINALIZADA'))
+        .group_by(Servicio.institucion_id)
+        .subquery()
+    )
+
+    query = (
+        db.session.query(Institucion)
+        .join(subquery, subquery.c.institucion_id == Institucion.id)
+        .order_by(subquery.c.tiempo_resolucion.desc())
+        .limit(10)
+    )
+
+    return query.all()

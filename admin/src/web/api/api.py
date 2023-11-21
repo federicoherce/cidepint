@@ -5,7 +5,7 @@ from src.web.schemas.auth import auth_schema, profile_schema
 from src.web.schemas.services import service_schema, solicitud_schema, request_show_schema
 from src.web.schemas.services import solicitudes_schema, get_solicitud_schema, paginated_services, paginated_search_services
 from src.web.schemas.service_type import service_type
-from src.web.schemas.institutions import paginated_schema, institution_schema
+from src.web.schemas.institutions import paginated_schema, institution_schema, list_institutions
 from marshmallow import ValidationError
 from src.core import services
 from src.core import configuracion
@@ -266,3 +266,11 @@ def solicitudes():
     }
 
     return solicitudes_schema.dump(response_data), 200
+
+
+@api_bp.get("/top-institutions")
+def top_institutions():
+    institutions = services.get_top_institutions()
+    result = paginated_schema.dump({"data": institutions})
+
+    return result, 200

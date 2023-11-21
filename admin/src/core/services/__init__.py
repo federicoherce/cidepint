@@ -78,7 +78,7 @@ def paginate_solicitudes_api_id(page, per_page,id):
     solicitudes = Solicitud.query.filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
     return solicitudes
 
-def paginate_solicitudes_api_id(page, per_page, id, sort, order):
+def paginate_solicitudes_api_id(page, per_page, id, sort, order, fecha_inicio, fecha_fin, estado):
 
     if order == 'asc':
         solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.asc(sort))
@@ -86,6 +86,15 @@ def paginate_solicitudes_api_id(page, per_page, id, sort, order):
         solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.desc(sort))
     else:
         solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id)
+
+    if fecha_inicio:
+        solicitudes = solicitudes.filter(Solicitud.fecha_creacion > fecha_inicio)
+
+    if fecha_fin:
+        solicitudes = solicitudes.filter(Solicitud.fecha_creacion < fecha_fin)
+
+    if estado:
+        solicitudes = solicitudes.filter(Solicitud.estado == estado)
 
     paginated_solicitudes = solicitudes.paginate(page=page, per_page=per_page)
 

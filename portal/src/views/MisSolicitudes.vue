@@ -4,8 +4,17 @@
     <h1 class="mt-4">Mis Solicitudes</h1>
 
     <div class="form-group">
-      <input type="text" class="form-control" v-model="estado" placeholder="Filtrar por Estado">
+      <label for="estado">Filtrar por Estado:</label>
+      <select class="form-control" v-model="estado">
+        <option value="">Seleccione un estado</option>
+        <option value="EN PROCESO">EN PROCESO</option>
+        <option value="ACEPTADA">ACEPTADA</option>
+        <option value="FINALIZADA">FINALIZADA</option>
+        <option value="CANCELADA">CANCELADA</option>
+        <option value="RECHAZADA">RECHAZADA</option>
+      </select>
     </div>
+
 
     <div class="form-group">
       <label for="fechaInicio">Fecha Inicio:</label>
@@ -22,9 +31,10 @@
       <button v-if="busqueda" class="btn btn-secondary" @click="deshacerBusqueda">Deshacer Búsqueda</button>
     </div>
 
-    <div class="btn-group">
-      <button class="btn btn-secondary" @click="ordenarPorFecha('asc')">Ordenar por Fecha Ascendente</button>
-      <button class="btn btn-secondary" @click="ordenarPorFecha('desc')">Ordenar por Fecha Descendente</button>
+    <div class="btn-group" style="margin-bottom: 1%;">
+      <button class="btn btn-secondary" @click="ordenarPor('fecha_creacion', 'asc')">Ordenar por Fecha Ascendente</button>
+      <button class="btn btn-secondary" @click="ordenarPor('fecha_creacion', 'desc')">Ordenar por Fecha Descendente</button>
+      <button class="btn btn-secondary" @click="ordenarPor('estado', 'asc')">Ordenar por Estado Alfabéticamente</button>
     </div>
 
     <table class="table table-striped table-bordered">
@@ -47,27 +57,49 @@
           <td>{{ formatoFecha(solicitud.fecha_creacion) }}</td>
           <td>{{ formatoFecha(solicitud.fecha_cambio_estado) }}</td>
           <td>{{ solicitud.observacion_cambio_estado }}</td>
+          <td>
+            <button class="btn btn-primary" @click="mostrarCampoComentario(solicitud)">Comentar</button>
+          </td>
         </tr>
       </tbody>
     </table>
 
+    <div v-if="solicitudConComentario">
+      <div class="comentario-container">
+        <label for="SolicitudComentario" class="comentario-label">
+          Comentario para {{ solicitudConComentario.servicio.nombre }} (Creada el {{ formatoFecha(solicitudConComentario.fecha_creacion) }})
+        </label>
+        <div class="form-group">
+          <input v-model="solicitudConComentario.nuevoComentario" placeholder="Ingrese su comentario" class="form-control">
+          <button class="btn btn-success" @click="comentarSolicitud(solicitudConComentario)">Enviar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mostrar mensaje de éxito -->
+      <div v-if="comentarioEnviado" class="alert alert-success mt-4">
+        Comentario añadido con éxito a la solicitud  
+      </div>
+
     <nav aria-label="Page navigation">
       <ul class="pagination">
-        <li class="page-item" v-if="solicitudes.page > 1">
-          <a class="page-link" @click="cambiarPagina(solicitudes.page - 1)" aria-label="Previous">
+        <li class="page-item" v-if="currentPage > 1">
+          <a class="page-link" @click="cambiarPagina(currentPage - 1)" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <li class="page-item" v-for="pageNumber in solicitudes.pages" :key="pageNumber" :class="{ 'active': solicitudes.page == pageNumber }">
+        <li class="page-item" v-for="pageNumber in pages" :key="pageNumber" :class="{ 'active': currentPage == pageNumber }">
           <a class="page-link" @click="cambiarPagina(pageNumber)">{{ pageNumber }}</a>
         </li>
-        <li class="page-item" v-if="solicitudes.page < solicitudes.pages">
-          <a class="page-link" @click="cambiarPagina(solicitudes.page + 1)" aria-label="Next">
+        <li class="page-item" v-if="currentPage < pages">
+          <a class="page-link" @click="cambiarPagina(currentPage + 1)" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
       </ul>
     </nav>
+    
+
   </div>
 </template>
 
@@ -83,33 +115,14 @@ export default {
       busqueda: false,
       solicitudes: [],
       currentPage: 1, // Agregamos una propiedad para rastrear la página actual
+      pages: 0,
       sort: '', // Agregamos una propiedad para rastrear la columna de ordenamiento
       order: '', // Agregamos una propiedad para rastrear el orden (ascendente o descendente)
+      solicitudConComentario: null,
+      comentarioEnviado: false
     };
   },
   methods: {
-    buscarSolicitudes() {
-      const jwtToken = localStorage.getItem('jwt')
-      const params = {
-        estado: this.estado,
-        page: this.currentPage,
-        per_page: '3',
-        sort: this.sort,
-        order: this.order
-      };
-
-      this.$axios.get('/api/me/requests', { params }, {headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwtToken}`
-          }})
-        .then(response => {
-          this.solicitudes = response.data.data;
-          this.busqueda = true;
-        })
-        .catch(error => {
-          console.error('Error al obtener las solicitudes:', error);
-        });
-    },
 
     async traerSolicitud() {
       const params = {
@@ -117,6 +130,9 @@ export default {
         per_page: '3',
         sort: this.sort,
         order: this.order,
+        fecha_inicio: this.fechaInicio,
+        fecha_fin: this.fechaFin,
+        estado: this.estado
       }
       try {
         const csrfToken = localStorage.getItem('csrfToken'); 
@@ -135,10 +151,10 @@ export default {
           },
         });
         this.solicitudes = respuesta.data.data;
+        this.pages = respuesta.data.pages
         this.busqueda = true;
-        this.solicitudEnviada = true;
       } catch (error) {
-        console.error('Error al enviar la solicitud', error);
+        console.error('Error al obtener o filtrar las solicitudes', error);
         this.$router.push({ name: 'loginView' });
       }},
 
@@ -148,34 +164,19 @@ export default {
       this.fechaInicio = '';
       this.fechaFin = '';
       this.sort = ''; // Reiniciar la columna de ordenamiento
-      this.order = 'asc'; // Reiniciar el orden (ascendente por defecto)
+      this.order = ''; // Reiniciar el orden (ascendente por defecto)
+      this.solicitudes = []
 
-      this.cargarSolicitudes();
     },
 
-    ordenarPorFecha(order) {
-      // Lógica para cambiar el orden por fecha
+    ordenarPor(sort, order) {
       this.order = order;
-      this.sort = 'fecha_creacion'; // Ajusta esto según el nombre real del campo de fecha en tus datos
-      this.cargarSolicitudes();
-    },
-
-    ordenarPor(columna) {
-      // Si la columna ya está ordenada, invertir el orden
-      if (this.sort === columna) {
-        this.order = this.order === 'asc' ? 'desc' : 'asc';
-      } else {
-        // Si es una nueva columna, ordenar en ascendente por defecto
-        this.sort = columna;
-        this.order = 'asc';
-      }
-
-      this.cargarSolicitudes();
+      this.sort = sort;
     },
 
     cambiarPagina(pageNumber) {
       this.currentPage = pageNumber;
-      this.cargarSolicitudes();
+      this.traerSolicitud();
     },
 
     formatoFecha(fecha) {
@@ -183,26 +184,42 @@ export default {
       return new Date(fecha).toLocaleDateString('es-ES', options);
     },
 
-    cargarSolicitudes() {
-      const params = {
-        estado: this.estado,
-        fechaInicio: this.fechaInicio,
-        fechaFin: this.fechaFin,
-        page: this.currentPage,
-        sort: this.sort,
-        order: this.order,
-      };
 
-      this.$axios.get('/api/me/requests', { params })
-        .then(response => {
-          this.solicitudes = response.data.data;
-        })
-        .catch(error => {
-          console.error('Error al obtener las solicitudes:', error);
-        });
+    mostrarCampoComentario(solicitud) {
+      // Asignar la solicitud actual a la propiedad solicitudConComentario
+      this.solicitudConComentario = solicitud;
     },
-  },
-};
+
+    async comentarSolicitud(solicitud) {
+      try {
+        const comentario = `comentario: ${solicitud.nuevoComentario}`;
+        const csrfToken = localStorage.getItem('csrfToken'); 
+        const jwtToken = localStorage.getItem('jwt');
+        if(localStorage.getItem('jwt') == null){
+            alert("Debe iniciar sesión para enviar una solicitud");
+            throw new Error("Debe iniciar sesión para enviar una solicitud");
+        }
+        const respuesta = await apiService.post(`api/me/requests/${solicitud.id}/notes`, { comentario
+        }, 
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}`,
+            'X-CSRF-TOKEN': csrfToken,
+          },
+        });
+        
+        // Limpiar el campo de comentario después de enviar el comentario
+        this.comentarioEnviado = true
+        solicitud.nuevoComentario = '';
+        this.solicitudConComentario = null
+      } catch (error) {
+        console.error('Error al enviar la solicitud', error);
+        this.$router.push({ name: 'loginView' });
+      }
+    },
+
+  },}
 </script>
 
 <style>

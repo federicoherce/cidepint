@@ -12,6 +12,9 @@
         <li class="nav-item">
           <router-link to="/contacto" class="nav-link">Contacto</router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/solicitudes" class="nav-link">Mis Solicitudes</router-link>
+        </li>
         <li v-if="!loggedIn" class="nav-item">
           <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
         </li>

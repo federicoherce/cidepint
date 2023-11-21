@@ -230,7 +230,6 @@ def comentar_solicitud(id):
         data = request.json
         comentario = data.get('comentario', '') 
         services.update_solicitud(solicitud, comentario=comentario)
-        services.update_solicitud(solicitud, comentario=comentario)
     except ValidationError as err:
         print(err.messages)  
         print(err.valid_data) 
@@ -253,13 +252,17 @@ def solicitudes():
     per_page = request_data['per_page']
     sort = request_data['sort']
     order = request_data['order']
-    solicitudes_paginadas = services.paginate_solicitudes_api_id(page, per_page, get_jwt_identity(), sort, order)
+    fecha_inicio = request_data['fecha_inicio']
+    fecha_fin = request_data['fecha_fin']
+    estado = request_data['estado']
+    solicitudes_paginadas = services.paginate_solicitudes_api_id(page, per_page, get_jwt_identity(), sort, order, fecha_inicio, fecha_fin, estado)
     solicitudes_serializadas = get_solicitud_schema.dump(solicitudes_paginadas.items, many=True)
     response_data = {
         "data": solicitudes_serializadas,
         "page": page,
         "per_page": per_page,
-        "total": solicitudes_paginadas.total
+        "total": solicitudes_paginadas.total,
+        "pages": solicitudes_paginadas.pages
     }
 
     return solicitudes_schema.dump(response_data), 200

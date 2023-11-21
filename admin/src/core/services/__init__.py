@@ -78,6 +78,27 @@ def paginate_solicitudes_api_id(page, per_page,id):
     solicitudes = Solicitud.query.filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
     return solicitudes
 
+def paginate_solicitudes_api_id(page, per_page, id, sort, order, fecha_inicio, fecha_fin, estado):
+
+    if order == 'asc':
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.asc(sort))
+    elif order == 'desc':
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.desc(sort))
+    else:
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id)
+
+    if fecha_inicio:
+        solicitudes = solicitudes.filter(Solicitud.fecha_creacion > fecha_inicio)
+
+    if fecha_fin:
+        solicitudes = solicitudes.filter(Solicitud.fecha_creacion < fecha_fin)
+
+    if estado:
+        solicitudes = solicitudes.filter(Solicitud.estado == estado)
+
+    paginated_solicitudes = solicitudes.paginate(page=page, per_page=per_page)
+
+    return paginated_solicitudes
 
 def solicitudes_api_id(cliente_id, solicitud_id):
     """
@@ -143,3 +164,23 @@ def create_solicitud(**kwargs):
     return solicitud
 
 
+def get_top_institutions():
+    subquery = (
+        db.session.query(
+            Servicio.institucion_id,
+            db.func.sum(Solicitud.updated_at - Solicitud.inserted_at).label("tiempo_resolucion")
+        )
+        .join(Solicitud, Servicio.id == Solicitud.servicio_id)
+        .filter(Solicitud.estado.like('FINALIZADA'))
+        .group_by(Servicio.institucion_id)
+        .subquery()
+    )
+
+    query = (
+        db.session.query(Institucion)
+        .join(subquery, subquery.c.institucion_id == Institucion.id)
+        .order_by(subquery.c.tiempo_resolucion.desc())
+        .limit(10)
+    )
+
+    return query.all()

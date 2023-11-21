@@ -122,27 +122,6 @@ router.beforeEach((to, from, next) => {
 });
 
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore();
-
-  console.log('User Permissions:', authStore.getUserPermissions);
-
-  if (to.meta.requiresStatisticsPermission) {
-    const requiredPermission = to.meta.requiresStatisticsPermission
-
-    if (authStore.getUserPermissions && authStore.getUserPermissions.includes(requiredPermission)) {
-      console.log('Access granted!');
-      next();
-    } else {
-      console.log('Access denied!');
-      next('/');
-    }
-  } else {
-    console.log('No special permission required.');
-    next();
-  }
-});
-
-router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     const store = useAuthStore();
     if (store.getIsLoggedIn) {

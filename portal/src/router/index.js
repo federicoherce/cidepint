@@ -91,7 +91,8 @@ const routes = [
     name: 'RankingServicios',
     component: rankingServicios,
     meta: { requiresStatisticsPermission: 'statistics_index' }
-  }
+  },
+
 
 ]
 

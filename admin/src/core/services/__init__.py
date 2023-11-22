@@ -3,6 +3,7 @@ from src.core.api.api_user import ApiUsers
 from src.core.database import database as db
 from src.core.auth.user import Users
 from src.core.instituciones.institucion import Institucion
+from collections import Counter
 
 def create_service(**kwargs):
     service = Servicio(**kwargs)
@@ -184,3 +185,17 @@ def get_top_institutions():
     )
 
     return query.all()
+
+
+def solicitudes_por_estado():
+    solicitudes = Solicitud.query.all()
+    frecuencia_estados = Counter(solicitud.estado for solicitud in solicitudes)
+    estados_ordenados = frecuencia_estados.most_common()
+    return estados_ordenados
+
+
+def ranking_servicios():
+    solicitudes = Solicitud.query.all()
+    frecuencia_servicios = Counter((f"{solicitud.servicio.nombre}-{solicitud.servicio.institucion.nombre}", solicitud.servicio, solicitud.servicio.institucion.nombre) for solicitud in solicitudes)
+    servicios_con_cantidad = [{'servicio': servicio[0], 'cantidad_solicitudes': cantidad} for servicio, cantidad in frecuencia_servicios.items()]
+    return servicios_con_cantidad

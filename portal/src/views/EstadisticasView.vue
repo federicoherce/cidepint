@@ -31,7 +31,7 @@
                 <div class="card">
                 <div class="card-body text-center">
                     <font-awesome-icon icon="fa-solid fa-ranking-star" />
-                    <h5 class="card-title">Ranking de servicios más solicitados</h5>
+                    <h5 class="card-title">Solicitudes por Servicio</h5>
                 </div>
             </div>
             </router-link>

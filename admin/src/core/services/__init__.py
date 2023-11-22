@@ -2,6 +2,7 @@ from src.core.services.services import Servicio, Solicitud
 from src.core.api.api_user import ApiUsers
 from src.core.database import database as db
 from src.core.auth.user import Users
+from src.core.users.role import UserRoleInstitution
 from src.core.instituciones.institucion import Institucion
 from collections import Counter
 
@@ -194,7 +195,17 @@ def solicitudes_por_estado():
     return estados_ordenados
 
 
-def ranking_servicios():
+
+def ranking_servicios(user):
+    instituciones_duenas = [uir.institution_id for uir in UserRoleInstitution.query.filter_by(user_id=user.id, role_id=2).all()]
+    solicitudes = Solicitud.query.join(Servicio).filter(Servicio.institucion_id.in_(instituciones_duenas)).all()
+    frecuencia_servicios = Counter((f"{solicitud.servicio.nombre}-{solicitud.servicio.institucion.nombre}", solicitud.servicio, solicitud.servicio.institucion.nombre) for solicitud in solicitudes)
+    servicios_con_cantidad = [{'servicio': servicio[0], 'cantidad_solicitudes': cantidad} for servicio, cantidad in frecuencia_servicios.items()]
+
+    return servicios_con_cantidad
+
+
+def ranking_all_servicios():
     solicitudes = Solicitud.query.all()
     frecuencia_servicios = Counter((f"{solicitud.servicio.nombre}-{solicitud.servicio.institucion.nombre}", solicitud.servicio, solicitud.servicio.institucion.nombre) for solicitud in solicitudes)
     servicios_con_cantidad = [{'servicio': servicio[0], 'cantidad_solicitudes': cantidad} for servicio, cantidad in frecuencia_servicios.items()]

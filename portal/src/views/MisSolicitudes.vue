@@ -138,8 +138,8 @@ export default {
         const csrfToken = localStorage.getItem('csrfToken'); 
         const jwtToken = localStorage.getItem('jwt');
         if(localStorage.getItem('jwt') == null){
-            alert("Debe iniciar sesión para enviar una solicitud");
-            throw new Error("Debe iniciar sesión para enviar una solicitud");
+            alert("Debe iniciar sesión para ver sus solicitudes");
+            throw new Error("Debe iniciar sesión para ver sus solicitudes");
         }
         const respuesta = await apiService.get('api/me/requests', { params
         }, 
@@ -151,6 +151,7 @@ export default {
           },
         });
         this.solicitudes = respuesta.data.data;
+        this.comentarioEnviado = false
         this.pages = respuesta.data.pages
         this.busqueda = true;
       } catch (error) {
@@ -165,7 +166,8 @@ export default {
       this.fechaFin = '';
       this.sort = ''; // Reiniciar la columna de ordenamiento
       this.order = ''; // Reiniciar el orden (ascendente por defecto)
-      this.solicitudes = []
+      this.solicitudes = [];
+      this.comentarioEnviado = false
 
     },
 
@@ -192,12 +194,12 @@ export default {
 
     async comentarSolicitud(solicitud) {
       try {
-        const comentario = `comentario: ${solicitud.nuevoComentario}`;
+        const comentario = solicitud.nuevoComentario
         const csrfToken = localStorage.getItem('csrfToken'); 
         const jwtToken = localStorage.getItem('jwt');
         if(localStorage.getItem('jwt') == null){
-            alert("Debe iniciar sesión para enviar una solicitud");
-            throw new Error("Debe iniciar sesión para enviar una solicitud");
+            alert("Debe iniciar sesión para comentar una solicitud");
+            throw new Error("Debe iniciar sesión para comentar una solicitud");
         }
         const respuesta = await apiService.post(`api/me/requests/${solicitud.id}/notes`, { comentario
         }, 
@@ -214,7 +216,7 @@ export default {
         solicitud.nuevoComentario = '';
         this.solicitudConComentario = null
       } catch (error) {
-        console.error('Error al enviar la solicitud', error);
+        console.error('Error al comentar una solicitud', error);
         this.$router.push({ name: 'loginView' });
       }
     },

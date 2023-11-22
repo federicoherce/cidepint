@@ -13,7 +13,7 @@ from src.core import instituciones as module_institutions
 from src.core import auth, users
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_jwt_extended import set_access_cookies,unset_jwt_cookies,jwt_required
-from src.web.helpers.auth import has_permissions
+from src.web.helpers.auth import has_permissions, user_is_superadmin
 
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
@@ -284,15 +284,20 @@ def top_institutions():
 
 
 @api_bp.get("/solicitudes_por_estado")
-#@jwt_required
+@jwt_required()
 def solicitudes_por_estado():
     solicitudes = services.solicitudes_por_estado()
     return jsonify({'data':solicitudes}), 200
 
 
 @api_bp.get("/ranking_servicios")
-#@jwt_required
+@jwt_required()
 def ranking_servicios():
-    servicios = services.ranking_servicios()
+    user_id = get_jwt_identity()
+    user = auth.get_user_by_id(user_id)
+    if user_is_superadmin(user=user):
+        servicios = services.ranking_all_servicios()
+    else:
+        servicios = services.ranking_servicios(user)
     return jsonify({'data': servicios}), 200
 

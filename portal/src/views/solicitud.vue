@@ -1,9 +1,9 @@
 <template>
+  <br>
     <div class="container">
-      <h2 class="mt-4">Detalle solicitud</h2>
+      <h2 class="mt-4">Por favor, complete un detalle sobre su solicitud</h2>
       <form @submit.prevent="enviarSolicitud" class="mt-4">
         <div class="form-group">
-          <label for="detalle">Detalle:</label>
           <textarea id="detalle" v-model="detalle" class="form-control" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Enviar Solicitud</button>

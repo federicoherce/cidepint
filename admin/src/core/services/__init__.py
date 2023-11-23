@@ -170,7 +170,7 @@ def get_top_institutions():
     subquery = (
         db.session.query(
             Servicio.institucion_id,
-            db.func.sum(Solicitud.updated_at - Solicitud.inserted_at).label("tiempo_resolucion")
+            db.func.sum(Solicitud.fecha_cambio_estado - Solicitud.fecha_creacion).label("tiempo_resolucion")
         )
         .join(Solicitud, Servicio.id == Solicitud.servicio_id)
         .filter(Solicitud.estado.like('FINALIZADA'))

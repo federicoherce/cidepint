@@ -41,10 +41,6 @@ class Solicitud(db.Model):
     # Falta el campo de archivos adjuntos
     cliente = db.relationship('Users', backref='solicitudes')
     servicio = db.relationship('Servicio', backref='solicitudes')
-    updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
-    )
-    inserted_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, servicio_id, cliente_id, detalles):
         self.servicio_id = servicio_id

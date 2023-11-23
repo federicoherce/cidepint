@@ -1,37 +1,37 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">CIDEPINT</a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/" class="nav-link">Inicio</router-link>
-        </li>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">CIDEPINT</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-        <li class="nav-item">
-          <router-link to="/servicios" class="nav-link">Servicios</router-link>
-        </li>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <router-link to="/" class="nav-link">Inicio</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/servicios" class="nav-link">Servicios</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/contacto" class="nav-link">Contacto</router-link>
+      </li>
+      <li v-if="loggedIn" class="nav-item">
+        <router-link to="/solicitudes" class="nav-link">Mis Solicitudes</router-link>
+      </li>
+      <li v-if="tienePermisosDeEstadistica" class="nav-item">
+        <router-link to="/estadisticas" class="nav-link">Estadísticas</router-link>
+      </li>
+      <li v-if="!loggedIn" class="nav-item">
+        <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
+      </li>
+      <li v-if="loggedIn" class="nav-item">
+        <a href="#" class="nav-link" @click.prevent="logout">Cerrar sesión</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
-        <li class="nav-item">
-          <router-link to="/contacto" class="nav-link">Contacto</router-link>
-        </li>
-        <li v-if="loggedIn" class="nav-item">
-          <router-link to="/solicitudes" class="nav-link">Mis Solicitudes</router-link>
-        </li>
-
-        <li v-if="tienePermisosDeEstadistica" class="nav-item">
-          <router-link to="/estadisticas" class="nav-link">Estadísticas</router-link>
-        </li>
-
-        <li v-if="!loggedIn" class="nav-item">
-          <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
-        </li>
-
-        <li v-if="loggedIn" class="nav-item">
-          <a href="#" class="nav-link" @click.prevent="logout">Cerrar sesión</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
 </template>
   
 <script>
@@ -47,7 +47,6 @@
       logout
   },
   created() {
-    // Al crear el componente, almacena el store en una variable local
     this.store = useAuthStore();
   },
   

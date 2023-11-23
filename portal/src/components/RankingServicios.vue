@@ -76,7 +76,7 @@ export default {
           },
         });
 
-        // Utiliza la respuesta.data directamente
+        
         this.chartData.labels = respuesta.data.data.map(item => item.servicio);
         this.chartData.datasets[0].data = respuesta.data.data.map(item => item.cantidad_solicitudes);
         this.loaded = true;

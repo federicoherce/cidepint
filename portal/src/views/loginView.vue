@@ -23,6 +23,7 @@
     </div>
   </div>
   </div>
+  <p v-if="success" class="success-message">Inicio de sesión exitoso!</p>
 </template>
 
 <script>
@@ -37,16 +38,15 @@ export default {
         email: '',
         password: ''
       },
-      error: false
+      error: false,
+      success: false
     };
   },
   created() {
-    // Al crear el componente, almacena el store en una variable local
     this.store = useAuthStore();
   },
   computed: {
     loggedIn() {
-      // Usa la información de inicio de sesión para determinar si el usuario ha iniciado sesión
       return this.store.isLoggedIn;
     }
   },
@@ -65,6 +65,7 @@ export default {
         });
         console.log('login : ',response.status , response.statusText);
         localStorage.setItem('jwt', response.data.token);
+        this.success = true;
         await this.store.axiosUser();
 
       } catch (error) {
@@ -90,5 +91,6 @@ export default {
   color: green;
   font-weight: bold;
   margin-top: 10px;
+  text-align: center
 }
 </style>

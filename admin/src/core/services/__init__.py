@@ -2,7 +2,9 @@ from src.core.services.services import Servicio, Solicitud
 from src.core.api.api_user import ApiUsers
 from src.core.database import database as db
 from src.core.auth.user import Users
+from src.core.users.role import UserRoleInstitution
 from src.core.instituciones.institucion import Institucion
+from collections import Counter
 
 def create_service(**kwargs):
     service = Servicio(**kwargs)
@@ -78,6 +80,27 @@ def paginate_solicitudes_api_id(page, per_page,id):
     solicitudes = Solicitud.query.filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
     return solicitudes
 
+def paginate_solicitudes_api_id(page, per_page, id, sort, order, fecha_inicio, fecha_fin, estado):
+
+    if order == 'asc':
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.asc(sort))
+    elif order == 'desc':
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.desc(sort))
+    else:
+        solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id)
+
+    if fecha_inicio:
+        solicitudes = solicitudes.filter(Solicitud.fecha_creacion > fecha_inicio)
+
+    if fecha_fin:
+        solicitudes = solicitudes.filter(Solicitud.fecha_creacion < fecha_fin)
+
+    if estado:
+        solicitudes = solicitudes.filter(Solicitud.estado == estado)
+
+    paginated_solicitudes = solicitudes.paginate(page=page, per_page=per_page)
+
+    return paginated_solicitudes
 
 def solicitudes_api_id(cliente_id, solicitud_id):
     """
@@ -143,3 +166,47 @@ def create_solicitud(**kwargs):
     return solicitud
 
 
+def get_top_institutions():
+    subquery = (
+        db.session.query(
+            Servicio.institucion_id,
+            db.func.sum(Solicitud.fecha_cambio_estado - Solicitud.fecha_creacion).label("tiempo_resolucion")
+        )
+        .join(Solicitud, Servicio.id == Solicitud.servicio_id)
+        .filter(Solicitud.estado.like('FINALIZADA'))
+        .group_by(Servicio.institucion_id)
+        .subquery()
+    )
+
+    query = (
+        db.session.query(Institucion)
+        .join(subquery, subquery.c.institucion_id == Institucion.id)
+        .order_by(subquery.c.tiempo_resolucion.desc())
+        .limit(10)
+    )
+
+    return query.all()
+
+
+def solicitudes_por_estado():
+    solicitudes = Solicitud.query.all()
+    frecuencia_estados = Counter(solicitud.estado for solicitud in solicitudes)
+    estados_ordenados = frecuencia_estados.most_common()
+    return estados_ordenados
+
+
+
+def ranking_servicios(user):
+    instituciones_duenas = [uir.institution_id for uir in UserRoleInstitution.query.filter_by(user_id=user.id, role_id=2).all()]
+    solicitudes = Solicitud.query.join(Servicio).filter(Servicio.institucion_id.in_(instituciones_duenas)).all()
+    frecuencia_servicios = Counter((f"{solicitud.servicio.nombre}-{solicitud.servicio.institucion.nombre}", solicitud.servicio, solicitud.servicio.institucion.nombre) for solicitud in solicitudes)
+    servicios_con_cantidad = [{'servicio': servicio[0], 'cantidad_solicitudes': cantidad} for servicio, cantidad in frecuencia_servicios.items()]
+
+    return servicios_con_cantidad
+
+
+def ranking_all_servicios():
+    solicitudes = Solicitud.query.all()
+    frecuencia_servicios = Counter((f"{solicitud.servicio.nombre}-{solicitud.servicio.institucion.nombre}", solicitud.servicio, solicitud.servicio.institucion.nombre) for solicitud in solicitudes)
+    servicios_con_cantidad = [{'servicio': servicio[0], 'cantidad_solicitudes': cantidad} for servicio, cantidad in frecuencia_servicios.items()]
+    return servicios_con_cantidad

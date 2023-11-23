@@ -13,6 +13,10 @@ class Servicio(db.Model):
     habilitado = db.Column(db.Boolean, nullable=False)
     institucion_id = db.Column(db.Integer, db.ForeignKey('instituciones.id'))
     institucion = db.relationship("Institucion", back_populates='servicios')
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+    inserted_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, nombre, descripcion, keywords, tipo_servicio, habilitado, institucion):
         self.nombre = nombre

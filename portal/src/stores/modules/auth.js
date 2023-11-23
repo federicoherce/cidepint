@@ -6,11 +6,12 @@ export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     user: null,
-    isLoggedIn:false // Asegúrate de que esta propiedad esté declarada aquí
+    isLoggedIn:false
   }),
   getters: {
     getUser: (state) => state.user,
     getIsLoggedIn: (state) => state.isLoggedIn,
+    getUserPermissions: (state) => state.user ? state.user.statistics_permissions : []
   },
   persist: {
     storage: sessionStorage,
@@ -32,10 +33,20 @@ export const useAuthStore = defineStore({
         console.error(error);
         this.error = true;
       }},
-
-
-
-
+  async logout() {  
+        try {
+           const response = await apiService.get('api/logout_jwt',{
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+            }})
+           localStorage.removeItem('jwt');
+           console.log(response.data.message);
+           this.logoutUser()
+      }
+      catch (error) {
+          console.error(error);
+        }},
 
     setUser(user) {
       this.user = user;

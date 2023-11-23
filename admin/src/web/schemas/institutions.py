@@ -25,3 +25,4 @@ class PaginatedInstitutionSchema(Schema):
 
 paginated_schema = PaginatedInstitutionSchema()
 institution_schema = InstitutionSchema(exclude=['palabras_claves'])
+list_institutions = PaginatedInstitutionSchema(only=['data'])

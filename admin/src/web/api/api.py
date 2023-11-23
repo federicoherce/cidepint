@@ -5,14 +5,15 @@ from src.web.schemas.auth import auth_schema, profile_schema
 from src.web.schemas.services import service_schema, solicitud_schema, request_show_schema
 from src.web.schemas.services import solicitudes_schema, get_solicitud_schema, paginated_services, paginated_search_services
 from src.web.schemas.service_type import service_type
-from src.web.schemas.institutions import paginated_schema, institution_schema
+from src.web.schemas.institutions import paginated_schema, institution_schema, list_institutions
 from marshmallow import ValidationError
 from src.core import services
 from src.core import configuracion
 from src.core import instituciones as module_institutions
-from src.core import auth
+from src.core import auth, users
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_jwt_extended import set_access_cookies,unset_jwt_cookies,jwt_required
+from src.web.helpers.auth import has_permissions, user_is_superadmin
 
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
@@ -22,7 +23,13 @@ api_bp = Blueprint("api", __name__, url_prefix="/api")
 def user_jwt():
     current_user = get_jwt_identity()
     user = auth.get_user_by_id(current_user)
-    return profile_schema.dump(user), 200
+
+    statistics_permissions = [p for p in users.list_permissions_by_user(user) if p.startswith("statistics_")]
+
+    user_data = profile_schema.dump(user)
+    user_data["statistics_permissions"] = statistics_permissions
+
+    return user_data, 200
 
 
 @api_bp.post('/login_jwt')
@@ -37,7 +44,7 @@ def login_jwt():
     set_access_cookies(response, access_token)
     return response, 201
   else:
-    return jsonify(message="debe registrarse antes de hacer el login"), 401
+    return jsonify(message="Debe registrarse antes de hacer el login"), 403
 
 
 @api_bp.get('/logout_jwt')
@@ -230,7 +237,6 @@ def comentar_solicitud(id):
         data = request.json
         comentario = data.get('comentario', '') 
         services.update_solicitud(solicitud, comentario=comentario)
-        services.update_solicitud(solicitud, comentario=comentario)
     except ValidationError as err:
         print(err.messages)  
         print(err.valid_data) 
@@ -244,18 +250,54 @@ def comentar_solicitud(id):
 def solicitudes():
     try:
         request_data = solicitudes_schema.load(request.args)
-    except ValidationError:
+    except ValidationError as err:
+        print(err.messages)  
+        print(err.valid_data) 
         return jsonify({"error": "Parametros invalidos"}), 400
 
     page = request_data['page']
     per_page = request_data['per_page']
-    solicitudes_paginadas = services.paginate_solicitudes_api_id(page, per_page, get_jwt_identity())
+    sort = request_data['sort']
+    order = request_data['order']
+    fecha_inicio = request_data['fecha_inicio']
+    fecha_fin = request_data['fecha_fin']
+    estado = request_data['estado']
+    solicitudes_paginadas = services.paginate_solicitudes_api_id(page, per_page, get_jwt_identity(), sort, order, fecha_inicio, fecha_fin, estado)
     solicitudes_serializadas = get_solicitud_schema.dump(solicitudes_paginadas.items, many=True)
     response_data = {
         "data": solicitudes_serializadas,
         "page": page,
         "per_page": per_page,
-        "total": solicitudes_paginadas.total
+        "total": solicitudes_paginadas.total,
+        "pages": solicitudes_paginadas.pages
     }
 
     return solicitudes_schema.dump(response_data), 200
+
+
+@api_bp.get("/top-institutions")
+def top_institutions():
+    institutions = services.get_top_institutions()
+    result = paginated_schema.dump({"data": institutions})
+
+    return result, 200
+
+
+@api_bp.get("/solicitudes_por_estado")
+@jwt_required()
+def solicitudes_por_estado():
+    solicitudes = services.solicitudes_por_estado()
+    return jsonify({'data':solicitudes}), 200
+
+
+@api_bp.get("/ranking_servicios")
+@jwt_required()
+def ranking_servicios():
+    user_id = get_jwt_identity()
+    user = auth.get_user_by_id(user_id)
+    if user_is_superadmin(user=user):
+        servicios = services.ranking_all_servicios()
+    else:
+        servicios = services.ranking_servicios(user)
+    return jsonify({'data': servicios}), 200
+

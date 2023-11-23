@@ -13,7 +13,7 @@
         <a><b>Observacion del último cambio: </b>{{solicitud.observacion_cambio_estado}}</a><br><br>
 
         {% if solicitud.comentario != '' %}
-            <a><b>Comentario de la solicitud: </b>{{ solicitud.comentario }}</a>
+            <a><b>Último comentario del cliente: </b>{{ solicitud.comentario }}</a>
         {% endif %}
 
     <form method="POST" action="{{ url_for('services.update_solicitud', id=solicitud.id) }}">

@@ -15,6 +15,7 @@
                 <input v-model="user.password" type="password" id="password" class="form-control" required>
               </div>
               <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+              <p v-if="error" class="text-danger text-center mt-2">Correo electrónico o contraseña incorrectos</p>
             </form>
           </div>
         </div>

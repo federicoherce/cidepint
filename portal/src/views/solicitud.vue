@@ -1,9 +1,9 @@
 <template>
+  <br>
     <div class="container">
-      <h2 class="mt-4">Detalle solicitud</h2>
+      <h2 class="mt-4">Por favor, complete un detalle sobre su solicitud</h2>
       <form @submit.prevent="enviarSolicitud" class="mt-4">
         <div class="form-group">
-          <label for="detalle">Detalle:</label>
           <textarea id="detalle" v-model="detalle" class="form-control" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
@@ -35,17 +35,21 @@ import { apiService } from '@/api';
         this.obtenerInstitucion(this.$route.params.institucion_id);
   },
     methods: {
-    async enviarSolicitud() {
+      async enviarSolicitud() {
   try {
     const csrfToken = localStorage.getItem('csrfToken'); 
-    const jwtToken = localStorage.getItem('jwt'); 
+    const jwtToken = localStorage.getItem('jwt');
     if (!this.institucion.habilitado){
         alert("El centro no está habilitado");
         throw new Error("Este centro no está habilitado");
     }
+    if(!this.servicio.habilitado){
+        alert("El servicio no está habilitado");
+        throw new Error("Este servicio no está habilitado");
+    }
     if(localStorage.getItem('jwt') == null){
         alert("Debe iniciar sesión para enviar una solicitud");
-        throw new Error("Debe iniciar sesión para enviar una solicitud");
+        this.$router.push({ name: 'loginView' });
     }
     const respuesta = await apiService.post('api/me/requests', {
       detalles: this.detalle,
@@ -63,7 +67,6 @@ import { apiService } from '@/api';
     this.solicitudEnviada = true;
   } catch (error) {
     console.error('Error al enviar la solicitud', error);
-    this.$router.push({ name: 'loginView' });
   }},
 
   async obtenerServicio() {

@@ -19,6 +19,9 @@
             </form>
           </div>
           <br>
+            <p class="text-inverse text-center">
+              ¿No tenes una cuenta? <a :href="registerURL" data-abc="true">Registrate</a>
+            </p>
       </div>
     </div>
   </div>
@@ -29,6 +32,7 @@
 <script>
 
 import { apiService } from '@/api';
+import { baseURL } from '@/api';
 import { useAuthStore } from '@/stores/modules/auth';
 
 export default {
@@ -48,6 +52,9 @@ export default {
   computed: {
     loggedIn() {
       return this.store.isLoggedIn;
+    },
+    registerURL() {
+      return `${baseURL}/sesion/register`;
     }
   },
   methods: {

@@ -4,10 +4,10 @@
       <h1 class="display-4 text-center">Bienvenido a CIDEPINT - Sitio público</h1>
       <hr>
       <div class="image-container">
-        <img src="cidepint1.jpg">
-        <img src="cidepint2.jpg">
-        <img src="cidepint3.jpg">
-        <img src="cidepint4.jpg">
+        <img src="/public/cidepint1.jpg">
+        <img src="/public/cidepint2.jpg">
+        <img src="/public/cidepint3.jpg">
+        <img src="/public/cidepint4.jpg">
       </div>
       <br>
       <p class="lead text-center">

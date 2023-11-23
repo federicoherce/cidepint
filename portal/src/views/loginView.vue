@@ -18,10 +18,7 @@
               <p v-if="error" class="text-danger text-center mt-2">Correo electrónico o contraseña incorrectos</p>
             </form>
           </div>
-        </div>
-        <div v-else>
-          <p class="success-message text-center">¡Sesión iniciada correctamente!</p>
-        </div>
+          <br>
       </div>
     </div>
   </div>
@@ -89,8 +86,8 @@ export default {
 }
 
 .success-message {
-  color: green; /* Color de texto verde para éxito */
-  font-weight: bold; /* Texto en negrita */
-  margin-top: 10px; /* Espacio superior */
+  color: green;
+  font-weight: bold;
+  margin-top: 10px;
 }
 </style>

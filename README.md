@@ -9,3 +9,6 @@
   - Super Administrador 1:
     - Correo/Nombre de usuario: juan@admin.com
     - Contraseña: 1234
+  - Dueño 1:
+    - Correo/Nombre de usuario: pepe.argento@mail.com
+    - Contraseña: 1234

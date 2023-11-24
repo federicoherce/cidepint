@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid mb-4">
-    <br>
-    <h1 class="mt-4">Servicios</h1>
+  <div class="container-fluid mb-4 my-5">
+    <h2 class="display-4 text-center">Servicios</h2>
+    <hr>
 
     <TiposDeServicios :selectedTipo="tipoServicio" @tipo-servicio-seleccionado="actualizarTipoServicio"></TiposDeServicios>
 

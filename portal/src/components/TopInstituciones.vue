@@ -1,6 +1,7 @@
 <template>
 <div class="container my-5">
     <h2 class="display-4 text-center">Top 10 instituciones con mejor tiempo de resolución.</h2>
+    <hr>
     <p class="lead text-center">
     El tiempo de resolución representa el período desde la creación de la solicitud hasta su finalización.
     </p>

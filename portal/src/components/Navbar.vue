@@ -1,38 +1,46 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">CIDEPINT</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <router-link to="/" class="navbar-brand">CIDEPINT</router-link>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <router-link to="/" class="nav-link">Inicio</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/servicios" class="nav-link">Servicios</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/contacto" class="nav-link">Contacto</router-link>
-      </li>
-      <li v-if="loggedIn" class="nav-item">
-        <router-link to="/solicitudes" class="nav-link">Mis Solicitudes</router-link>
-      </li>
-      <li v-if="tienePermisosDeEstadistica" class="nav-item">
-        <router-link to="/estadisticas" class="nav-link">Estadísticas</router-link>
-      </li>
-      <li v-if="!loggedIn" class="nav-item">
-        <router-link to="/login" class="nav-link">Iniciar sesión</router-link>
-      </li>
-      <li v-if="loggedIn" class="nav-item">
-        <a href="#" class="nav-link" @click.prevent="logout">Cerrar sesión</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <router-link to="/" class="nav-link">Inicio</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/servicios" class="nav-link">Servicios</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/contacto" class="nav-link">Contacto</router-link>
+        </li>
+        <li v-if="loggedIn" class="nav-item">
+          <router-link to="/solicitudes" class="nav-link">Mis Solicitudes</router-link>
+        </li>
+        <li v-if="tienePermisosDeEstadistica" class="nav-item">
+          <router-link to="/estadisticas" class="nav-link">Estadísticas</router-link>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <font-awesome-icon icon="fa-solid fa-circle-user" />
+          </a>
+
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+            <router-link v-if="!loggedIn" to="/login" class="dropdown-item">Iniciar sesión</router-link>
+            <a v-else href="#" class="dropdown-item" @click.prevent="logout">Cerrar sesión</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </template>
+
   
 <script>
   import { useAuthStore } from '@/stores/modules/auth';
@@ -81,7 +89,6 @@
   <style scoped>
   nav {
     background-color: #333;
-    color: #fff;
     width: 100%;
     position: fixed; 
     top: 0;
@@ -98,6 +105,6 @@
   }
   a {
     text-decoration: none;
-    color: #fff;
   }
+
 </style>

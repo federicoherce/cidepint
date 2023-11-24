@@ -1,6 +1,7 @@
 <template>
   <div class="container my-5">
     <h2 class="display-4 text-center">Solicitudes por Servicio</h2>
+    <hr>
     <p class="lead text-center">
       Este gráfico representa la cantidad de solicitudes realizadas a cada servicio
     </p>

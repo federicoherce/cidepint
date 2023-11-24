@@ -36,11 +36,17 @@
         </li>
       </ul>
       <br>
-      <div style="text-align: center;">
-        <img src="/public/logo.jpg" style="max-width: 1000px; display: inline-block;">
-      </div>
     </div>
   </section>
+  <footer class="bg-light text-dark">
+      <div class="container py-3">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                  <img id="logo" src="/public/logo.jpg" alt="Banner CIDEPINT" style="max-width: 100%; height: auto; display: inline-block;">
+                </div>
+            </div>
+        </div>
+    </footer>
 </template>
 
 <script>
@@ -69,4 +75,9 @@ export default {
       margin-top: 10px;
       margin-bottom: 30px; 
     }
+    #logo {
+    max-width: 118%;
+    max-height: 118%;
+    padding: 8px;
+  }
 </style>

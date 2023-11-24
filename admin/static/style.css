@@ -31,8 +31,8 @@ body {
   }
   
   #logo {
-    max-width: 118%; /* Asegura que la imagen no exceda el tamaño del contenedor */
-    max-height: 118%; /* Asegura que la imagen no exceda el tamaño del contenedor */
+    max-width: 118%;
+    max-height: 118%;
     padding: 8px;
   }
   

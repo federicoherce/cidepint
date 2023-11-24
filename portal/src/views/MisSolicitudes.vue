@@ -1,8 +1,7 @@
 <template>
-  <div class="container-fluid mb-4">
-    <br>
-    <h1 class="mt-4">Mis Solicitudes</h1>
-
+  <div class="container-fluid mb-4 my-5">
+    <h2 class="display-4 text-center">Mis Solicitudes</h2>
+    <hr>
     <div class="form-group">
       <label for="estado">Filtrar por Estado:</label>
       <select class="form-control" v-model="estado">

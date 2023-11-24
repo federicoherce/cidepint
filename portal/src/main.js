@@ -11,7 +11,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { Pie, Chart } from 'vue-chartjs';
+import { Pie, Bar } from 'vue-chartjs';
 
 library.add(fas);
 const app = createApp(App)
@@ -20,6 +20,6 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 app.component('pie-chart', Pie);
-app.component('bar-chart', Chart)
+app.component('bar-chart', Bar)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.mount('#app')

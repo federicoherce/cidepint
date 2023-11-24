@@ -15,7 +15,7 @@ export const useAuthStore = defineStore({
   },
   persist: {
     storage: sessionStorage,
-    paths: ['isLoggedIn'],
+    paths: ['isLoggedIn', 'user'],
   },
   actions: {
     async axiosUser() {

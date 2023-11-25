@@ -57,7 +57,7 @@ def search_services_api(**kwargs):
     if 'tipo_servicio' in kwargs and kwargs['tipo_servicio']:
         query = query.filter(Servicio.tipo_servicio == kwargs['tipo_servicio'])
     if 'keywords' in kwargs and kwargs['keywords']:
-        query = query.filter(Servicio.keywords.ilike(f"%{kwargs['keywords']}"))
+        query = query.filter(Servicio.keywords.contains(kwargs['keywords']))
     
     return query.paginate(page=kwargs['page'], per_page=kwargs['per_page'])
 

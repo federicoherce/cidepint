@@ -3,9 +3,10 @@
     <div class="row justify-content-center">
       <div class="col-md-6">
         <div v-if="!loggedIn" class="card">
-          <div class="card-body">
+          <div class="card-body d-flex flex-column align-items-center">
+            <img src="/public/logo_login.png" style="max-width: 125px;" class="mb-3">
             <h2 class="card-title text-center">Iniciar sesión</h2>
-            <form @submit.prevent="login">
+            <form @submit.prevent="login" class="w-100">
               <div class="mb-3">
                 <label for="email" class="form-label">Correo electrónico:</label>
                 <input v-model="user.email" type="email" id="email" class="form-control" required>
@@ -17,7 +18,8 @@
               <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
               <p v-if="error" class="text-danger text-center mt-2">Correo electrónico o contraseña incorrectos</p>
             </form>
-          </div>
+        </div>
+
           <br>
             <p class="text-inverse text-center">
               ¿No tenes una cuenta? <a :href="registerURL" data-abc="true">Registrate</a>

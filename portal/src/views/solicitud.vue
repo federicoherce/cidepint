@@ -1,15 +1,17 @@
 <template>
   <br>
+  <br>
     <div class="container">
-      <h2 class="mt-4">Por favor, complete un detalle sobre su solicitud</h2>
+      <h3 class="display-4">Usted va a solicitar {{ servicio.nombre }}, de la institución {{ institucion.nombre }} </h3>
+      <br>
+      <h4 class="mt-4">Por favor, complete este campo indicando detalles de su solicitud</h4>
       <form @submit.prevent="enviarSolicitud" class="mt-4">
         <div class="form-group">
           <textarea id="detalle" v-model="detalle" class="form-control" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
       </form>
-      
-      <!-- Mostrar mensaje de éxito -->
+      <button @click="volverAtras" class="btn btn-secondary mt-4">Volver atrás</button> 
       <div v-if="solicitudEnviada" class="alert alert-success mt-4">
         Solicitud enviada con éxito al servicio : "{{ this.servicio.nombre}}"  
       </div>
@@ -35,6 +37,9 @@ import { apiService } from '@/api';
         this.obtenerInstitucion(this.$route.params.institucion_id);
   },
     methods: {
+      volverAtras() {
+        window.history.back();
+    },
       async enviarSolicitud() {
   try {
     const csrfToken = localStorage.getItem('csrfToken'); 
@@ -88,6 +93,5 @@ import { apiService } from '@/api';
     },
   };
 </script>
-<style>
-</style>
+
   

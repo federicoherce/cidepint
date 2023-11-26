@@ -64,6 +64,7 @@
         </tbody>
       </table>
     </div>
+    <p v-if="busqueda && solicitudes && solicitudes.length == 0"> <b>No se encontraron solicitudes</b></p>
 
     <div v-if="solicitudConComentario">
       <div class="comentario-container">

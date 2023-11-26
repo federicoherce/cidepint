@@ -76,6 +76,7 @@ export default {
         localStorage.setItem('jwt', response.data.token);
         this.success = true;
         await this.store.axiosUser();
+        this.$router.push({ name: 'Home' });
 
       } catch (error) {
         console.error(error);

@@ -46,6 +46,9 @@ def paginate_services_api(page, per_page):
 
 
 def search_services_api(**kwargs):
+    """
+    Realiza una búsqueda de servicios usando varios criterios de filtrado.
+    """
     query = Servicio.query
 
     if 'nombre' in kwargs and kwargs['nombre']:
@@ -80,6 +83,7 @@ def paginate_solicitudes_api_id(page, per_page,id):
     solicitudes = Solicitud.query.filter( Solicitud.cliente_id == id).paginate(page=page, per_page=per_page)
     return solicitudes
 
+
 def paginate_solicitudes_api_id(page, per_page, id, sort, order, fecha_inicio, fecha_fin, estado):
 
     if order == 'asc':
@@ -101,6 +105,7 @@ def paginate_solicitudes_api_id(page, per_page, id, sort, order, fecha_inicio, f
     paginated_solicitudes = solicitudes.paginate(page=page, per_page=per_page)
 
     return paginated_solicitudes
+
 
 def solicitudes_api_id(cliente_id, solicitud_id):
     """
@@ -167,6 +172,11 @@ def create_solicitud(**kwargs):
 
 
 def get_top_institutions():
+    """
+    Obtiene las 10 instituciones con el mejor tiempo de resolución.
+
+    Calcula el tiempo de resolución para cada institución basándose en las solicitudes finalizadas.
+    """
     subquery = (
         db.session.query(
             Servicio.institucion_id,
@@ -195,11 +205,15 @@ def solicitudes_por_estado():
     return estados_ordenados
 
 
-
 def ranking_servicios(user):
-    instituciones_duenas = [uir.institution_id for uir in UserRoleInstitution.query.filter_by(user_id=user.id, role_id=2).all()]
+    instituciones_duenas = [
+        uir.institution_id for uir in UserRoleInstitution.query.filter_by(user_id=user.id, role_id=2).all()
+    ]
+
     solicitudes = Solicitud.query.join(Servicio).filter(Servicio.institucion_id.in_(instituciones_duenas)).all()
+
     frecuencia_servicios = Counter((f"{solicitud.servicio.nombre}-{solicitud.servicio.institucion.nombre}", solicitud.servicio, solicitud.servicio.institucion.nombre) for solicitud in solicitudes)
+
     servicios_con_cantidad = [{'servicio': servicio[0], 'cantidad_solicitudes': cantidad} for servicio, cantidad in frecuencia_servicios.items()]
 
     return servicios_con_cantidad
@@ -207,6 +221,9 @@ def ranking_servicios(user):
 
 def ranking_all_servicios():
     solicitudes = Solicitud.query.all()
+
     frecuencia_servicios = Counter((f"{solicitud.servicio.nombre}-{solicitud.servicio.institucion.nombre}", solicitud.servicio, solicitud.servicio.institucion.nombre) for solicitud in solicitudes)
+
     servicios_con_cantidad = [{'servicio': servicio[0], 'cantidad_solicitudes': cantidad} for servicio, cantidad in frecuencia_servicios.items()]
+
     return servicios_con_cantidad

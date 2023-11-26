@@ -184,11 +184,11 @@ def google_authorized():
         abort(401)
 
     session['google_token'] = (response['access_token'], '')
-    
+
     google_user = current_app.extensions['oauthlib.client'].google.get('userinfo')
     user_info = google_user.data
     user_email = user_info.get('email')
-    
+
     google_id = user_info.get('id')
     existe = auth.find_user_by_mail(user_email)
 

@@ -85,6 +85,11 @@ def paginate_solicitudes_api_id(page, per_page,id):
 
 
 def paginate_solicitudes_api_id(page, per_page, id, sort, order, fecha_inicio, fecha_fin, estado):
+    """
+    Se devuelven las solicitudes paginadas del user cuyo id es el pasado por
+    parametro, filtradas por los parametros y ordenadas si es que se mandaron 
+    los mismos.
+    """
 
     if order == 'asc':
         solicitudes = Solicitud.query.filter(Solicitud.cliente_id == id).order_by(db.asc(sort))
@@ -199,6 +204,9 @@ def get_top_institutions():
 
 
 def solicitudes_por_estado():
+    """
+    Obtiene todas las solicitudes, las agrupa por estados y las ordena de mayor a menor
+    """
     solicitudes = Solicitud.query.all()
     frecuencia_estados = Counter(solicitud.estado for solicitud in solicitudes)
     estados_ordenados = frecuencia_estados.most_common()
@@ -206,6 +214,10 @@ def solicitudes_por_estado():
 
 
 def ranking_servicios(user):
+    """
+    Obtiene los servicios de las instituciones pertenecientes al usuario que se pasa
+    por parametro. Agrupa las solicitudes a dichos servicios y los devuelve.
+    """
     instituciones_duenas = [
         uir.institution_id for uir in UserRoleInstitution.query.filter_by(user_id=user.id, role_id=2).all()
     ]
@@ -220,6 +232,9 @@ def ranking_servicios(user):
 
 
 def ranking_all_servicios():
+    """
+    Obtiene los servicios de todas las instituciones y agrupa las solicitudes a los mismos.
+    """
     solicitudes = Solicitud.query.all()
 
     frecuencia_servicios = Counter((f"{solicitud.servicio.nombre}-{solicitud.servicio.institucion.nombre}", solicitud.servicio, solicitud.servicio.institucion.nombre) for solicitud in solicitudes)

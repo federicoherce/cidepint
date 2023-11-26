@@ -280,7 +280,8 @@ def solicitudes():
     Obtiene una lista paginada de solicitudes del usuario autenticado
 
     Los parámetros aceptados para la paginación y filtrado son 'page', 'per_page',
-    'fecha_inicio', 'fecha_fin' y 'estado'.
+    'fecha_inicio', 'fecha_fin' y 'estado'. Para el orden 'sort' indica la columna
+    y 'order' si es ascendente o descendente.
     """
     try:
         request_data = solicitudes_schema.load(request.args)
@@ -311,6 +312,11 @@ def solicitudes():
 
 @api_bp.get("/top-institutions")
 def top_institutions():
+    """
+    Se obtienen las instituciones que mas rapido resuelven las 
+    solicitudes que le fueron realizadas. Es decir, desde que se crean
+    hasta que su estado pasa a 'FINALIZADA'
+    """
     institutions = services.get_top_institutions()
     result = paginated_schema.dump({"data": institutions})
 
@@ -320,6 +326,10 @@ def top_institutions():
 @api_bp.get("/solicitudes_por_estado")
 @jwt_required()
 def solicitudes_por_estado():
+    """
+    Se obtienen los distintos estados que puede tomar cada solicitud
+    junto con la cantidad de solicitudes en dicha etapa del proceso.
+    """
     solicitudes = services.solicitudes_por_estado()
     return jsonify({'data': solicitudes}), 200
 
@@ -327,6 +337,13 @@ def solicitudes_por_estado():
 @api_bp.get("/ranking_servicios")
 @jwt_required()
 def ranking_servicios():
+    """
+    En caso de que la llamada sea realizada por el Super Admin, se
+    obtienen todos los servicios junto con su cantidad de solicitudes.
+    Si la misma fue hecha por un dueño de una/s institucion/es, solo
+    se devuelven los servicios (y sus solicitudes) de aquellas que le
+    pertenecen.
+    """
     user_id = get_jwt_identity()
     user = auth.get_user_by_id(user_id)
     if user_is_superadmin(user=user):

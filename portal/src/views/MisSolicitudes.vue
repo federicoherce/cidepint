@@ -36,32 +36,34 @@
       <button class="btn btn-secondary" @click="ordenarPor('estado', 'asc')">Ordenar por Estado Alfabéticamente</button>
     </div>
 
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th @click="ordenarPor('nombre')">Título del Servicio</th>
-          <th>Descripción</th>
-          <th>Estado</th>
-          <th>Fecha de Creación</th>
-          <th>Fecha de Cambio de Estado</th>
-          <th>Ultimo Comentario</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="solicitud in solicitudes" :key="solicitud.id">
-          <td>{{ solicitud.servicio ? solicitud.servicio.nombre : 'Sin servicio' }}</td>
-          <td>{{ solicitud.detalles }}</td>
-          <td>{{ solicitud.estado }}</td>
-          <td>{{ formatoFecha(solicitud.fecha_creacion) }}</td>
-          <td>{{ formatoFecha(solicitud.fecha_cambio_estado) }}</td>
-          <td>{{ solicitud.observacion_cambio_estado }}</td>
-          <td>
-            <button class="btn btn-primary" @click="mostrarCampoComentario(solicitud)">Comentar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th @click="ordenarPor('nombre')">Título del Servicio</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Fecha de Creación</th>
+            <th>Fecha de Cambio de Estado</th>
+            <th>Ultimo Comentario</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="solicitud in solicitudes" :key="solicitud.id">
+            <td>{{ solicitud.servicio ? solicitud.servicio.nombre : 'Sin servicio' }}</td>
+            <td>{{ solicitud.detalles }}</td>
+            <td>{{ solicitud.estado }}</td>
+            <td>{{ formatoFecha(solicitud.fecha_creacion) }}</td>
+            <td>{{ formatoFecha(solicitud.fecha_cambio_estado) }}</td>
+            <td>{{ solicitud.observacion_cambio_estado }}</td>
+            <td>
+              <button class="btn btn-primary" @click="mostrarCampoComentario(solicitud)">Comentar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div v-if="solicitudConComentario">
       <div class="comentario-container">

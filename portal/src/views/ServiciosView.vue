@@ -26,31 +26,31 @@
       <button v-if="busqueda" class="btn btn-secondary" @click="deshacerBusqueda">Deshacer Búsqueda</button>
     </div>
 
-
-
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>Título</th>
-          <th>Descripción</th>
-          <th>Institución</th>
-          <th>Tags</th>
-          <th>Tipo de Servicio</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="servicio in servicios.data" :key="servicio.id">
-          <router-link :to="{name: 'detallesServicio', params: { id: servicio.id } }">
-          <td>{{ servicio.nombre }}</td>
-          </router-link>
-          <td>{{ servicio.descripcion }}</td>
-          <td>{{ servicio.institucion }}</td>
-          <td>{{ servicio.keywords }}</td>
-          <td>{{ servicio.tipo_servicio }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Institución</th>
+            <th>Tags</th>
+            <th>Tipo de Servicio</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="servicio in servicios.data" :key="servicio.id">
+            <router-link :to="{name: 'detallesServicio', params: { id: servicio.id } }">
+            <td>{{ servicio.nombre }}</td>
+            </router-link>
+            <td>{{ servicio.descripcion }}</td>
+            <td>{{ servicio.institucion }}</td>
+            <td>{{ servicio.keywords }}</td>
+            <td>{{ servicio.tipo_servicio }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <nav aria-label="Page navigation">
       <ul class="pagination">

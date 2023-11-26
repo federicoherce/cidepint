@@ -114,6 +114,9 @@ export default {
     },
     async buscarServicios() {
       try {
+        if (!this.busqueda) {
+          this.servicios.page = 1;
+        }
         const respuesta = await apiService.get('api/search_services', {
           params: {
             nombre: this.nombre,
@@ -151,6 +154,7 @@ export default {
       this.keywords = '';
       this.tipoServicio = '';
       this.busqueda = false;
+      this.page = 1;
       this.obtenerServicios();
 
     }

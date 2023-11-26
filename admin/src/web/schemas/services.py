@@ -32,6 +32,7 @@ paginated_services = PaginatedServicesSchema(exclude=[
     "nombre", "descripcion", "institucion", "tipo_servicio", "keywords"])
 paginated_search_services = PaginatedServicesSchema()
 
+
 class SolicitudSchema(Schema):
     id = fields.Int(dump_only=True)
     cliente_id = fields.Int()
@@ -43,7 +44,6 @@ class SolicitudSchema(Schema):
     observacion_cambio_estado = fields.Str()
     comentario = fields.Str()
     servicio = fields.Nested(ServiceSchema)
-
 
 
 solicitud_schema = SolicitudSchema(exclude=['fecha_creacion', 'estado', 'servicio', 'fecha_cambio_estado', 'observacion_cambio_estado', 'id'])
@@ -61,6 +61,7 @@ class PaginatedSolicitudesSchema(Schema):
     estado = fields.Str()
     total = fields.Integer()
     pages = fields.Int()
+
 
 solicitudes_schema = PaginatedSolicitudesSchema()
 

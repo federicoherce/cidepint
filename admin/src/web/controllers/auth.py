@@ -57,8 +57,6 @@ def authenticate():
 @auth_bp.route('/logout')
 def logout():
     if 'user_id' in session:
-        #session.pop('user_id', None)
-        #session.pop('google_token', None)
         session.clear()
         return redirect(url_for('home.index'))
     else:
@@ -82,27 +80,37 @@ def register():
 @maintenanceActivated
 def register_user():
     """
-    Ésta función registra al usuario, verifica que el mail ingresado no se
-    repita, crea un token que servirá hasta que el usuario termine su registro
-    y envía un correo al mail ingresado para que continue con el registro.
+    Registra a un usuario, verifica la unicidad del correo electrónico,
+    crea un token de confirmación y envía un correo para completar el registro.
     """
     form = SignUpForm()
+
     if form.validate_on_submit():
-        existe = auth.find_user_by_mail(form.email.data)
-        if existe:
+        email = form.email.data
+        existing_user = auth.find_user_by_mail(email)
+
+        if existing_user and existing_user.google_id is None:
             flash('Este correo electrónico ya está en uso. Por favor, elige otro.', 'error')
             return redirect(url_for('auth.register'))
+
+        if existing_user and existing_user.google_id is not None:
+            token = generate_confirmation_token()
+            auth.add_token(existing_user, token)
+            send_confirmation_email(existing_user.email, token)
+            flash('Tu cuenta ha sido creada, se envió un correo y se asoció con tu cuenta de Google', 'success')
+            return redirect(url_for('home.index'))
 
         token = generate_confirmation_token()
         auth.create_user_no_pw(
             nombre=form.nombre.data,
             apellido=form.apellido.data,
-            email=form.email.data,
+            email=email,
             token=token
         )
-        send_confirmation_email(form.email.data, token)
-        flash('Tu cuenta ha sido creada, te enviamos un mail', 'success')
+        send_confirmation_email(email, token)
+        flash('Tu cuenta ha sido creada, se envió un correo electrónico.', 'success')
         return redirect(url_for('home.index'))
+
     return render_template("auth/register.html", form=form)
 
 
@@ -151,6 +159,11 @@ def save_password(email, token):
 
 @auth_bp.get("/google")
 def google():
+    """
+    Inicia el flujo de autenticación con Google.
+
+    Retorna una redirección a la página de autorización de Google.
+    """
     return current_app.extensions['oauthlib.client'].google.authorize(
         callback=url_for('auth.google_authorized', _external=True)
     )
@@ -158,22 +171,32 @@ def google():
 
 @auth_bp.get("/google/authorized")
 def google_authorized():
+    """
+    Callback para manejar la respuesta de autorización de Google.
+
+    Si la autorización es exitosa, se crea una sesión para el usuario y se redirige a la página principal.
+    Si la autorización falla, se devuelve un error 401.
+
+    :return: Redirección a la página principal o error 401.
+    """
     response = current_app.extensions['oauthlib.client'].google.authorized_response()
     if response is None or response.get('access_token') is None:
         abort(401)
 
     session['google_token'] = (response['access_token'], '')
+    
     google_user = current_app.extensions['oauthlib.client'].google.get('userinfo')
     user_info = google_user.data
     user_email = user_info.get('email')
-
+    
+    google_id = user_info.get('id')
     existe = auth.find_user_by_mail(user_email)
+
     if existe:
         msg = 'La sesión se inició correctamente.'
         if existe.password is not None and existe.google_id is None:
-            google_id = user_info.get('id')
             auth.add_google_id(existe, google_id)
-            msg += 'Tu cuenta de Google se asoció junto con la cuenta que ya tenías.'
+            msg += ' Tu cuenta de Google se asoció junto con la cuenta que ya tenías.'
         create_session_google(existe, session)
         flash(msg, 'success')
         return redirect(url_for('home.index'))
@@ -183,7 +206,8 @@ def google_authorized():
         user = auth.create_user_no_pw(
             nombre=user_name,
             apellido=user_lastname,
-            email=user_email
+            email=user_email,
+            google_id=google_id
         )
         create_session_google(user, session)
         flash('Tu cuenta de Google ha sido añadida con éxito!', 'success')
@@ -191,6 +215,9 @@ def google_authorized():
 
 
 def create_session_google(user, session):
+    """
+    Crea una sesión para el usuario después de la autenticación con Google.
+    """
     session['user_id'] = user.email
-    session["is_superadmin"] = user_is_superadmin(user)
-    session["permissions"] = users.list_permissions_by_user(user)
+    session['is_superadmin'] = user_is_superadmin(user)
+    session['permissions'] = users.list_permissions_by_user(user)

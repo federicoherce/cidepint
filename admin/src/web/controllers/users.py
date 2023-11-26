@@ -28,28 +28,7 @@ def index():
 
 
 def get_users(email, estado, page, per_page):
-    """
-    Este método se encarga de traer los usuarios (se haga o no una búsqueda)
-    - Si no se realizó una búsqueda:
-      - Me traigo a todos
-    - Si se realizó una búsqueda por email y estado:
-      - Me traigo a los que contengan el email cuyo estado sea
-      igual al recibido
-    - Si solo se busca por un criterio, se aplicará solo ese al listado.
-    """
-    if email == "" or estado == "todos":
-        return auth.list_users(page, per_page)
-
-    elif email != "" and estado != "todos":
-        return auth.find_user_by_email_and_state_paginated(email, estado, page, per_page)
-
-    elif email != "":
-        return auth.find_user_contains_mail_paginated(email, page, per_page)
-
-    elif estado != "todos":
-        return auth.find_user_by_state_paginated(estado, page, per_page)
-
-    return []
+    return auth.filter_users(email, estado, page, per_page)
 
 
 @users_bp.get("/profile/<int:user_id>")

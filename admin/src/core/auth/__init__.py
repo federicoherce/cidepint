@@ -69,29 +69,14 @@ def list_users(page, per_page):
     return users
 
 
-def find_user_contains_mail_paginated(email, page, per_page):
-    users = Users.query.filter(Users.email.contains(f'{email}')).paginate(page=page, per_page=per_page)
-    return users
-
-
-def find_user_by_state_paginated(state, page, per_page):
-    return Users.query.filter(Users.activo == (state == 'activo')).paginate(page=page, per_page=per_page)
-
-
-def find_user_by_email_and_state_paginated(email, state, page, per_page):
-    """
-    Esta función filtra primero por email y después por el estado (según si se
-    busca por activo o bloqueado)
-    """
+def filter_users(email, estado, page, per_page):
     query = Users.query
 
     if email:
         query = query.filter(Users.email.contains(email))
 
-    if state == 'activo':
-        query = query.filter(Users.activo == True)
-    elif state == 'bloqueado':
-        query = query.filter(Users.activo == False)
+    if estado != "todos":
+        query = query.filter(Users.activo == (estado == 'activo'))
 
     return query.paginate(page=page, per_page=per_page, error_out=False)
 
@@ -139,4 +124,9 @@ def find_user_email_by_id(id):
 
 def add_google_id(user, google_id):
     user.google_id = google_id
+    db.session.commit()
+
+
+def add_token(user, token):
+    user.token = token
     db.session.commit()

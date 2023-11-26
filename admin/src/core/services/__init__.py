@@ -196,7 +196,7 @@ def get_top_institutions():
     query = (
         db.session.query(Institucion)
         .join(subquery, subquery.c.institucion_id == Institucion.id)
-        .order_by(subquery.c.tiempo_resolucion.desc())
+        .order_by(subquery.c.tiempo_resolucion.asc())
         .limit(10)
     )
 

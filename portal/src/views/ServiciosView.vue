@@ -148,13 +148,14 @@ export default {
       this.tipoServicio = valor;
     },
     deshacerBusqueda() {
+      console.log("DESHACER");
       this.nombre = '';
       this.descripcion = '';
       this.institucion = '';
       this.keywords = '';
       this.tipoServicio = '';
       this.busqueda = false;
-      this.page = 1;
+      this.servicios.page = 1;
       this.obtenerServicios();
 
     }

@@ -1,4 +1,12 @@
-# Grupo17
+Aplicación realizada para la matería Proyecto de Software - Facultad de Informática - UNLP
+
+# Tecnologías utilizadas
+
+- Flask
+- PostgreSQL
+- Vue.js
+
+# Enlaces
 
 - [Aplicación de administración](https://admin-grupo17.proyecto2023.linti.unlp.edu.ar/)
 - [Portal público](https://grupo17.proyecto2023.linti.unlp.edu.ar/)
@@ -7,10 +15,3 @@
 - [Wiki materia](https://proyecto-de-software.github.io/)
 - [Wiki APIs](https://proyecto-de-software.github.io/api/)
 
-- Credenciales:
-  - Super Administrador 1:
-    - Correo/Nombre de usuario: juan@admin.com
-    - Contraseña: 1234
-  - Dueño 1:
-    - Correo/Nombre de usuario: pepe.argento@mail.com
-    - Contraseña: 1234
